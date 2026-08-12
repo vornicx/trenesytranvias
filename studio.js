@@ -2,6 +2,20 @@ const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
 const config = window.TYT_SUPABASE || {};
 const SESSION_KEY = 'tyt_studio_session';
+const studioViews = ['solicitudes', 'clientes', 'ayuntamientos', 'ventas', 'ajustes'];
+
+function showView(name) {
+  $$('[data-view]').forEach(el => { el.hidden = el.dataset.view !== name; });
+  $$('[data-nav]').forEach(a => a.classList.toggle('is-active', a.dataset.nav === name));
+  location.hash = name;
+  // dispatch custom event for view modules
+  document.dispatchEvent(new CustomEvent('tyt:view', { detail: { name } }));
+}
+
+function showHashView() {
+  const name = location.hash.slice(1);
+  showView(studioViews.includes(name) ? name : 'solicitudes');
+}
 
 const loginScreen = $('[data-login-screen]');
 const studioApp = $('[data-studio-app]');
@@ -44,7 +58,7 @@ let selectedInquiryId = null;
 let currentView = 'list';
 
 const labels = {
-  status: { new: 'Nueva', contacted: 'Contactado', qualified: 'Cualificada', quoted: 'Presupuesto', won: 'Ganada', lost: 'Perdida', archived: 'Archivada' },
+  status: { new: 'Nueva', contacted: 'Contactado', qualified: 'Cualificada', quoted: 'Presupuestado', won: 'Vendido', lost: 'Perdida', archived: 'Archivada' },
   priority: { high: 'Alta', normal: 'Normal', low: 'Baja' },
   project: { turismo: 'Turismo y ciudad', eventos: 'Ferias y eventos', recintos: 'Empresas y recintos', tren: 'Tren turístico', tranvia: 'Tranvía turístico', otro: 'Otro' },
   operation: { alquiler: 'Alquiler', compra: 'Compra', fabricacion: 'Fabricación / especial' },
@@ -289,7 +303,7 @@ function renderList(){
       <div class="status-cell"><span class="status-badge status-${escapeHTML(item.status)}">${escapeHTML(labels.status[item.status] || item.status)}</span></div>
       <div class="priority-cell"><span class="priority-badge priority-${escapeHTML(item.priority)}">${escapeHTML(labels.priority[item.priority] || item.priority)}</span></div>
       <div class="date-cell">${escapeHTML(relativeDate(item.created_at))}</div>
-      <button class="row-open" type="button" aria-label="Abrir inquiry de ${escapeHTML(item.name)}" data-open-inquiry="${item.id}">→</button>
+      <button class="row-open" type="button" aria-label="Abrir solicitud de ${escapeHTML(item.name)}" data-open-inquiry="${item.id}">→</button>
     </article>`;
   }).join('');
   empty.hidden = visible.length > 0;
@@ -309,7 +323,7 @@ function renderPipeline(){
           <p>${escapeHTML(item.company || labels.project[item.project_type] || 'Sin empresa')}</p>
           ${sourceChip(item)}
           <div class="pipeline-card-meta"><span>${escapeHTML(item.location || 'Sin localidad')}</span><span>${escapeHTML(relativeDate(item.created_at))}</span></div>
-        </button>`).join('') : '<div class="pipeline-empty">Sin inquiries</div>'}</div>
+        </button>`).join('') : '<div class="pipeline-empty">Sin solicitudes</div>'}</div>
     </section>`;
   }).join('');
   $$('[data-open-inquiry]', pipelineBoard).forEach(button => button.addEventListener('click', () => openDrawer(button.dataset.openInquiry)));
@@ -327,7 +341,7 @@ async function loadInquiries(){
     renderAll();
   } catch (error) {
     console.error(error);
-    showError('No se han podido cargar las inquiries. Comprueba la conexión y vuelve a intentarlo.');
+    showError('No se han podido cargar las solicitudes. Comprueba la conexión y vuelve a intentarlo.');
   } finally { if (loading) loading.hidden = true; }
 }
 
@@ -442,7 +456,7 @@ $('[data-mark-contacted]')?.addEventListener('click', async () => {
 
 $('[data-archive]')?.addEventListener('click', async () => {
   const item = selectedInquiry(); if (!item) return;
-  await updateInquiry(item.id, { status: 'archived' }, 'Inquiry archivada.');
+  await updateInquiry(item.id, { status: 'archived' }, 'Solicitud archivada.');
   closeDrawer();
 });
 
@@ -492,9 +506,16 @@ manualForm?.addEventListener('submit', async event => {
     if (created?.[0]) openDrawer(created[0].id);
   } catch (error) {
     console.error(error);
-    if (manualStatus) manualStatus.textContent = 'No se ha podido registrar la inquiry.';
-  } finally { manualSubmit.disabled = false; manualSubmit.textContent = 'Guardar inquiry'; }
+    if (manualStatus) manualStatus.textContent = 'No se ha podido registrar la solicitud.';
+  } finally { manualSubmit.disabled = false; manualSubmit.textContent = 'Guardar solicitud'; }
 });
+
+$$('[data-nav]').forEach(link => link.addEventListener('click', event => {
+  event.preventDefault();
+  showView(link.dataset.nav);
+  sidebar?.classList.remove('is-open');
+}));
+window.addEventListener('hashchange', showHashView);
 
 sidebarToggle?.addEventListener('click', () => sidebar?.classList.toggle('is-open'));
 document.addEventListener('click', event => {
@@ -507,5 +528,6 @@ document.addEventListener('keydown', event => {
 });
 
 session = readSession();
+showHashView();
 if (session) initAuthenticated();
 else if (!config.url || !config.publishableKey) setAuthMessage('El backend de Studio no está configurado.', 'error');
