@@ -49,6 +49,7 @@ const formStatus = $('[data-form-status]');
 const requestSummary = $('[data-request-summary]');
 const projectSelect = $('[data-project-select]');
 const copyButton = $('[data-copy-request]');
+const contactSubmit = $('[data-contact-submit]');
 
 if (projectSelect) {
   const requestedProject = new URLSearchParams(window.location.search).get('proyecto');
@@ -80,7 +81,41 @@ function buildRequestSummary(data){
   ].join('\n');
 }
 
-contactForm?.addEventListener('submit', event => {
+async function persistInquiry(data){
+  const config = window.TYT_SUPABASE;
+  if (!config?.url || !config?.publishableKey) throw new Error('backend_not_configured');
+  const value = key => String(data.get(key) || '').trim();
+  const payload = {
+    name: value('name'),
+    company: value('company') || null,
+    email: value('email'),
+    phone: value('phone') || null,
+    project_type: value('project') || null,
+    operation: value('operation') || null,
+    location: value('location') || null,
+    message: value('message') || null,
+    source: 'website'
+  };
+
+  const response = await fetch(`${config.url}/rest/v1/tyt_inquiries`, {
+    method: 'POST',
+    headers: {
+      apikey: config.publishableKey,
+      'Content-Type': 'application/json',
+      Prefer: 'return=representation'
+    },
+    body: JSON.stringify(payload)
+  });
+
+  if (!response.ok) {
+    const details = await response.text().catch(() => '');
+    console.error('Inquiry submission failed', response.status, details);
+    throw new Error('submission_failed');
+  }
+  return response.json();
+}
+
+contactForm?.addEventListener('submit', async event => {
   event.preventDefault();
   if (formStatus) formStatus.textContent = '';
 
@@ -88,19 +123,32 @@ contactForm?.addEventListener('submit', event => {
   const name = String(data.get('name') || '').trim();
   const email = String(data.get('email') || '').trim();
   const privacy = data.get('privacy');
+  const honeypot = String(data.get('website') || '').trim();
 
-  if (!name || !email || !email.includes('@') || !privacy) {
+  if (honeypot) return;
+  if (!name || !email || !/^\S+@\S+\.\S+$/.test(email) || !privacy) {
     if (formStatus) formStatus.textContent = 'Revisa nombre, email y aceptación antes de continuar.';
     return;
   }
 
-  const summary = buildRequestSummary(data);
-  localStorage.setItem('ciudadDelSolQuoteDraft', JSON.stringify({ summary, createdAt: new Date().toISOString() }));
-  if (requestSummary) requestSummary.value = summary;
-  contactForm.hidden = true;
-  if (contactSuccess) {
-    contactSuccess.hidden = false;
-    contactSuccess.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  contactSubmit?.setAttribute('disabled', '');
+  if (contactSubmit) contactSubmit.textContent = 'Enviando…';
+  if (formStatus) formStatus.textContent = 'Registrando la solicitud…';
+
+  try {
+    await persistInquiry(data);
+    const summary = buildRequestSummary(data);
+    if (requestSummary) requestSummary.value = summary;
+    contactForm.hidden = true;
+    if (contactSuccess) {
+      contactSuccess.hidden = false;
+      contactSuccess.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  } catch (error) {
+    console.error(error);
+    if (formStatus) formStatus.textContent = 'No hemos podido registrar la solicitud. Inténtalo de nuevo en unos segundos.';
+    contactSubmit?.removeAttribute('disabled');
+    if (contactSubmit) contactSubmit.textContent = 'Enviar solicitud →';
   }
 });
 
@@ -109,7 +157,7 @@ copyButton?.addEventListener('click', async () => {
   if (!text) return;
   try {
     await navigator.clipboard.writeText(text);
-    copyButton.textContent = 'Solicitud copiada';
+    copyButton.textContent = 'Resumen copiado';
   } catch {
     requestSummary?.focus();
     requestSummary?.select();
