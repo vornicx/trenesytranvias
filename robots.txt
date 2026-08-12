@@ -2,3 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /studio
 Disallow: /studio.html
+Disallow: /gestion
