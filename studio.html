@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#171817" />
+  <meta name="robots" content="noindex,nofollow" />
+  <title>Inquiry Studio | Trenes y Tranvías Ciudad del Sol</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./studio.css" />
+</head>
+<body class="studio-body">
+  <section class="studio-login" data-login-screen>
+    <div class="login-panel">
+      <a class="studio-brand" href="./index.html" aria-label="Volver a la web">
+        <span class="studio-brand-mark" aria-hidden="true"><i></i></span>
+        <span class="studio-brand-copy"><strong>Trenes & Tranvías</strong><small>Inquiry Studio</small></span>
+      </a>
+
+      <div class="login-form-wrap">
+        <span class="login-kicker">Acceso privado</span>
+        <h1>Gestión de inquiries.</h1>
+        <p>Accede para revisar solicitudes, actualizar su estado y mantener el seguimiento comercial en un único lugar.</p>
+        <form class="studio-form" data-login-form>
+          <label>Email<input type="email" name="email" autocomplete="email" required /></label>
+          <label>Contraseña<input type="password" name="password" autocomplete="current-password" minlength="8" required /></label>
+          <div class="login-actions">
+            <button class="studio-button" type="submit" data-login-button>Entrar</button>
+            <button class="studio-button secondary" type="button" data-signup-button>Crear acceso inicial</button>
+          </div>
+          <p class="auth-message" data-auth-message aria-live="polite"></p>
+        </form>
+      </div>
+      <span class="login-foot">Área privada · Ciudad del Sol</span>
+    </div>
+    <div class="login-visual" aria-hidden="true">
+      <div class="login-visual-copy"><span>Control comercial</span><h2>Cada solicitud,<br /><em>bien seguida.</em></h2></div>
+    </div>
+  </section>
+
+  <div class="studio-app" data-studio-app hidden>
+    <aside class="studio-sidebar" data-sidebar>
+      <a class="studio-brand" href="./index.html">
+        <span class="studio-brand-mark" aria-hidden="true"><i></i></span>
+        <span class="studio-brand-copy"><strong>Trenes & Tranvías</strong><small>Inquiry Studio</small></span>
+      </a>
+      <span class="sidebar-label">Gestión</span>
+      <nav class="sidebar-nav">
+        <a class="is-active" href="./studio.html">Inquiries <b data-new-count>0</b></a>
+      </nav>
+      <span class="sidebar-label">Accesos</span>
+      <nav class="sidebar-nav">
+        <a href="./index.html">Ver web <span>→</span></a>
+        <a href="./contacto.html">Formulario público <span>→</span></a>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="sidebar-user"><strong data-user-name>Administrador</strong><span data-user-email></span></div>
+        <nav class="sidebar-nav"><button type="button" data-logout>Cerrar sesión <span>→</span></button></nav>
+      </div>
+    </aside>
+
+    <main class="studio-main">
+      <header class="studio-topbar">
+        <div class="studio-topbar-left">
+          <button class="studio-icon-button mobile-sidebar-button" type="button" aria-label="Abrir navegación" data-sidebar-toggle>☰</button>
+          <div><h1>Inquiries</h1><p>Solicitudes comerciales recibidas desde la web.</p></div>
+        </div>
+        <div class="studio-topbar-actions">
+          <button class="studio-button secondary" type="button" data-refresh><span>Actualizar</span> ↻</button>
+        </div>
+      </header>
+
+      <div class="studio-content">
+        <div class="studio-error" data-studio-error hidden></div>
+
+        <section class="stats-grid" aria-label="Resumen de inquiries">
+          <article class="stat-card"><span>Total</span><strong data-stat-total>0</strong><small>Solicitudes registradas</small></article>
+          <article class="stat-card"><span>Nuevas</span><strong data-stat-new>0</strong><small>Pendientes de revisar</small></article>
+          <article class="stat-card"><span>En seguimiento</span><strong data-stat-followup>0</strong><small>Contacto · cualificación · presupuesto</small></article>
+          <article class="stat-card"><span>Ganadas</span><strong data-stat-won>0</strong><small>Oportunidades cerradas</small></article>
+        </section>
+
+        <section class="inquiry-panel">
+          <div class="inquiry-toolbar">
+            <div class="search-wrap"><input type="search" placeholder="Buscar nombre, empresa, email o localidad" data-search /></div>
+            <select data-filter-status aria-label="Filtrar por estado"><option value="all">Todos los estados</option><option value="new">Nueva</option><option value="contacted">Contactado</option><option value="qualified">Cualificada</option><option value="quoted">Presupuesto</option><option value="won">Ganada</option><option value="lost">Perdida</option><option value="archived">Archivada</option></select>
+            <select data-filter-priority aria-label="Filtrar por prioridad"><option value="all">Toda prioridad</option><option value="high">Alta</option><option value="normal">Normal</option><option value="low">Baja</option></select>
+            <select data-filter-project aria-label="Filtrar por proyecto"><option value="all">Todos los proyectos</option><option value="turismo">Turismo y ciudad</option><option value="eventos">Ferias y eventos</option><option value="recintos">Empresas y recintos</option><option value="tren">Tren turístico</option><option value="tranvia">Tranvía turístico</option><option value="otro">Otro</option></select>
+          </div>
+
+          <div class="table-head"><span>Contacto</span><span>Proyecto</span><span>Estado</span><span>Prioridad</span><span>Recibida</span><span></span></div>
+          <div class="loading-state" data-loading>Recuperando inquiries…</div>
+          <div data-inquiry-list></div>
+          <div class="empty-state" data-empty hidden><strong>No hay inquiries que mostrar.</strong><p>Cuando llegue una solicitud desde el formulario aparecerá aquí automáticamente.</p></div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <button class="drawer-backdrop" type="button" aria-label="Cerrar detalle" data-drawer-backdrop></button>
+  <aside class="inquiry-drawer" data-drawer aria-hidden="true">
+    <header class="drawer-header"><span>Detalle de inquiry</span><button class="studio-icon-button" type="button" aria-label="Cerrar" data-close-drawer>×</button></header>
+    <div class="drawer-body">
+      <div class="drawer-person"><h2 data-detail-name>—</h2><p data-detail-company>—</p><div class="drawer-tags"><span class="status-badge" data-detail-status-badge>—</span><span class="priority-badge" data-detail-priority-badge>—</span></div></div>
+
+      <section class="detail-section">
+        <div class="detail-section-title">Contacto</div>
+        <div class="contact-lines">
+          <div class="contact-line"><small>Email</small><strong data-detail-email>—</strong><button class="copy-value" type="button" data-copy-field="email">Copiar</button></div>
+          <div class="contact-line"><small>Teléfono</small><strong data-detail-phone>—</strong><button class="copy-value" type="button" data-copy-field="phone">Copiar</button></div>
+        </div>
+      </section>
+
+      <section class="detail-section">
+        <div class="detail-section-title">Proyecto</div>
+        <div class="project-detail-grid">
+          <div class="detail-box"><small>Tipo</small><strong data-detail-project>—</strong></div>
+          <div class="detail-box"><small>Modalidad</small><strong data-detail-operation>—</strong></div>
+          <div class="detail-box"><small>Localidad</small><strong data-detail-location>—</strong></div>
+          <div class="detail-box"><small>Recibida</small><strong data-detail-created>—</strong></div>
+        </div>
+      </section>
+
+      <section class="detail-section"><div class="detail-section-title">Necesidad</div><div class="message-box" data-detail-message>—</div></section>
+
+      <section class="detail-section">
+        <div class="detail-section-title">Seguimiento</div>
+        <div class="drawer-fields">
+          <label>Estado<select data-edit-status><option value="new">Nueva</option><option value="contacted">Contactado</option><option value="qualified">Cualificada</option><option value="quoted">Presupuesto enviado</option><option value="won">Ganada</option><option value="lost">Perdida</option><option value="archived">Archivada</option></select></label>
+          <label>Prioridad<select data-edit-priority><option value="high">Alta</option><option value="normal">Normal</option><option value="low">Baja</option></select></label>
+        </div>
+        <label class="notes-label" style="margin-top:12px">Responsable<input type="text" maxlength="120" placeholder="Nombre del responsable" data-edit-assigned /></label>
+        <label class="notes-label" style="margin-top:12px">Notas internas<textarea maxlength="5000" placeholder="Próximos pasos, contexto de la llamada, presupuesto enviado…" data-edit-notes></textarea></label>
+        <p class="save-state" data-save-state></p>
+        <div class="drawer-actions"><button class="studio-button" type="button" data-save-inquiry>Guardar cambios</button><button class="studio-button secondary" type="button" data-mark-contacted>Marcar contactado</button><button class="studio-button ghost" type="button" data-archive>Archivar</button></div>
+      </section>
+    </div>
+  </aside>
+
+  <script src="./supabase-config.js"></script>
+  <script src="./studio.js"></script>
+</body>
+</html>
