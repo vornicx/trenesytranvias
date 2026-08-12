@@ -4,9 +4,10 @@ import test from 'node:test';
 import vm from 'node:vm';
 
 const root = new URL('../', import.meta.url);
-const [html, script] = await Promise.all([
+const [html, script, publicScript] = await Promise.all([
   readFile(new URL('studio.html', root), 'utf8'),
-  readFile(new URL('studio.js', root), 'utf8')
+  readFile(new URL('studio.js', root), 'utf8'),
+  readFile(new URL('app.js', root), 'utf8')
 ]);
 
 test('Studio exposes the five Spanish module views', () => {
@@ -56,4 +57,16 @@ test('primary sales statuses use the approved Spanish labels', () => {
   assert.match(script, /contacted: 'Contactado'/);
   assert.match(script, /quoted: 'Presupuestado'/);
   assert.match(script, /won: 'Vendido'/);
+});
+
+test('sold status has an optional amount modal and dedicated action', () => {
+  assert.match(html, /data-won-modal/);
+  assert.match(html, /name="amount_eur"/);
+  assert.match(html, /data-mark-won>Marcar vendido/);
+  assert.match(script, /createMarkInquiryWon/);
+  assert.match(script, /if \(nextStatus === 'won' && item\.status !== 'won'\)/);
+});
+
+test('public inquiry payload explicitly starts as new', () => {
+  assert.match(publicScript, /source: 'website',\s+status: 'new'/);
 });

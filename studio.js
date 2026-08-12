@@ -1,3 +1,6 @@
+import { createApiFetch } from './studio/lib/api.js';
+import { createMarkInquiryWon } from './studio/lib/sales.js';
+
 const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
 const config = window.TYT_SUPABASE || {};
@@ -50,6 +53,11 @@ const manualModal = $('[data-manual-modal]');
 const manualForm = $('[data-manual-form]');
 const manualSubmit = $('[data-manual-submit]');
 const manualStatus = $('[data-manual-status]');
+const wonModal = $('[data-won-modal]');
+const wonForm = $('[data-won-form]');
+const wonSubmit = $('[data-won-submit]');
+const wonStatus = $('[data-won-status]');
+const markWonButton = $('[data-mark-won]');
 
 let session = null;
 let currentUser = null;
@@ -110,28 +118,15 @@ async function refreshSession(){
   return next;
 }
 
-async function apiFetch(path, options = {}, retry = true){
-  if (!session?.access_token) throw new Error('not_authenticated');
-  const response = await fetch(`${config.url}/rest/v1/${path}`, {
-    ...options,
-    headers: {
-      apikey: config.publishableKey,
-      Authorization: `Bearer ${session.access_token}`,
-      'Content-Type': 'application/json',
-      ...(options.headers || {})
-    }
-  });
-  if (response.status === 401 && retry) {
-    await refreshSession();
-    return apiFetch(path, options, false);
-  }
-  if (!response.ok) {
-    const details = await response.text().catch(() => '');
-    throw Object.assign(new Error(details || `HTTP ${response.status}`), { status: response.status });
-  }
-  if (response.status === 204) return null;
-  return response.json().catch(() => null);
-}
+const apiFetch = createApiFetch({
+  config,
+  getAccessToken: () => session?.access_token,
+  refreshSession
+});
+const markInquiryWon = createMarkInquiryWon({
+  apiFetch,
+  getActorEmail: () => currentUser?.email
+});
 
 async function getCurrentUser(){
   if (!session?.access_token) throw new Error('not_authenticated');
@@ -168,6 +163,7 @@ function signOut(message = 'Sesión cerrada.', type = 'success'){
   if (loginScreen) loginScreen.hidden = false;
   closeDrawer();
   closeManual();
+  closeWon();
   loginForm?.reset();
   setAuthMessage(message, type);
 }
@@ -387,6 +383,7 @@ function openDrawer(id){
   $('[data-edit-assigned]').value = item.assigned_to || '';
   $('[data-edit-notes]').value = item.internal_notes || '';
   $('[data-save-state]').textContent = item.updated_at ? `Última actualización: ${formatDate(item.updated_at)}` : '';
+  if (markWonButton) markWonButton.disabled = item.status === 'won';
 
   drawer.classList.add('is-open');
   drawerBackdrop?.classList.add('is-open');
@@ -398,7 +395,7 @@ function closeDrawer(){
   drawer?.classList.remove('is-open');
   drawerBackdrop?.classList.remove('is-open');
   drawer?.setAttribute('aria-hidden','true');
-  if (!manualModal?.classList.contains('is-open')) document.body.style.overflow = '';
+  if (!manualModal?.classList.contains('is-open') && !wonModal?.classList.contains('is-open')) document.body.style.overflow = '';
   selectedInquiryId = null;
 }
 
@@ -439,14 +436,70 @@ async function updateInquiry(id, patch, successMessage = 'Cambios guardados.'){
 
 $('[data-save-inquiry]')?.addEventListener('click', async () => {
   const item = selectedInquiry(); if (!item) return;
+  const nextStatus = $('[data-edit-status]').value;
+  if (nextStatus === 'won' && item.status !== 'won') return openWon();
   const followup = $('[data-edit-followup]').value;
   await updateInquiry(item.id, {
-    status: $('[data-edit-status]').value,
+    status: nextStatus,
     priority: $('[data-edit-priority]').value,
     assigned_to: $('[data-edit-assigned]').value.trim() || null,
     internal_notes: $('[data-edit-notes]').value.trim() || null,
     next_follow_up_at: followup ? new Date(followup).toISOString() : null
   });
+});
+
+function openWon(){
+  const item = selectedInquiry();
+  if (!item || item.status === 'won' || !wonModal) return;
+  wonForm?.reset();
+  if (wonStatus) wonStatus.textContent = '';
+  wonModal.classList.add('is-open');
+  wonModal.setAttribute('aria-hidden', 'false');
+  document.body.style.overflow = 'hidden';
+  setTimeout(() => $('input[name="amount_eur"]', wonForm)?.focus(), 150);
+}
+
+function closeWon(){
+  wonModal?.classList.remove('is-open');
+  wonModal?.setAttribute('aria-hidden', 'true');
+  const item = selectedInquiry();
+  const statusSelect = $('[data-edit-status]');
+  if (item && statusSelect && item.status !== 'won') statusSelect.value = item.status;
+  if (!drawer?.classList.contains('is-open') && !manualModal?.classList.contains('is-open')) document.body.style.overflow = '';
+}
+
+$('[data-edit-status]')?.addEventListener('change', event => {
+  const item = selectedInquiry();
+  if (event.target.value === 'won' && item?.status !== 'won') openWon();
+});
+markWonButton?.addEventListener('click', openWon);
+$$('[data-close-won]').forEach(button => button.addEventListener('click', closeWon));
+wonForm?.addEventListener('submit', async event => {
+  event.preventDefault();
+  const item = selectedInquiry();
+  if (!item) return closeWon();
+  const amountValue = String(new FormData(wonForm).get('amount_eur') || '').trim();
+  wonSubmit.disabled = true;
+  wonSubmit.textContent = 'Guardando…';
+  if (wonStatus) wonStatus.textContent = '';
+  try {
+    await markInquiryWon(item, {
+      amountEur: amountValue === '' ? undefined : Number(amountValue),
+      concept: [labels.project[item.project_type], labels.operation[item.operation]].filter(Boolean).join(' · ') || undefined
+    });
+    inquiries = inquiries.map(inquiry => inquiry.id === item.id ? { ...inquiry, status: 'won' } : inquiry);
+    renderAll();
+    closeWon();
+    if (selectedInquiryId === item.id) openDrawer(item.id);
+    const saveState = $('[data-save-state]');
+    if (saveState) saveState.textContent = 'Venta registrada.';
+  } catch (error) {
+    console.error(error);
+    if (wonStatus) wonStatus.textContent = 'No se ha podido registrar la venta. No vuelvas a guardar sin comprobar los datos.';
+  } finally {
+    wonSubmit.disabled = false;
+    wonSubmit.textContent = 'Guardar venta';
+  }
 });
 
 $('[data-mark-contacted]')?.addEventListener('click', async () => {
@@ -473,7 +526,7 @@ function openManual(){
 function closeManual(){
   manualModal?.classList.remove('is-open');
   manualModal?.setAttribute('aria-hidden','true');
-  if (!drawer?.classList.contains('is-open')) document.body.style.overflow = '';
+  if (!drawer?.classList.contains('is-open') && !wonModal?.classList.contains('is-open')) document.body.style.overflow = '';
 }
 
 $('[data-open-manual]')?.addEventListener('click', openManual);
@@ -524,7 +577,7 @@ document.addEventListener('click', event => {
 });
 document.addEventListener('keydown', event => {
   if (event.key !== 'Escape') return;
-  closeDrawer(); closeManual(); sidebar?.classList.remove('is-open');
+  closeDrawer(); closeManual(); closeWon(); sidebar?.classList.remove('is-open');
 });
 
 session = readSession();

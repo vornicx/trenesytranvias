@@ -124,7 +124,8 @@ async function persistInquiry(data){
     operation: value('operation') || null,
     location: value('location') || null,
     message: value('message') || null,
-    source: 'website'
+    source: 'website',
+    status: 'new'
   };
 
   const response = await fetch(`${config.url}/rest/v1/tyt_inquiries`, {
