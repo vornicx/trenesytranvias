@@ -12,6 +12,26 @@ const header = $('[data-header]');
 const menuButton = $('[data-menu-button]');
 const mobileMenu = $('[data-mobile-menu]');
 
+const desktopNav = $('.desktop-nav');
+if (desktopNav && !$('.management-nav-link', desktopNav)) {
+  const managementNavLink = document.createElement('a');
+  managementNavLink.href = './gestion';
+  managementNavLink.className = 'management-nav-link';
+  managementNavLink.textContent = 'Gestión';
+  managementNavLink.setAttribute('aria-label', 'Abrir área privada de gestión');
+  desktopNav.appendChild(managementNavLink);
+}
+
+const mobileNav = $('.mobile-menu nav');
+if (mobileNav && !$('.management-nav-link', mobileNav)) {
+  const managementMobileLink = document.createElement('a');
+  managementMobileLink.href = './gestion';
+  managementMobileLink.className = 'management-nav-link';
+  managementMobileLink.textContent = 'Área de gestión';
+  managementMobileLink.setAttribute('aria-label', 'Abrir área privada de gestión');
+  mobileNav.appendChild(managementMobileLink);
+}
+
 const syncHeader = () => header?.classList.toggle('is-scrolled', window.scrollY > 22);
 syncHeader();
 window.addEventListener('scroll', syncHeader, { passive: true });
