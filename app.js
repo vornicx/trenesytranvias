@@ -1,6 +1,13 @@
 const $ = (s, root = document) => root.querySelector(s);
 const $$ = (s, root = document) => [...root.querySelectorAll(s)];
 
+if (!document.querySelector('link[href$="pages.css"]')) {
+  const coherenceStyles = document.createElement('link');
+  coherenceStyles.rel = 'stylesheet';
+  coherenceStyles.href = './pages.css';
+  document.head.appendChild(coherenceStyles);
+}
+
 const header = $('[data-header]');
 const menuButton = $('[data-menu-button]');
 const mobileMenu = $('[data-mobile-menu]');
