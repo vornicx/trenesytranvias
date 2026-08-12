@@ -4,12 +4,6 @@ const $$ = (s, root = document) => [...root.querySelectorAll(s)];
 const header = $('[data-header]');
 const menuButton = $('[data-menu-button]');
 const mobileMenu = $('[data-mobile-menu]');
-const modal = $('[data-quote-modal]');
-const projectSelect = $('[data-project-select]');
-const form = $('[data-quote-form]');
-const success = $('[data-quote-success]');
-const formError = $('[data-form-error]');
-let lastFocused = null;
 
 const syncHeader = () => header?.classList.toggle('is-scrolled', window.scrollY > 22);
 syncHeader();
@@ -18,67 +12,100 @@ window.addEventListener('scroll', syncHeader, { passive: true });
 function closeMenu(){
   if (!mobileMenu || !menuButton) return;
   mobileMenu.hidden = true;
-  menuButton.setAttribute('aria-expanded','false');
+  menuButton.setAttribute('aria-expanded', 'false');
 }
+
 menuButton?.addEventListener('click', () => {
   const willOpen = mobileMenu.hidden;
   mobileMenu.hidden = !willOpen;
   menuButton.setAttribute('aria-expanded', String(willOpen));
 });
-$$('.mobile-menu a').forEach(a => a.addEventListener('click', closeMenu));
 
-function openQuote(trigger){
-  if (!modal) return;
-  lastFocused = trigger || document.activeElement;
-  const project = trigger?.dataset?.project;
-  if (project && projectSelect) projectSelect.value = project;
-  form.hidden = false;
-  success.hidden = true;
-  modal.classList.add('is-open');
-  modal.setAttribute('aria-hidden','false');
-  document.body.classList.add('modal-open');
-  setTimeout(() => $('.quote-panel input', modal)?.focus(), 220);
-}
-function closeQuote(){
-  if (!modal) return;
-  modal.classList.remove('is-open');
-  modal.setAttribute('aria-hidden','true');
-  document.body.classList.remove('modal-open');
-  lastFocused?.focus?.();
-}
-$$('[data-open-quote]').forEach(btn => btn.addEventListener('click', () => openQuote(btn)));
-$$('[data-close-quote]').forEach(btn => btn.addEventListener('click', closeQuote));
-document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeQuote(); closeMenu(); } });
+$$('.mobile-menu a').forEach(link => link.addEventListener('click', closeMenu));
+document.addEventListener('keydown', event => { if (event.key === 'Escape') closeMenu(); });
 
-form?.addEventListener('submit', e => {
-  e.preventDefault();
-  formError.textContent = '';
-  const data = new FormData(form);
-  const email = String(data.get('email') || '').trim();
+const observer = 'IntersectionObserver' in window
+  ? new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('is-visible');
+        observer.unobserve(entry.target);
+      });
+    }, { threshold: .12, rootMargin: '0px 0px -40px' })
+  : null;
+
+$$('.reveal').forEach(el => observer ? observer.observe(el) : el.classList.add('is-visible'));
+
+const contactForm = $('[data-contact-form]');
+const contactSuccess = $('[data-contact-success]');
+const formStatus = $('[data-form-status]');
+const requestSummary = $('[data-request-summary]');
+const projectSelect = $('[data-project-select]');
+const copyButton = $('[data-copy-request]');
+
+if (projectSelect) {
+  const requestedProject = new URLSearchParams(window.location.search).get('proyecto');
+  if (requestedProject && [...projectSelect.options].some(option => option.value === requestedProject)) {
+    projectSelect.value = requestedProject;
+  }
+}
+
+function buildRequestSummary(data){
+  const labels = {
+    turismo: 'Turismo y ciudad', eventos: 'Ferias y eventos', recintos: 'Empresas y recintos',
+    tren: 'Tren turístico', tranvia: 'Tranvía turístico', otro: 'Otro',
+    alquiler: 'Alquiler', compra: 'Compra', fabricacion: 'Fabricación / proyecto especial'
+  };
+  const value = key => String(data.get(key) || '').trim();
+  return [
+    'SOLICITUD · TRENES Y TRANVÍAS CIUDAD DEL SOL',
+    '',
+    `Nombre: ${value('name')}`,
+    `Empresa / entidad: ${value('company') || '—'}`,
+    `Email: ${value('email')}`,
+    `Teléfono: ${value('phone') || '—'}`,
+    `Proyecto: ${labels[value('project')] || value('project') || '—'}`,
+    `Modalidad: ${labels[value('operation')] || 'Por definir'}`,
+    `Localidad / provincia: ${value('location') || '—'}`,
+    '',
+    'Necesidad:',
+    value('message') || '—'
+  ].join('\n');
+}
+
+contactForm?.addEventListener('submit', event => {
+  event.preventDefault();
+  if (formStatus) formStatus.textContent = '';
+
+  const data = new FormData(contactForm);
   const name = String(data.get('name') || '').trim();
+  const email = String(data.get('email') || '').trim();
   const privacy = data.get('privacy');
+
   if (!name || !email || !email.includes('@') || !privacy) {
-    formError.textContent = 'Revisa nombre, email y aceptación de privacidad antes de continuar.';
+    if (formStatus) formStatus.textContent = 'Revisa nombre, email y aceptación antes de continuar.';
     return;
   }
-  const payload = Object.fromEntries(data.entries());
-  localStorage.setItem('ciudadDelSolQuoteDraft', JSON.stringify({ ...payload, createdAt: new Date().toISOString() }));
-  form.hidden = true;
-  success.hidden = false;
+
+  const summary = buildRequestSummary(data);
+  localStorage.setItem('ciudadDelSolQuoteDraft', JSON.stringify({ summary, createdAt: new Date().toISOString() }));
+  if (requestSummary) requestSummary.value = summary;
+  contactForm.hidden = true;
+  if (contactSuccess) {
+    contactSuccess.hidden = false;
+    contactSuccess.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
 });
 
-const tabs = $$('.vehicle-tab');
-tabs.forEach(tab => tab.addEventListener('click', () => {
-  tabs.forEach(t => { t.classList.remove('is-active'); t.setAttribute('aria-selected','false'); });
-  tab.classList.add('is-active'); tab.setAttribute('aria-selected','true');
-  const filter = tab.dataset.filter;
-  $$('[data-tags]').forEach(card => {
-    const match = filter === 'all' || card.dataset.tags.split(' ').includes(filter);
-    card.classList.toggle('is-hidden', !match);
-  });
-}));
-
-const observer = 'IntersectionObserver' in window ? new IntersectionObserver(entries => {
-  entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('is-visible'); observer.unobserve(entry.target); } });
-}, { threshold: .12, rootMargin: '0px 0px -40px' }) : null;
-$$('.reveal').forEach(el => observer ? observer.observe(el) : el.classList.add('is-visible'));
+copyButton?.addEventListener('click', async () => {
+  const text = requestSummary?.value || '';
+  if (!text) return;
+  try {
+    await navigator.clipboard.writeText(text);
+    copyButton.textContent = 'Solicitud copiada';
+  } catch {
+    requestSummary?.focus();
+    requestSummary?.select();
+    copyButton.textContent = 'Seleccionado para copiar';
+  }
+});
