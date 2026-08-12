@@ -43,6 +43,16 @@ const observer = 'IntersectionObserver' in window
 
 $$('.reveal').forEach(el => observer ? observer.observe(el) : el.classList.add('is-visible'));
 
+const footerBottom = $('.footer-bottom');
+if (footerBottom && !$('.management-access', footerBottom)) {
+  const managementLink = document.createElement('a');
+  managementLink.href = './gestion';
+  managementLink.className = 'management-access';
+  managementLink.textContent = 'Área de gestión';
+  managementLink.setAttribute('aria-label', 'Abrir área privada de gestión');
+  footerBottom.appendChild(managementLink);
+}
+
 const contactForm = $('[data-contact-form]');
 const contactSuccess = $('[data-contact-success]');
 const formStatus = $('[data-form-status]');
