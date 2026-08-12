@@ -1,0 +1,131 @@
+/* Internal pages and coherence overrides */
+.internal-page{background:var(--paper)}
+.internal-page .site-header{height:72px;color:var(--ink);background:rgba(245,242,235,.96);backdrop-filter:blur(18px) saturate(1.08);border-color:var(--line);box-shadow:0 8px 30px rgba(24,24,20,.05)}
+.internal-page .site-header .button-dark{background:var(--ink);color:#fff}
+.internal-page main{padding-top:72px}
+
+/* Home refinements after removing decorative illustrations */
+.use-card{display:flex;flex-direction:column}
+.use-card .use-number{margin-bottom:auto}
+.use-card h3{margin-top:76px}
+.vehicle-grid-clean{align-items:stretch}
+.vehicle-text-card{display:flex;min-height:390px}
+.vehicle-text-card .vehicle-card-body{display:flex;flex-direction:column;justify-content:flex-end;width:100%}
+.vehicle-text-card .vehicle-card-body p{max-width:460px}
+.vehicles-copy p{margin:0 0 20px}
+.hero-inline-link{display:grid;grid-template-columns:auto auto;column-gap:18px;row-gap:2px;align-items:center;font-size:11px}
+.hero-inline-link small{grid-column:1;color:rgba(255,255,255,.48)}
+.hero-inline-link strong{grid-column:1;font-weight:700}
+.hero-inline-link span{grid-column:2;grid-row:1/3;font-size:18px;color:var(--sun)}
+.route-facts{border-top:1px solid var(--line)}
+.route-label{display:block;padding:15px 0 24px;text-transform:uppercase;letter-spacing:.16em;font-size:9px;font-weight:800;color:var(--muted)}
+.route-row{display:grid;grid-template-columns:120px 1fr;gap:24px;padding:18px 0;border-top:1px solid var(--line)}
+.route-row strong{font-size:11px}.route-row span{font-size:13px;color:var(--muted)}
+
+/* Internal page hero */
+.page-hero{padding:112px 0 84px;background:var(--paper);border-bottom:1px solid var(--line)}
+.page-hero .eyebrow{margin-bottom:42px}
+.page-hero-grid{display:grid;grid-template-columns:1.25fr .65fr;gap:110px;align-items:end}
+.page-title{font-family:"Manrope";font-size:clamp(58px,7vw,104px);line-height:.93;letter-spacing:-.065em;margin:0;max-width:900px}
+.page-title span{font-family:Georgia,"Times New Roman",serif;font-style:italic;font-weight:400;color:var(--sun-deep);letter-spacing:-.04em}
+.page-intro{max-width:520px;margin:0;font-size:16px;line-height:1.65;color:var(--muted)}
+.page-actions{display:flex;gap:10px;margin-top:28px;flex-wrap:wrap}
+
+/* Content primitives: factual, not decorative */
+.content-section{padding:96px 0;border-bottom:1px solid var(--line)}
+.content-section:last-child{border-bottom:0}
+.section-grid{display:grid;grid-template-columns:.62fr 1.38fr;gap:110px}
+.section-label{position:sticky;top:110px;align-self:start}
+.section-label .overline{margin-bottom:14px}
+.section-label h2{font-family:"Manrope";font-size:30px;line-height:1.05;letter-spacing:-.04em;margin:0;max-width:330px}
+.section-body{max-width:760px}
+.section-body>.lead{font-size:23px;line-height:1.45;letter-spacing:-.025em;max-width:710px}
+.section-body>p{font-size:14px;line-height:1.8;color:var(--muted);max-width:680px}
+.facts-list{margin-top:42px;border-top:1px solid var(--line)}
+.fact-row{display:grid;grid-template-columns:42px 190px 1fr;gap:20px;padding:22px 0;border-bottom:1px solid var(--line);align-items:start}
+.fact-row>span:first-child{font-size:9px;color:var(--sun-deep);font-weight:800;padding-top:3px}
+.fact-row strong{font-size:13px}
+.fact-row p{margin:0;font-size:12.5px;line-height:1.65;color:var(--muted)}
+
+/* Solution page */
+.solution-block{scroll-margin-top:92px}
+.solution-meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:28px}
+.meta-chip{border:1px solid var(--line);border-radius:7px;padding:8px 10px;font-size:10px;color:var(--muted);background:rgba(255,255,255,.2)}
+
+/* Vehicle page */
+.vehicle-detail{scroll-margin-top:92px}
+.vehicle-detail-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:70px;align-items:start}
+.vehicle-photo{border-radius:var(--radius-lg);overflow:hidden;background:var(--ink);box-shadow:var(--shadow)}
+.vehicle-photo img{display:block;width:100%;height:auto;aspect-ratio:4/3;object-fit:cover;filter:saturate(.82) contrast(1.04)}
+.photo-caption{display:flex;justify-content:space-between;gap:24px;padding:14px 16px;background:var(--ink);color:rgba(255,255,255,.55);font-size:9px;text-transform:uppercase;letter-spacing:.12em}
+.no-photo{min-height:420px;border:1px solid var(--line);border-radius:var(--radius-lg);display:flex;flex-direction:column;justify-content:flex-end;padding:32px;background:rgba(255,255,255,.18)}
+.no-photo small{text-transform:uppercase;letter-spacing:.14em;font-size:9px;color:var(--sun-deep);font-weight:800}
+.no-photo h3{font-family:"Manrope";font-size:34px;letter-spacing:-.04em;margin:12px 0 14px}
+.no-photo p{color:var(--muted);font-size:13px;line-height:1.7;max-width:440px;margin:0}
+.vehicle-detail-copy h2{font-family:"Manrope";font-size:clamp(42px,4.4vw,64px);line-height:.98;letter-spacing:-.05em;margin:0 0 26px}
+.vehicle-detail-copy>p{font-size:14px;line-height:1.8;color:var(--muted)}
+.spec-table{margin-top:34px;border-top:1px solid var(--line)}
+.spec-table div{display:grid;grid-template-columns:170px 1fr;gap:22px;padding:17px 0;border-bottom:1px solid var(--line)}
+.spec-table strong{font-size:11px}.spec-table span{font-size:12px;color:var(--muted)}
+
+/* Company / Ecija */
+.statement{font-family:"Manrope";font-size:clamp(44px,5vw,72px);line-height:1;letter-spacing:-.055em;margin:0;max-width:980px}
+.statement span{font-family:Georgia,"Times New Roman",serif;font-style:italic;font-weight:400;color:var(--sun-deep)}
+.timeline{margin-top:50px;border-top:1px solid var(--line)}
+.timeline-row{display:grid;grid-template-columns:160px 1fr;gap:32px;padding:24px 0;border-bottom:1px solid var(--line)}
+.timeline-row strong{font-size:12px}.timeline-row p{margin:0;color:var(--muted);font-size:13px;line-height:1.7;max-width:650px}
+
+/* Contact */
+.contact-layout{display:grid;grid-template-columns:.72fr 1.28fr;gap:90px;align-items:start}
+.contact-aside{position:sticky;top:110px}
+.contact-aside h2{font-family:"Manrope";font-size:40px;line-height:1;letter-spacing:-.045em;margin:0 0 22px}
+.contact-aside p{color:var(--muted);font-size:13px;line-height:1.7;max-width:360px}
+.contact-facts{margin-top:36px;border-top:1px solid var(--line)}
+.contact-facts div{padding:15px 0;border-bottom:1px solid var(--line)}
+.contact-facts small{display:block;text-transform:uppercase;letter-spacing:.14em;color:var(--muted);font-size:8px;margin-bottom:5px}.contact-facts strong{font-size:12px}
+.contact-form{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-lg);padding:34px;box-shadow:0 20px 60px rgba(24,24,20,.05)}
+.contact-form label{display:flex;flex-direction:column;gap:8px;margin-bottom:18px;font-size:9px;text-transform:uppercase;letter-spacing:.13em;font-weight:800;color:var(--muted)}
+.contact-form input,.contact-form select,.contact-form textarea{width:100%;border:1px solid var(--line);background:#fff;border-radius:8px;padding:13px 14px;color:var(--ink);outline:0;text-transform:none;letter-spacing:normal;font-weight:400;font-size:14px}
+.contact-form input:focus,.contact-form select:focus,.contact-form textarea:focus{border-color:var(--sun-deep);box-shadow:0 0 0 3px rgba(216,138,19,.10)}
+.contact-form .field-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.contact-form .check-field{flex-direction:row;align-items:flex-start;text-transform:none;letter-spacing:normal;font-weight:400;line-height:1.5;gap:10px}
+.contact-form .check-field input{width:16px;height:16px;margin:2px 0 0;flex:0 0 auto}
+.form-status{min-height:20px;color:#9b3d25;font-size:11px;margin:0 0 12px}
+.prototype-note{font-size:10px;line-height:1.55;color:var(--muted);margin:15px 0 0;text-align:center}
+.contact-success{border:1px solid var(--line);border-radius:var(--radius-lg);padding:34px;background:var(--surface)}
+.contact-success h2{font-family:"Manrope";font-size:36px;letter-spacing:-.04em;margin:0 0 14px}.contact-success p{color:var(--muted);font-size:13px;line-height:1.7}
+.request-summary{width:100%;min-height:190px;margin:18px 0;border:1px solid var(--line);border-radius:8px;background:#fff;padding:14px;resize:vertical;font:12px/1.6 ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--ink)}
+
+/* Internal CTA */
+.internal-cta{padding:90px 0;background:var(--sun)}
+.internal-cta-grid{display:flex;align-items:flex-end;justify-content:space-between;gap:60px}
+.internal-cta h2{font-family:"Manrope";font-size:clamp(44px,5vw,70px);line-height:.98;letter-spacing:-.055em;margin:0;max-width:770px}.internal-cta p{max-width:420px;color:rgba(23,24,23,.68);font-size:13px;line-height:1.65;margin:0 0 24px}
+
+@media(max-width:980px){
+  .page-hero-grid,.section-grid,.vehicle-detail-grid,.contact-layout{grid-template-columns:1fr;gap:46px}
+  .section-label,.contact-aside{position:static}
+  .page-intro{max-width:650px}
+  .fact-row{grid-template-columns:36px 160px 1fr}
+  .internal-cta-grid{align-items:flex-start;flex-direction:column}
+  .no-photo{min-height:300px}
+}
+@media(max-width:640px){
+  .internal-page main{padding-top:70px}
+  .page-hero{padding:78px 0 58px}
+  .page-title{font-size:clamp(50px,15vw,72px)}
+  .page-hero-grid{gap:30px}
+  .content-section{padding:68px 0}
+  .section-grid{gap:34px}
+  .section-label h2{font-size:27px}
+  .section-body>.lead{font-size:20px}
+  .fact-row{grid-template-columns:30px 1fr;gap:12px}.fact-row p{grid-column:2}
+  .vehicle-detail-grid{gap:34px}.vehicle-detail-copy h2{font-size:43px}
+  .spec-table div{grid-template-columns:120px 1fr}
+  .timeline-row{grid-template-columns:1fr;gap:8px}
+  .contact-form{padding:22px 18px}.contact-form .field-row{grid-template-columns:1fr;gap:0}
+  .contact-aside h2{font-size:34px}
+  .internal-cta{padding:68px 0}
+  .use-card h3{margin-top:52px}
+  .route-row{grid-template-columns:96px 1fr}
+  .hero-inline-link{display:none}
+}
