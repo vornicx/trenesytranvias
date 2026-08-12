@@ -10,6 +10,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="./studio.css" />
+  <link rel="stylesheet" href="./studio-v2.css" />
 </head>
 <body class="studio-body">
   <section class="studio-login" data-login-screen>
@@ -18,11 +19,10 @@
         <span class="studio-brand-mark" aria-hidden="true"><i></i></span>
         <span class="studio-brand-copy"><strong>Trenes & Tranvías</strong><small>Inquiry Studio</small></span>
       </a>
-
       <div class="login-form-wrap">
         <span class="login-kicker">Acceso privado</span>
         <h1>Gestión de inquiries.</h1>
-        <p>Accede para revisar solicitudes, actualizar su estado y mantener el seguimiento comercial en un único lugar.</p>
+        <p>Revisa solicitudes, registra las que llegan por teléfono o WhatsApp y mantén cada oportunidad comercial en seguimiento.</p>
         <form class="studio-form" data-login-form>
           <label>Email<input type="email" name="email" autocomplete="email" required /></label>
           <label>Contraseña<input type="password" name="password" autocomplete="current-password" minlength="8" required /></label>
@@ -47,14 +47,9 @@
         <span class="studio-brand-copy"><strong>Trenes & Tranvías</strong><small>Inquiry Studio</small></span>
       </a>
       <span class="sidebar-label">Gestión</span>
-      <nav class="sidebar-nav">
-        <a class="is-active" href="./studio.html">Inquiries <b data-new-count>0</b></a>
-      </nav>
+      <nav class="sidebar-nav"><a class="is-active" href="./gestion">Inquiries <b data-new-count>0</b></a></nav>
       <span class="sidebar-label">Accesos</span>
-      <nav class="sidebar-nav">
-        <a href="./index.html">Ver web <span>→</span></a>
-        <a href="./contacto.html">Formulario público <span>→</span></a>
-      </nav>
+      <nav class="sidebar-nav"><a href="./index.html">Ver web <span>→</span></a><a href="./contacto.html">Formulario público <span>→</span></a></nav>
       <div class="sidebar-bottom">
         <div class="sidebar-user"><strong data-user-name>Administrador</strong><span data-user-email></span></div>
         <nav class="sidebar-nav"><button type="button" data-logout>Cerrar sesión <span>→</span></button></nav>
@@ -65,35 +60,43 @@
       <header class="studio-topbar">
         <div class="studio-topbar-left">
           <button class="studio-icon-button mobile-sidebar-button" type="button" aria-label="Abrir navegación" data-sidebar-toggle>☰</button>
-          <div><h1>Inquiries</h1><p>Solicitudes comerciales recibidas desde la web.</p></div>
+          <div><h1>Inquiries</h1><p>Solicitudes de web, teléfono, WhatsApp y otros canales.</p></div>
         </div>
         <div class="studio-topbar-actions">
+          <div class="view-switch" aria-label="Cambiar vista">
+            <button type="button" class="is-active" data-view-mode="list">Bandeja</button>
+            <button type="button" data-view-mode="pipeline">Pipeline</button>
+          </div>
+          <button class="studio-button accent" type="button" data-open-manual><span>Nueva inquiry</span> +</button>
           <button class="studio-button secondary" type="button" data-refresh><span>Actualizar</span> ↻</button>
         </div>
       </header>
 
       <div class="studio-content">
         <div class="studio-error" data-studio-error hidden></div>
-
         <section class="stats-grid" aria-label="Resumen de inquiries">
-          <article class="stat-card"><span>Total</span><strong data-stat-total>0</strong><small>Solicitudes registradas</small></article>
+          <article class="stat-card"><span>Total activas</span><strong data-stat-total>0</strong><small>Sin contar archivadas</small></article>
           <article class="stat-card"><span>Nuevas</span><strong data-stat-new>0</strong><small>Pendientes de revisar</small></article>
-          <article class="stat-card"><span>En seguimiento</span><strong data-stat-followup>0</strong><small>Contacto · cualificación · presupuesto</small></article>
+          <article class="stat-card"><span>Seguimiento</span><strong data-stat-followup>0</strong><small>Vencido o previsto para hoy</small></article>
           <article class="stat-card"><span>Ganadas</span><strong data-stat-won>0</strong><small>Oportunidades cerradas</small></article>
         </section>
 
-        <section class="inquiry-panel">
+        <section class="inquiry-panel" data-list-panel>
           <div class="inquiry-toolbar">
             <div class="search-wrap"><input type="search" placeholder="Buscar nombre, empresa, email o localidad" data-search /></div>
             <select data-filter-status aria-label="Filtrar por estado"><option value="all">Todos los estados</option><option value="new">Nueva</option><option value="contacted">Contactado</option><option value="qualified">Cualificada</option><option value="quoted">Presupuesto</option><option value="won">Ganada</option><option value="lost">Perdida</option><option value="archived">Archivada</option></select>
             <select data-filter-priority aria-label="Filtrar por prioridad"><option value="all">Toda prioridad</option><option value="high">Alta</option><option value="normal">Normal</option><option value="low">Baja</option></select>
             <select data-filter-project aria-label="Filtrar por proyecto"><option value="all">Todos los proyectos</option><option value="turismo">Turismo y ciudad</option><option value="eventos">Ferias y eventos</option><option value="recintos">Empresas y recintos</option><option value="tren">Tren turístico</option><option value="tranvia">Tranvía turístico</option><option value="otro">Otro</option></select>
+            <select data-filter-source aria-label="Filtrar por origen"><option value="all">Todos los orígenes</option><option value="website">Web</option><option value="phone">Teléfono</option><option value="whatsapp">WhatsApp</option><option value="email">Email</option><option value="instagram">Instagram</option><option value="manual">Manual</option></select>
           </div>
-
           <div class="table-head"><span>Contacto</span><span>Proyecto</span><span>Estado</span><span>Prioridad</span><span>Recibida</span><span></span></div>
           <div class="loading-state" data-loading>Recuperando inquiries…</div>
           <div data-inquiry-list></div>
-          <div class="empty-state" data-empty hidden><strong>No hay inquiries que mostrar.</strong><p>Cuando llegue una solicitud desde el formulario aparecerá aquí automáticamente.</p></div>
+          <div class="empty-state" data-empty hidden><strong>No hay inquiries que mostrar.</strong><p>Cuando llegue una solicitud o añadas una manualmente aparecerá aquí.</p></div>
+        </section>
+
+        <section class="inquiry-panel" data-pipeline-panel hidden>
+          <div class="pipeline-board" data-pipeline-board></div>
         </section>
       </div>
     </main>
@@ -103,8 +106,7 @@
   <aside class="inquiry-drawer" data-drawer aria-hidden="true">
     <header class="drawer-header"><span>Detalle de inquiry</span><button class="studio-icon-button" type="button" aria-label="Cerrar" data-close-drawer>×</button></header>
     <div class="drawer-body">
-      <div class="drawer-person"><h2 data-detail-name>—</h2><p data-detail-company>—</p><div class="drawer-tags"><span class="status-badge" data-detail-status-badge>—</span><span class="priority-badge" data-detail-priority-badge>—</span></div></div>
-
+      <div class="drawer-person"><h2 data-detail-name>—</h2><p data-detail-company>—</p><div class="drawer-tags"><span class="status-badge" data-detail-status-badge>—</span><span class="priority-badge" data-detail-priority-badge>—</span></div><div class="detail-source" data-detail-source>—</div></div>
       <section class="detail-section">
         <div class="detail-section-title">Contacto</div>
         <div class="contact-lines">
@@ -112,7 +114,6 @@
           <div class="contact-line"><small>Teléfono</small><strong data-detail-phone>—</strong><button class="copy-value" type="button" data-copy-field="phone">Copiar</button></div>
         </div>
       </section>
-
       <section class="detail-section">
         <div class="detail-section-title">Proyecto</div>
         <div class="project-detail-grid">
@@ -122,15 +123,14 @@
           <div class="detail-box"><small>Recibida</small><strong data-detail-created>—</strong></div>
         </div>
       </section>
-
       <section class="detail-section"><div class="detail-section-title">Necesidad</div><div class="message-box" data-detail-message>—</div></section>
-
       <section class="detail-section">
         <div class="detail-section-title">Seguimiento</div>
         <div class="drawer-fields">
           <label>Estado<select data-edit-status><option value="new">Nueva</option><option value="contacted">Contactado</option><option value="qualified">Cualificada</option><option value="quoted">Presupuesto enviado</option><option value="won">Ganada</option><option value="lost">Perdida</option><option value="archived">Archivada</option></select></label>
           <label>Prioridad<select data-edit-priority><option value="high">Alta</option><option value="normal">Normal</option><option value="low">Baja</option></select></label>
         </div>
+        <label class="notes-label next-followup-field" style="margin-top:12px">Próximo seguimiento<input type="datetime-local" data-edit-followup /></label>
         <label class="notes-label" style="margin-top:12px">Responsable<input type="text" maxlength="120" placeholder="Nombre del responsable" data-edit-assigned /></label>
         <label class="notes-label" style="margin-top:12px">Notas internas<textarea maxlength="5000" placeholder="Próximos pasos, contexto de la llamada, presupuesto enviado…" data-edit-notes></textarea></label>
         <p class="save-state" data-save-state></p>
@@ -138,6 +138,26 @@
       </section>
     </div>
   </aside>
+
+  <div class="manual-modal" data-manual-modal aria-hidden="true">
+    <button class="manual-backdrop" type="button" aria-label="Cerrar" data-close-manual></button>
+    <section class="manual-panel" role="dialog" aria-modal="true" aria-labelledby="manual-title">
+      <header class="manual-header"><div><span>Nueva inquiry</span><h2 id="manual-title">Registrar solicitud manual</h2></div><button class="studio-icon-button" type="button" aria-label="Cerrar" data-close-manual>×</button></header>
+      <div class="manual-body">
+        <form class="manual-form" data-manual-form>
+          <div class="manual-grid"><label>Nombre<input name="name" required maxlength="120" /></label><label>Empresa / entidad<input name="company" maxlength="160" /></label></div>
+          <div class="manual-grid"><label>Email<input type="email" name="email" required maxlength="254" /></label><label>Teléfono<input name="phone" maxlength="60" /></label></div>
+          <div class="manual-grid"><label>Origen<select name="source" required><option value="phone">Teléfono</option><option value="whatsapp">WhatsApp</option><option value="email">Email</option><option value="instagram">Instagram</option><option value="manual">Otro / manual</option></select></label><label>Prioridad<select name="priority"><option value="normal">Normal</option><option value="high">Alta</option><option value="low">Baja</option></select></label></div>
+          <div class="manual-grid"><label>Proyecto<select name="project_type"><option value="">Por definir</option><option value="turismo">Turismo y ciudad</option><option value="eventos">Ferias y eventos</option><option value="recintos">Empresas y recintos</option><option value="tren">Tren turístico</option><option value="tranvia">Tranvía turístico</option><option value="otro">Otro</option></select></label><label>Modalidad<select name="operation"><option value="">Por definir</option><option value="alquiler">Alquiler</option><option value="compra">Compra</option><option value="fabricacion">Fabricación / especial</option></select></label></div>
+          <div class="manual-grid"><label>Localidad<input name="location" maxlength="160" /></label><label>Próximo seguimiento<input type="datetime-local" name="next_follow_up_at" /></label></div>
+          <label>Necesidad<textarea name="message" rows="4" maxlength="5000" placeholder="Qué necesita el potencial cliente, fechas, recorrido, evento…"></textarea></label>
+          <label>Notas internas<textarea name="internal_notes" rows="3" maxlength="5000" placeholder="Información solo visible en Studio"></textarea></label>
+          <p class="manual-status" data-manual-status aria-live="polite"></p>
+          <div class="manual-actions"><button class="studio-button secondary" type="button" data-close-manual>Cancelar</button><button class="studio-button" type="submit" data-manual-submit>Guardar inquiry</button></div>
+        </form>
+      </div>
+    </section>
+  </div>
 
   <script src="./supabase-config.js"></script>
   <script src="./studio.js"></script>
