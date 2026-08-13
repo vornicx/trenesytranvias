@@ -179,7 +179,62 @@
           </div>
         </aside>
       </section>
-      <section data-view="ayuntamientos" hidden></section>
+      <section data-view="ayuntamientos" hidden>
+        <header class="studio-topbar">
+          <div class="studio-topbar-left">
+            <button class="studio-icon-button mobile-sidebar-button" type="button" aria-label="Abrir navegación" data-sidebar-toggle>☰</button>
+            <div><h1>Ayuntamientos</h1><p>Planifica el recontacto municipal y sigue cada campaña electoral.</p></div>
+          </div>
+          <div class="studio-topbar-actions">
+            <button class="studio-button secondary" type="button" data-municipality-refresh><span>Actualizar</span> ↻</button>
+          </div>
+        </header>
+        <div class="studio-content">
+          <div class="studio-error" data-municipality-error hidden></div>
+          <section class="stats-grid" aria-label="Resumen de ayuntamientos">
+            <article class="stat-card"><span>Ayuntamientos</span><strong data-municipality-stat-total>0</strong><small>Fichas municipales</small></article>
+            <article class="stat-card"><span>Con recontacto</span><strong data-municipality-stat-recontact>0</strong><small>Próxima fecha definida</small></article>
+            <article class="stat-card"><span>Campañas</span><strong data-municipality-stat-campaigns>0</strong><small>Campañas registradas</small></article>
+            <article class="stat-card"><span>Pendientes</span><strong data-municipality-stat-pending>0</strong><small>En la campaña activa</small></article>
+          </section>
+
+          <section class="inquiry-panel municipality-panel">
+            <div class="municipality-panel-title">
+              <div><span>Directorio municipal</span><h2>Próximos recontactos</h2></div>
+            </div>
+            <div class="table-head municipality-table-head"><span>Ayuntamiento</span><span>Elecciones</span><span>Próximo recontacto</span><span>Último contacto</span><span>Campaña activa</span></div>
+            <div class="loading-state" data-municipality-loading>Recuperando ayuntamientos…</div>
+            <div data-municipality-list></div>
+            <div class="empty-state" data-municipality-empty hidden><strong>No hay ayuntamientos que mostrar.</strong><p>Marca una ficha de cliente como ayuntamiento para incluirla aquí.</p></div>
+          </section>
+
+          <div class="campaign-workspace">
+            <section class="inquiry-panel campaign-create-panel">
+              <form class="manual-form" data-campaign-form>
+                <div class="municipality-panel-title">
+                  <div><span>Nueva campaña municipal</span><h2>Preparar recontacto</h2></div>
+                </div>
+                <p class="campaign-help">Se añadirá como pendiente cada ayuntamiento registrado actualmente.</p>
+                <label>Nombre de la campaña<input name="name" maxlength="160" placeholder="Municipales 2027" required /></label>
+                <label>Año electoral<input type="number" name="election_year" min="1900" max="9999" step="1" inputmode="numeric" placeholder="2027" required /></label>
+                <p class="manual-status campaign-form-status" data-campaign-status aria-live="polite"></p>
+                <div><button class="studio-button" type="submit" data-campaign-submit>Crear campaña</button></div>
+              </form>
+            </section>
+
+            <section class="inquiry-panel campaign-items-panel">
+              <div class="campaign-selector">
+                <div><span>Seguimiento</span><h2>Estado por ayuntamiento</h2></div>
+                <label>Campaña<select data-campaign-select aria-label="Seleccionar campaña"><option value="">Sin campañas</option></select></label>
+              </div>
+              <div class="campaign-item-head"><span>Ayuntamiento</span><span>Estado</span><span>Actualizado</span></div>
+              <div data-campaign-items>
+                <div class="empty-state compact"><strong>No hay ninguna campaña.</strong><p>Crea una campaña para preparar el recontacto municipal.</p></div>
+              </div>
+            </section>
+          </div>
+        </div>
+      </section>
       <section data-view="ventas" hidden></section>
       <section data-view="ajustes" hidden>
         <header class="studio-topbar">

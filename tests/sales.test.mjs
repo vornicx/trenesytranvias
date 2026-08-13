@@ -63,6 +63,7 @@ test('markInquiryWon reuses normalized contact and adds amount to existing total
     name: 'Maria',
     company: 'Ayuntamiento de Écija',
     email: 'mayor@ecija.es',
+    is_municipality: true,
     sales_count: 2,
     sales_total: '125.50'
   };

@@ -1,6 +1,9 @@
 import { createApiFetch } from './studio/lib/api.js';
+import { findOrCreateClient } from './studio/lib/clients.js';
+import { detectMunicipality } from './studio/lib/municipality.js';
 import { createMarkInquiryWon } from './studio/lib/sales.js';
 import { initAjustesView } from './studio/views/ajustes.js';
+import { initAyuntamientosView } from './studio/views/ayuntamientos.js';
 import { initClientesView } from './studio/views/clientes.js';
 
 const $ = (selector, root = document) => root.querySelector(selector);
@@ -556,10 +559,22 @@ manualForm?.addEventListener('submit', async event => {
   if (manualStatus) manualStatus.textContent = '';
   try {
     const created = await apiFetch('tyt_inquiries', { method: 'POST', headers: { Prefer: 'return=representation' }, body: JSON.stringify(payload) });
+    let municipalitySyncFailed = false;
+    if (created?.[0] && detectMunicipality(payload.name, payload.company, payload.message)) {
+      try {
+        await findOrCreateClient(apiFetch, created[0]);
+      } catch (municipalityError) {
+        municipalitySyncFailed = true;
+        console.error(municipalityError);
+      }
+    }
     if (created?.[0]) inquiries.unshift(created[0]);
     renderAll();
     closeManual();
     if (created?.[0]) openDrawer(created[0].id);
+    if (municipalitySyncFailed) {
+      showError('Solicitud guardada, pero no se ha podido actualizar su ficha de ayuntamiento.');
+    }
   } catch (error) {
     console.error(error);
     if (manualStatus) manualStatus.textContent = 'No se ha podido registrar la solicitud.';
@@ -590,6 +605,10 @@ initAjustesView({
 initClientesView({
   apiFetch,
   root: document.querySelector('[data-view="clientes"]')
+});
+initAyuntamientosView({
+  apiFetch,
+  root: document.querySelector('[data-view="ayuntamientos"]')
 });
 
 session = readSession();
