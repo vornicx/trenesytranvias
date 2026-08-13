@@ -4,7 +4,7 @@ import { fileURLToPath } from 'node:url';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const origin = 'https://www.trenesytranvias.com';
-const corePaths = ['/', '/contacto.html', '/soluciones.html', '/vehiculos.html', '/empresa.html', '/ecija.html'];
+const corePaths = ['/', '/contacto', '/soluciones', '/vehiculos', '/empresa', '/ecija'];
 
 const [pages, provinces, productTemplate, provinceTemplate] = await Promise.all([
   readJson('data/seo-pages.json'),
@@ -17,7 +17,7 @@ validateData(pages, provinces);
 
 const urls = corePaths.map((pathname) => `${origin}${pathname}`);
 for (const page of pages) {
-  const pathname = `/${page.slug}/`;
+  const pathname = `/${page.slug}`;
   const canonical = `${origin}${pathname}`;
   const html = render(productTemplate, {
     ...page,
@@ -40,7 +40,7 @@ for (const page of pages) {
 }
 
 for (const [index, province] of provinces.entries()) {
-  const pathname = `/trenes-turisticos/${province.slug}/`;
+  const pathname = `/trenes-turisticos/${province.slug}`;
   const canonical = `${origin}${pathname}`;
   const page = provincePage(province, index);
   const html = render(provinceTemplate, {
@@ -48,14 +48,14 @@ for (const [index, province] of provinces.entries()) {
     canonical,
     breadcrumbs: breadcrumbs([
       ['Inicio', '/'],
-      ['Trenes turísticos', '/trenes-turisticos/'],
+      ['Trenes turísticos', '/trenes-turisticos'],
       [province.name, pathname],
     ]),
     content: provinceContent(province, index),
     faqs: faqMarkup(page.faqs),
     schema: schemaMarkup(page, canonical, [
       ['Inicio', `${origin}/`],
-      ['Trenes turísticos', `${origin}/trenes-turisticos/`],
+      ['Trenes turísticos', `${origin}/trenes-turisticos`],
       [province.name, canonical],
     ]),
   });

@@ -14,10 +14,15 @@ function clientName(client) {
 
 function joinClients(sales, clients) {
   const clientsById = new Map(clients.map(client => [client.id, client]));
-  return sales.map(sale => ({
-    ...sale,
-    client_name: clientName(sale.tyt_clients) || clientName(clientsById.get(sale.client_id))
-  }));
+  return sales.map(sale => {
+    const embedded = Array.isArray(sale.tyt_clients) ? sale.tyt_clients[0] : sale.tyt_clients;
+    const client = embedded || clientsById.get(sale.client_id);
+    return {
+      ...sale,
+      client_name: clientName(client),
+      is_municipality: Boolean(client?.is_municipality)
+    };
+  });
 }
 
 export async function loadSales(apiFetch) {
@@ -38,12 +43,18 @@ export async function loadSales(apiFetch) {
   }
 }
 
-export function filterSales(rows, from = '', to = '') {
+export function filterSales(rows, from = '', to = '', municipalityFilter = 'all') {
   const fromTime = from ? Date.parse(`${from}T00:00:00.000Z`) : -Infinity;
   const toTime = to ? Date.parse(`${to}T23:59:59.999Z`) : Infinity;
   return rows.filter(row => {
     const soldTime = Date.parse(row.sold_at);
-    return Number.isFinite(soldTime) && soldTime >= fromTime && soldTime <= toTime;
+    const matchesMunicipality = municipalityFilter === 'all'
+      || (municipalityFilter === 'municipality' && row.is_municipality)
+      || (municipalityFilter === 'non-municipality' && !row.is_municipality);
+    return Number.isFinite(soldTime)
+      && soldTime >= fromTime
+      && soldTime <= toTime
+      && matchesMunicipality;
   });
 }
 
@@ -86,6 +97,7 @@ export function initVentasView({ apiFetch, root }) {
   const error = select('[data-sales-error]');
   const from = select('[data-sales-from]');
   const to = select('[data-sales-to]');
+  const municipalityFilter = select('[data-sales-municipality-filter]');
   const total = select('[data-sales-total]');
   const count = select('[data-sales-count]');
   const excelButton = select('[data-sales-export-xlsx]');
@@ -93,7 +105,12 @@ export function initVentasView({ apiFetch, root }) {
   let sales = [];
 
   function visibleSales() {
-    return filterSales(sales, from?.value || '', to?.value || '');
+    return filterSales(
+      sales,
+      from?.value || '',
+      to?.value || '',
+      municipalityFilter?.value || 'all'
+    );
   }
 
   function setError(message = '') {
@@ -144,6 +161,7 @@ export function initVentasView({ apiFetch, root }) {
 
   from?.addEventListener('input', render);
   to?.addEventListener('input', render);
+  municipalityFilter?.addEventListener('change', render);
   select('[data-sales-refresh]')?.addEventListener('click', async event => {
     event.currentTarget.disabled = true;
     await refreshSales();

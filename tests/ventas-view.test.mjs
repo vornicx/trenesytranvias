@@ -27,17 +27,19 @@ test('loadSales joins client names from the embedded relation', async () => {
   assert.equal(rows[0].client_name, 'María');
 });
 
-test('filterSales applies inclusive optional date bounds', () => {
+test('filterSales applies inclusive date and municipality filters', () => {
   const rows = [
-    { sold_at: '2026-08-09T23:59:59Z' },
-    { sold_at: '2026-08-10T12:00:00Z' },
-    { sold_at: '2026-08-12T23:59:59Z' },
-    { sold_at: '2026-08-13T00:00:00Z' }
+    { sold_at: '2026-08-09T23:59:59Z', is_municipality: false },
+    { sold_at: '2026-08-10T12:00:00Z', is_municipality: true },
+    { sold_at: '2026-08-12T23:59:59Z', is_municipality: false },
+    { sold_at: '2026-08-13T00:00:00Z', is_municipality: true }
   ];
 
   assert.deepEqual(filterSales(rows, '2026-08-10', '2026-08-12'), rows.slice(1, 3));
   assert.deepEqual(filterSales(rows, '', '2026-08-10'), rows.slice(0, 2));
   assert.deepEqual(filterSales(rows, '2026-08-12', ''), rows.slice(2));
+  assert.deepEqual(filterSales(rows, '', '', 'municipality'), [rows[1], rows[3]]);
+  assert.deepEqual(filterSales(rows, '', '', 'non-municipality'), [rows[0], rows[2]]);
 });
 
 test('shapeSalesRows exposes only the exporter fields', () => {
@@ -107,6 +109,7 @@ test('Studio wires the Ventas view and export CDN libraries', async () => {
 
   assert.match(html, /data-sales-from/);
   assert.match(html, /data-sales-to/);
+  assert.match(html, /data-sales-municipality-filter/);
   assert.match(html, /data-sales-export-xlsx[^>]*>Exportar Excel/);
   assert.match(html, /data-sales-export-pdf[^>]*>Exportar PDF/);
   assert.match(html, /xlsx\.full\.min\.js/);

@@ -1,4 +1,5 @@
 import { createApiFetch } from './studio/lib/api.js';
+import { loadInquiryActivity, logInquiryStatusChange } from './studio/lib/activity.js';
 import { findOrCreateClient } from './studio/lib/clients.js';
 import { detectMunicipality } from './studio/lib/municipality.js';
 import { createMarkInquiryWon } from './studio/lib/sales.js';
@@ -362,6 +363,34 @@ viewButtons.forEach(button => button.addEventListener('click', () => {
 function selectedInquiry(){ return inquiries.find(item => item.id === selectedInquiryId) || null; }
 function setText(selector, value){ const element = $(selector); if (element) element.textContent = value || '—'; }
 
+function renderInquiryActivity(entries){
+  const container = $('[data-inquiry-activity]');
+  if (!container) return;
+  if (!entries.length) {
+    container.innerHTML = '<p class="history-empty">No hay actividad registrada.</p>';
+    return;
+  }
+  container.innerHTML = entries.map(entry => {
+    const from = labels.status[entry.meta?.from] || entry.meta?.from;
+    const to = labels.status[entry.meta?.to] || entry.meta?.to;
+    const description = entry.action === 'status_changed'
+      ? `${from || 'Sin estado'} → ${to || 'Sin estado'}`
+      : entry.action === 'won' ? 'Venta registrada' : entry.action;
+    return `<article class="history-item"><div><strong>${escapeHTML(description)}</strong><span>${escapeHTML(entry.actor_email || 'Sistema')}</span></div><span>${escapeHTML(formatDate(entry.created_at))}</span></article>`;
+  }).join('');
+}
+
+async function refreshInquiryActivity(id){
+  const container = $('[data-inquiry-activity]');
+  if (container) container.innerHTML = '<p class="history-empty">Cargando actividad…</p>';
+  try {
+    renderInquiryActivity(await loadInquiryActivity(apiFetch, id));
+  } catch (error) {
+    console.error(error);
+    if (container) container.innerHTML = '<p class="history-empty error">No se ha podido cargar la actividad.</p>';
+  }
+}
+
 function openDrawer(id){
   selectedInquiryId = id;
   const item = selectedInquiry();
@@ -396,6 +425,7 @@ function openDrawer(id){
   drawerBackdrop?.classList.add('is-open');
   drawer.setAttribute('aria-hidden','false');
   document.body.style.overflow = 'hidden';
+  refreshInquiryActivity(id);
 }
 
 function closeDrawer(){
@@ -423,6 +453,7 @@ function actionCopySetup(){
 
 async function updateInquiry(id, patch, successMessage = 'Cambios guardados.'){
   const saveState = $('[data-save-state]');
+  const previous = inquiries.find(item => item.id === id);
   if (saveState) saveState.textContent = 'Guardando…';
   try {
     const data = await apiFetch(`tyt_inquiries?id=eq.${encodeURIComponent(id)}`, {
@@ -432,6 +463,14 @@ async function updateInquiry(id, patch, successMessage = 'Cambios guardados.'){
     });
     const updated = data?.[0];
     if (updated) inquiries = inquiries.map(item => item.id === id ? updated : item);
+    if (updated && patch.status && patch.status !== previous?.status) {
+      await logInquiryStatusChange(apiFetch, {
+        inquiryId: id,
+        previousStatus: previous?.status,
+        nextStatus: patch.status,
+        actorEmail: currentUser?.email
+      });
+    }
     renderAll();
     if (saveState) saveState.textContent = successMessage;
     if (selectedInquiryId === id) openDrawer(id);

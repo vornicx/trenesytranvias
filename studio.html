@@ -132,8 +132,10 @@
                 <option value="all">Todos</option>
                 <option value="non-municipality">No ayuntamientos</option>
                 <option value="municipality">Ayuntamientos</option>
+                <option value="pending">Pendientes de ficha</option>
               </select>
             </div>
+            <p class="campaign-help">Se muestran fichas a partir de <strong data-client-threshold>3</strong> ventas, además de ayuntamientos y fichas importantes.</p>
             <div class="table-head client-table-head"><span>Contacto</span><span>Tipo</span><span>Ventas</span><span>Facturación</span><span>Actualizado</span><span></span></div>
             <div class="loading-state" data-client-loading>Recuperando clientes…</div>
             <div data-client-list></div>
@@ -164,6 +166,7 @@
             <section class="detail-section">
               <div class="detail-section-title">Clasificación y seguimiento</div>
               <label class="municipality-toggle"><input type="checkbox" data-client-edit-municipality /><span><strong>Es ayuntamiento</strong><small>Incluye esta ficha en el seguimiento municipal.</small></span></label>
+              <label class="municipality-toggle"><input type="checkbox" data-client-edit-important /><span><strong>Ficha importante</strong><small>Muéstrala aunque todavía no alcance el umbral de ventas.</small></span></label>
               <div class="drawer-fields client-cycle-fields">
                 <label>Año electoral<input type="number" min="1900" max="9999" step="1" inputmode="numeric" placeholder="2027" data-client-edit-election /></label>
                 <label>Próximo contacto<input type="date" data-client-edit-recontact /></label>
@@ -256,6 +259,7 @@
               <div class="sales-date-filters">
                 <label>Desde<input type="date" data-sales-from /></label>
                 <label>Hasta<input type="date" data-sales-to /></label>
+                <label>Cliente<select data-sales-municipality-filter><option value="all">Todos</option><option value="municipality">Ayuntamiento</option><option value="non-municipality">No ayuntamiento</option></select></label>
               </div>
               <div class="sales-export-actions">
                 <button class="studio-button secondary" type="button" data-sales-export-xlsx disabled>Exportar Excel</button>
@@ -280,9 +284,14 @@
           <section class="inquiry-panel ajustes-panel">
             <form class="studio-form ajustes-form" data-ajustes-form>
               <h2>Umbral de ficha de cliente</h2>
-              <p class="ajustes-help">Cuando un contacto acumula esta cantidad de ventas, el sistema exige crear o completar su ficha de cliente.</p>
+              <p class="ajustes-help">Se muestran fichas de cliente a partir de esta cantidad de ventas, salvo ayuntamientos o fichas marcadas como importantes.</p>
               <label>Umbral de ventas
                 <input type="number" name="client_fiche_threshold" min="1" step="1" inputmode="numeric" required data-ajustes-threshold />
+              </label>
+              <h2>Año electoral municipal por defecto</h2>
+              <p class="ajustes-help">Año sugerido para preparar el seguimiento de próximas elecciones municipales.</p>
+              <label>Año electoral
+                <input type="number" name="default_municipal_election_year" min="1900" max="9999" step="1" inputmode="numeric" required data-ajustes-election-year />
               </label>
               <p class="ajustes-status" data-ajustes-status aria-live="polite"></p>
               <div class="ajustes-actions">
@@ -328,6 +337,10 @@
         <label class="notes-label" style="margin-top:12px">Notas internas<textarea maxlength="5000" placeholder="Próximos pasos, contexto de la llamada, presupuesto enviado…" data-edit-notes></textarea></label>
         <p class="save-state" data-save-state></p>
         <div class="drawer-actions"><button class="studio-button" type="button" data-save-inquiry>Guardar cambios</button><button class="studio-button accent" type="button" data-mark-won>Marcar vendido</button><button class="studio-button secondary" type="button" data-mark-contacted>Marcar contactado</button><button class="studio-button ghost" type="button" data-archive>Archivar</button></div>
+      </section>
+      <section class="detail-section">
+        <div class="detail-section-title">Actividad reciente</div>
+        <div class="client-history" data-inquiry-activity><p class="history-empty">Cargando actividad…</p></div>
       </section>
     </div>
   </aside>

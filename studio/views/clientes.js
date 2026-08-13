@@ -20,7 +20,20 @@ const inquiryStatusLabels = {
   archived: 'Archivada'
 };
 
-export function filterClients(clients, query = '', filter = 'all') {
+export const DEFAULT_CLIENT_FICHE_THRESHOLD = 3;
+
+function hasClientFiche(client, threshold) {
+  return Number(client.sales_count || 0) >= threshold
+    || client.is_important
+    || client.is_municipality;
+}
+
+export function filterClients(
+  clients,
+  query = '',
+  filter = 'all',
+  threshold = DEFAULT_CLIENT_FICHE_THRESHOLD
+) {
   const needle = normalize(query.trim());
   return clients.filter(client => {
     const haystack = normalize([
@@ -30,16 +43,38 @@ export function filterClients(clients, query = '', filter = 'all') {
       client.phone,
       client.location
     ].filter(Boolean).join(' '));
-    const matchesType = filter === 'all'
-      || (filter === 'municipality' && client.is_municipality)
-      || (filter === 'non-municipality' && !client.is_municipality);
+    const hasFiche = hasClientFiche(client, threshold);
+    const matchesType = filter === 'pending'
+      ? !hasFiche
+      : hasFiche && (
+        filter === 'all'
+        || (filter === 'municipality' && client.is_municipality)
+        || (filter === 'non-municipality' && !client.is_municipality)
+      );
     return matchesType && (!needle || haystack.includes(needle));
   });
 }
 
-export async function loadClients(apiFetch) {
+export async function loadClientFicheThreshold(apiFetch) {
+  try {
+    const rows = await apiFetch('tyt_settings?key=eq.client_fiche_threshold&select=value&limit=1');
+    const threshold = Number(rows?.[0]?.value);
+    return Number.isInteger(threshold) && threshold >= 1
+      ? threshold
+      : DEFAULT_CLIENT_FICHE_THRESHOLD;
+  } catch {
+    return DEFAULT_CLIENT_FICHE_THRESHOLD;
+  }
+}
+
+export async function loadClients(
+  apiFetch,
+  threshold = DEFAULT_CLIENT_FICHE_THRESHOLD,
+  includeBelowThreshold = false
+) {
   const rows = await apiFetch('tyt_clients?select=*&order=updated_at.desc');
-  return Array.isArray(rows) ? rows : [];
+  if (!Array.isArray(rows)) return [];
+  return includeBelowThreshold ? rows : rows.filter(client => hasClientFiche(client, threshold));
 }
 
 export async function loadClientHistory(apiFetch, client) {
@@ -65,6 +100,7 @@ export async function updateClient(apiFetch, id, patch) {
     body: JSON.stringify({
       notes: patch.notes || null,
       is_municipality: Boolean(patch.is_municipality),
+      is_important: Boolean(patch.is_important),
       election_year: patch.election_year || null,
       next_recontact_at: patch.next_recontact_at || null
     })
@@ -105,6 +141,7 @@ export function initClientesView({ apiFetch, root }) {
   const saveState = select('[data-client-save-state]');
   const history = select('[data-client-history]');
   let clients = [];
+  let threshold = DEFAULT_CLIENT_FICHE_THRESHOLD;
   let selectedClientId = null;
 
   const selectedClient = () => clients.find(client => client.id === selectedClientId) || null;
@@ -120,15 +157,16 @@ export function initClientesView({ apiFetch, root }) {
   }
 
   function renderStats() {
-    setText('[data-client-stat-total]', String(clients.length));
-    setText('[data-client-stat-municipalities]', String(clients.filter(client => client.is_municipality).length));
-    setText('[data-client-stat-sales]', String(clients.reduce((total, client) => total + Number(client.sales_count || 0), 0)));
-    setText('[data-client-stat-value]', formatCurrency(clients.reduce((total, client) => total + Number(client.sales_total || 0), 0)));
+    const fiches = clients.filter(client => hasClientFiche(client, threshold));
+    setText('[data-client-stat-total]', String(fiches.length));
+    setText('[data-client-stat-municipalities]', String(fiches.filter(client => client.is_municipality).length));
+    setText('[data-client-stat-sales]', String(fiches.reduce((total, client) => total + Number(client.sales_count || 0), 0)));
+    setText('[data-client-stat-value]', formatCurrency(fiches.reduce((total, client) => total + Number(client.sales_total || 0), 0)));
   }
 
   function renderList() {
     if (!list || !empty) return;
-    const visible = filterClients(clients, search?.value || '', filter?.value || 'all');
+    const visible = filterClients(clients, search?.value || '', filter?.value || 'all', threshold);
     list.innerHTML = visible.map(client => `
       <article class="client-row">
         <div class="person-cell">
@@ -185,6 +223,7 @@ export function initClientesView({ apiFetch, root }) {
     setText('[data-client-detail-sales]', `${Number(client.sales_count || 0)} · ${formatCurrency(client.sales_total)}`);
     select('[data-client-edit-notes]').value = client.notes || '';
     select('[data-client-edit-municipality]').checked = Boolean(client.is_municipality);
+    select('[data-client-edit-important]').checked = Boolean(client.is_important);
     select('[data-client-edit-election]').value = client.election_year || '';
     select('[data-client-edit-recontact]').value = client.next_recontact_at || '';
     if (saveState) saveState.textContent = client.updated_at ? `Última actualización: ${formatDate(client.updated_at, true)}` : '';
@@ -214,7 +253,9 @@ export function initClientesView({ apiFetch, root }) {
     if (empty) empty.hidden = true;
     setError('');
     try {
-      clients = await loadClients(apiFetch);
+      threshold = await loadClientFicheThreshold(apiFetch);
+      clients = await loadClients(apiFetch, threshold, true);
+      setText('[data-client-threshold]', String(threshold));
       renderStats();
       renderList();
     } catch (loadError) {
@@ -259,6 +300,7 @@ export function initClientesView({ apiFetch, root }) {
       const updated = await updateClient(apiFetch, client.id, {
         notes: select('[data-client-edit-notes]').value.trim(),
         is_municipality: select('[data-client-edit-municipality]').checked,
+        is_important: select('[data-client-edit-important]').checked,
         election_year: electionYear,
         next_recontact_at: select('[data-client-edit-recontact]').value || null
       });

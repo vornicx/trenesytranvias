@@ -32,7 +32,9 @@ create index if not exists tyt_inquiries_status_idx on public.tyt_inquiries (sta
 create index if not exists tyt_inquiries_created_at_idx on public.tyt_inquiries (created_at desc);
 
 create or replace function public.tyt_set_updated_at()
-returns trigger language plpgsql as $$
+returns trigger language plpgsql
+set search_path = pg_catalog, public
+as $$
 begin
   new.updated_at = now();
   return new;
@@ -52,6 +54,10 @@ returns boolean language sql stable security definer set search_path = public as
   );
 $$;
 
+revoke execute on function public.tyt_is_admin() from public;
+revoke execute on function public.tyt_is_admin() from anon;
+grant execute on function public.tyt_is_admin() to authenticated;
+
 alter table public.tyt_admin_allowlist enable row level security;
 alter table public.tyt_inquiries enable row level security;
 
@@ -61,12 +67,21 @@ create policy tyt_allowlist_admin_select on public.tyt_admin_allowlist
 
 drop policy if exists tyt_inquiries_anon_insert on public.tyt_inquiries;
 create policy tyt_inquiries_anon_insert on public.tyt_inquiries
-  for insert to anon, authenticated
-  with check (true);
+  for insert to anon
+  with check (
+    status = 'new'
+    and source = 'website'
+    and priority = 'normal'
+    and internal_notes is null
+    and assigned_to is null
+    and next_follow_up_at is null
+    and last_contacted_at is null
+  );
 
 drop policy if exists tyt_inquiries_admin_all on public.tyt_inquiries;
 create policy tyt_inquiries_admin_all on public.tyt_inquiries
-  for all using (public.tyt_is_admin()) with check (public.tyt_is_admin());
+  for all to authenticated
+  using (public.tyt_is_admin()) with check (public.tyt_is_admin());
 
 grant usage on schema public to anon, authenticated;
 grant select on public.tyt_admin_allowlist to authenticated;

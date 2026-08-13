@@ -8,8 +8,11 @@ URL: `https://vtdvwphpjhhxnvezjoxr.supabase.co`
 
 Migraciones aplicadas vía Supabase MCP (2026-08-13):
 
-1. `20260813_init_inquiries_and_allowlist` — `tyt_inquiries`, `tyt_admin_allowlist`, RLS
-2. `20260812_crm_clients_sales` — clients, sales, activity_log, settings, campañas
+1. `20260812_init_inquiries_and_allowlist` — `tyt_inquiries`, `tyt_admin_allowlist`, RLS
+2. `20260813_crm_clients_sales` — clients, sales, activity_log, settings, campañas y RPC atómica de venta
+
+Los nombres locales se corrigieron después de aplicar inicialmente el esquema remoto para
+garantizar que una instalación nueva cree las solicitudes antes de las ventas que las referencian.
 
 ## Allowlist (obligatorio para Studio)
 
