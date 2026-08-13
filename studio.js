@@ -1,6 +1,7 @@
 import { createApiFetch } from './studio/lib/api.js';
 import { createMarkInquiryWon } from './studio/lib/sales.js';
 import { initAjustesView } from './studio/views/ajustes.js';
+import { initClientesView } from './studio/views/clientes.js';
 
 const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
@@ -42,7 +43,7 @@ const projectFilter = $('[data-filter-project]');
 const sourceFilter = $('[data-filter-source]');
 const newCount = $('[data-new-count]');
 const sidebar = $('[data-sidebar]');
-const sidebarToggle = $('[data-sidebar-toggle]');
+const sidebarToggles = $$('[data-sidebar-toggle]');
 const drawer = $('[data-drawer]');
 const drawerBackdrop = $('[data-drawer-backdrop]');
 const closeDrawerButton = $('[data-close-drawer]');
@@ -179,6 +180,7 @@ async function initAuthenticated(){
     if (userEmail) userEmail.textContent = currentUser.email || '';
     if (userName) userName.textContent = access.display_name || 'Administrador';
     await loadInquiries();
+    showHashView();
   } catch (error) {
     console.error(error);
     signOut('La sesión ha caducado. Vuelve a iniciar sesión.', 'error');
@@ -571,10 +573,10 @@ $$('[data-nav]').forEach(link => link.addEventListener('click', event => {
 }));
 window.addEventListener('hashchange', showHashView);
 
-sidebarToggle?.addEventListener('click', () => sidebar?.classList.toggle('is-open'));
+sidebarToggles.forEach(button => button.addEventListener('click', () => sidebar?.classList.toggle('is-open')));
 document.addEventListener('click', event => {
   if (window.innerWidth > 900 || !sidebar?.classList.contains('is-open')) return;
-  if (!sidebar.contains(event.target) && !sidebarToggle?.contains(event.target)) sidebar.classList.remove('is-open');
+  if (!sidebar.contains(event.target) && !sidebarToggles.some(button => button.contains(event.target))) sidebar.classList.remove('is-open');
 });
 document.addEventListener('keydown', event => {
   if (event.key !== 'Escape') return;
@@ -584,6 +586,10 @@ document.addEventListener('keydown', event => {
 initAjustesView({
   apiFetch,
   root: document.querySelector('[data-view="ajustes"]')
+});
+initClientesView({
+  apiFetch,
+  root: document.querySelector('[data-view="clientes"]')
 });
 
 session = readSession();

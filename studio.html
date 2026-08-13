@@ -107,7 +107,78 @@
         </section>
       </div>
       </section>
-      <section data-view="clientes" hidden></section>
+      <section data-view="clientes" hidden>
+        <header class="studio-topbar">
+          <div class="studio-topbar-left">
+            <button class="studio-icon-button mobile-sidebar-button" type="button" aria-label="Abrir navegación" data-sidebar-toggle>☰</button>
+            <div><h1>Clientes</h1><p>Consulta cada ficha, su actividad comercial y próximos contactos.</p></div>
+          </div>
+          <div class="studio-topbar-actions">
+            <button class="studio-button secondary" type="button" data-client-refresh><span>Actualizar</span> ↻</button>
+          </div>
+        </header>
+        <div class="studio-content">
+          <div class="studio-error" data-client-error hidden></div>
+          <section class="stats-grid" aria-label="Resumen de clientes">
+            <article class="stat-card"><span>Total clientes</span><strong data-client-stat-total>0</strong><small>Fichas registradas</small></article>
+            <article class="stat-card"><span>Ayuntamientos</span><strong data-client-stat-municipalities>0</strong><small>Entidades municipales</small></article>
+            <article class="stat-card"><span>Ventas</span><strong data-client-stat-sales>0</strong><small>Operaciones acumuladas</small></article>
+            <article class="stat-card"><span>Facturación</span><strong class="client-value-stat" data-client-stat-value>0,00 €</strong><small>Total registrado</small></article>
+          </section>
+          <section class="inquiry-panel">
+            <div class="inquiry-toolbar client-toolbar">
+              <div class="search-wrap"><input type="search" placeholder="Buscar nombre, empresa, email o localidad" data-client-search /></div>
+              <select data-client-filter aria-label="Filtrar clientes">
+                <option value="all">Todos</option>
+                <option value="non-municipality">No ayuntamientos</option>
+                <option value="municipality">Ayuntamientos</option>
+              </select>
+            </div>
+            <div class="table-head client-table-head"><span>Contacto</span><span>Tipo</span><span>Ventas</span><span>Facturación</span><span>Actualizado</span><span></span></div>
+            <div class="loading-state" data-client-loading>Recuperando clientes…</div>
+            <div data-client-list></div>
+            <div class="empty-state" data-client-empty hidden><strong>No hay clientes que mostrar.</strong><p>Prueba otra búsqueda o filtro. Los nuevos clientes aparecerán al registrar ventas.</p></div>
+          </section>
+        </div>
+
+        <button class="drawer-backdrop" type="button" aria-label="Cerrar ficha" data-client-drawer-backdrop></button>
+        <aside class="inquiry-drawer client-drawer" data-client-drawer aria-hidden="true">
+          <header class="drawer-header"><span>Ficha de cliente</span><button class="studio-icon-button" type="button" aria-label="Cerrar" data-client-close>×</button></header>
+          <div class="drawer-body">
+            <div class="drawer-person">
+              <h2 data-client-detail-name>—</h2>
+              <p data-client-detail-company>—</p>
+            </div>
+            <section class="detail-section">
+              <div class="detail-section-title">Contacto</div>
+              <div class="contact-lines">
+                <div class="contact-line"><small>Email</small><strong data-client-detail-email>—</strong></div>
+                <div class="contact-line"><small>Teléfono</small><strong data-client-detail-phone>—</strong></div>
+              </div>
+              <div class="project-detail-grid client-detail-grid">
+                <div class="detail-box"><small>Localidad</small><strong data-client-detail-location>—</strong></div>
+                <div class="detail-box"><small>Cliente desde</small><strong data-client-detail-created>—</strong></div>
+                <div class="detail-box client-sales-box"><small>Ventas · facturación</small><strong data-client-detail-sales>—</strong></div>
+              </div>
+            </section>
+            <section class="detail-section">
+              <div class="detail-section-title">Clasificación y seguimiento</div>
+              <label class="municipality-toggle"><input type="checkbox" data-client-edit-municipality /><span><strong>Es ayuntamiento</strong><small>Incluye esta ficha en el seguimiento municipal.</small></span></label>
+              <div class="drawer-fields client-cycle-fields">
+                <label>Año electoral<input type="number" min="1900" max="9999" step="1" inputmode="numeric" placeholder="2027" data-client-edit-election /></label>
+                <label>Próximo contacto<input type="date" data-client-edit-recontact /></label>
+              </div>
+              <label class="notes-label client-notes-label">Notas internas<textarea maxlength="5000" placeholder="Contexto, interlocutores, acuerdos y próximos pasos…" data-client-edit-notes></textarea></label>
+              <p class="save-state" data-client-save-state aria-live="polite"></p>
+              <div class="drawer-actions"><button class="studio-button" type="button" data-client-save>Guardar cambios</button></div>
+            </section>
+            <section class="detail-section">
+              <div class="detail-section-title">Historial comercial</div>
+              <div class="client-history" data-client-history></div>
+            </section>
+          </div>
+        </aside>
+      </section>
       <section data-view="ayuntamientos" hidden></section>
       <section data-view="ventas" hidden></section>
       <section data-view="ajustes" hidden>
