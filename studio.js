@@ -5,6 +5,7 @@ import { createMarkInquiryWon } from './studio/lib/sales.js';
 import { initAjustesView } from './studio/views/ajustes.js';
 import { initAyuntamientosView } from './studio/views/ayuntamientos.js';
 import { initClientesView } from './studio/views/clientes.js';
+import { initVentasView } from './studio/views/ventas.js';
 
 const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
@@ -609,6 +610,10 @@ initClientesView({
 initAyuntamientosView({
   apiFetch,
   root: document.querySelector('[data-view="ayuntamientos"]')
+});
+initVentasView({
+  apiFetch,
+  root: document.querySelector('[data-view="ventas"]')
 });
 
 session = readSession();

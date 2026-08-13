@@ -235,7 +235,40 @@
           </div>
         </div>
       </section>
-      <section data-view="ventas" hidden></section>
+      <section data-view="ventas" hidden>
+        <header class="studio-topbar">
+          <div class="studio-topbar-left">
+            <button class="studio-icon-button mobile-sidebar-button" type="button" aria-label="Abrir navegación" data-sidebar-toggle>☰</button>
+            <div><h1>Ventas</h1><p>Consulta la facturación registrada y exporta el periodo que necesites.</p></div>
+          </div>
+          <div class="studio-topbar-actions">
+            <button class="studio-button secondary" type="button" data-sales-refresh><span>Actualizar</span> ↻</button>
+          </div>
+        </header>
+        <div class="studio-content">
+          <div class="studio-error" data-sales-error hidden></div>
+          <section class="stats-grid sales-stats" aria-label="Resumen de ventas">
+            <article class="stat-card"><span>Ventas filtradas</span><strong data-sales-count>0</strong><small>Operaciones en el periodo</small></article>
+            <article class="stat-card"><span>Total</span><strong class="client-value-stat" data-sales-total>0,00 €</strong><small>Importe registrado</small></article>
+          </section>
+          <section class="inquiry-panel">
+            <div class="sales-toolbar">
+              <div class="sales-date-filters">
+                <label>Desde<input type="date" data-sales-from /></label>
+                <label>Hasta<input type="date" data-sales-to /></label>
+              </div>
+              <div class="sales-export-actions">
+                <button class="studio-button secondary" type="button" data-sales-export-xlsx disabled>Exportar Excel</button>
+                <button class="studio-button secondary" type="button" data-sales-export-pdf disabled>Exportar PDF</button>
+              </div>
+            </div>
+            <div class="table-head sales-table-head"><span>Cliente</span><span>Concepto</span><span>Importe</span><span>Fecha</span></div>
+            <div class="loading-state" data-sales-loading>Recuperando ventas…</div>
+            <div data-sales-list></div>
+            <div class="empty-state" data-sales-empty hidden><strong>No hay ventas que mostrar.</strong><p>Prueba otro intervalo de fechas o registra una venta desde una solicitud.</p></div>
+          </section>
+        </div>
+      </section>
       <section data-view="ajustes" hidden>
         <header class="studio-topbar">
           <div class="studio-topbar-left">
@@ -334,6 +367,8 @@
     </section>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
   <script src="./supabase-config.js"></script>
   <script type="module" src="./studio.js"></script>
 </body>
