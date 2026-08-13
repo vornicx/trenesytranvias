@@ -70,4 +70,6 @@ test('sold status has an optional amount modal and dedicated action', () => {
 test('public inquiry payload explicitly starts as new', () => {
   assert.match(publicScript, /source: 'website',\s+status: 'new',\s+priority: 'normal'/);
   assert.match(publicScript, /Prefer: 'return=minimal'/);
+  assert.match(publicScript, /Authorization: `Bearer \$\{config\.publishableKey\}`/);
+  assert.doesNotMatch(publicScript, /return response\.json\(\)/);
 });

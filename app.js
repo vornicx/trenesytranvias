@@ -51,17 +51,26 @@ menuButton?.addEventListener('click', () => {
 $$('.mobile-menu a').forEach(link => link.addEventListener('click', closeMenu));
 document.addEventListener('keydown', event => { if (event.key === 'Escape') closeMenu(); });
 
+const revealNow = el => el.classList.add('is-visible');
+const inView = el => {
+  const rect = el.getBoundingClientRect();
+  return rect.bottom > 48 && rect.top < window.innerHeight - 24;
+};
+
 const observer = 'IntersectionObserver' in window
   ? new IntersectionObserver(entries => {
       entries.forEach(entry => {
         if (!entry.isIntersecting) return;
-        entry.target.classList.add('is-visible');
+        revealNow(entry.target);
         observer.unobserve(entry.target);
       });
-    }, { threshold: .12, rootMargin: '0px 0px -40px' })
+    }, { threshold: 0.08, rootMargin: '0px 0px -8% 0px' })
   : null;
 
-$$('.reveal').forEach(el => observer ? observer.observe(el) : el.classList.add('is-visible'));
+$$('.reveal').forEach(el => {
+  if (!observer || inView(el)) revealNow(el);
+  else observer.observe(el);
+});
 
 const footerBottom = $('.footer-bottom');
 if (footerBottom && !$('.management-access', footerBottom)) {
@@ -133,6 +142,7 @@ async function persistInquiry(data){
     method: 'POST',
     headers: {
       apikey: config.publishableKey,
+      Authorization: `Bearer ${config.publishableKey}`,
       'Content-Type': 'application/json',
       Prefer: 'return=minimal'
     },
@@ -144,12 +154,16 @@ async function persistInquiry(data){
     console.error('Inquiry submission failed', response.status, details);
     throw new Error('submission_failed');
   }
-  return response.json();
+  // Prefer: return=minimal → empty body; parsing JSON would throw and fake a failure.
+  return true;
 }
 
 contactForm?.addEventListener('submit', async event => {
   event.preventDefault();
-  if (formStatus) formStatus.textContent = '';
+  if (formStatus) {
+    formStatus.textContent = '';
+    formStatus.classList.remove('is-ok');
+  }
 
   const data = new FormData(contactForm);
   const name = String(data.get('name') || '').trim();
@@ -178,7 +192,11 @@ contactForm?.addEventListener('submit', async event => {
     }
   } catch (error) {
     console.error(error);
-    if (formStatus) formStatus.textContent = 'No hemos podido registrar la solicitud. Inténtalo de nuevo en unos segundos.';
+    if (error?.message === 'backend_not_configured') {
+      if (formStatus) formStatus.textContent = 'El formulario no está configurado todavía. Escríbenos más tarde o vuelve a intentarlo.';
+    } else if (formStatus) {
+      formStatus.textContent = 'No hemos podido registrar la solicitud. Inténtalo de nuevo en unos segundos.';
+    }
     contactSubmit?.removeAttribute('disabled');
     if (contactSubmit) contactSubmit.textContent = 'Enviar solicitud →';
   }

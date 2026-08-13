@@ -3,14 +3,14 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#171817" />
+  <meta name="theme-color" content="#141512" />
   <meta name="description" content="Solicita presupuesto para un tren turístico, tranvía, evento, boda o proyecto municipal en España." />
   <meta name="robots" content="index,follow" />
   <link rel="canonical" href="https://www.trenesytranvias.com/contacto" />
   <title>Solicitar presupuesto | Trenes y Tranvías</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@1,9..144,500;1,9..144,600&family=Manrope:wght@500;600;700;800&family=Source+Sans+3:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="./styles.css" />
   <link rel="stylesheet" href="./pages.css" />
   <script type="application/ld+json">
@@ -34,9 +34,9 @@
   <div class="mobile-menu" data-mobile-menu hidden><nav aria-label="Navegación móvil"><a href="/trenes-turisticos/">Trenes turísticos</a><a href="./soluciones.html">Soluciones</a><a href="./vehiculos.html">Vehículos</a><a href="./ecija.html">Écija</a><a href="./empresa.html">Empresa</a><a href="./contacto.html">Contacto</a></nav></div>
 
   <main id="contenido">
-    <section class="page-hero">
+    <section class="page-hero page-hero-contact">
       <div class="page-shell">
-        <div class="eyebrow reveal"><span>Contacto</span><span>05</span></div>
+        <div class="eyebrow reveal"><span>Contacto</span><span>Solicitud</span></div>
         <div class="page-hero-grid">
           <h1 class="page-title reveal">Solicita presupuesto para <span>tu recorrido.</span></h1>
           <p class="page-intro reveal">Cuanta más información tengamos sobre lugar, fechas y uso previsto, mejor podremos orientar la modalidad y el vehículo.</p>
@@ -44,16 +44,24 @@
       </div>
     </section>
 
-    <section class="content-section">
+    <section class="content-section contact-section">
       <div class="page-shell contact-layout">
         <aside class="contact-aside reveal">
           <p class="overline">Antes de empezar</p>
           <h2>Lo importante es entender el proyecto.</h2>
-          <p>La solicitud llegará directamente al panel de gestión de Ciudad del Sol para que puedan revisarla, clasificarla y hacer seguimiento.</p>
-          <div class="contact-facts"><div><small>Base</small><strong>Écija · Sevilla</strong></div><div><small>Modalidades</small><strong>Alquiler · venta · fabricación</strong></div><div><small>Ámbito</small><strong>Proyectos en España</strong></div></div>
+          <p>La solicitud llega al panel de gestión de Ciudad del Sol para revisarla, clasificarla y hacer seguimiento.</p>
+          <div class="contact-facts">
+            <div><small>Base</small><strong>Écija · Sevilla</strong></div>
+            <div><small>Modalidades</small><strong>Alquiler · venta · fabricación</strong></div>
+            <div><small>Ámbito</small><strong>Proyectos en España</strong></div>
+          </div>
         </aside>
 
-        <div class="reveal">
+        <div class="contact-panel reveal">
+          <div class="contact-panel-head">
+            <span>Formulario de solicitud</span>
+            <span>Respuesta directa</span>
+          </div>
           <form class="contact-form" data-contact-form novalidate>
             <div class="field-row"><label>Nombre y apellidos<input name="name" autocomplete="name" maxlength="120" required /></label><label>Empresa / entidad<input name="company" autocomplete="organization" maxlength="160" /></label></div>
             <div class="field-row"><label>Email<input type="email" name="email" autocomplete="email" maxlength="254" required /></label><label>Teléfono<input type="tel" name="phone" autocomplete="tel" maxlength="40" /></label></div>
@@ -65,7 +73,7 @@
             </div>
             <label class="check-field"><input type="checkbox" name="privacy" required /><span>Acepto que estos datos se utilicen para responder a esta solicitud.</span></label>
             <p class="form-status" data-form-status aria-live="polite"></p>
-            <button class="button button-dark button-wide" type="submit" data-contact-submit>Enviar solicitud →</button>
+            <button class="button button-sun button-wide" type="submit" data-contact-submit>Enviar solicitud →</button>
             <p class="prototype-note">Tus datos se utilizan únicamente para gestionar esta consulta comercial.</p>
           </form>
 

@@ -3,15 +3,16 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#171817" />
+  <meta name="theme-color" content="#141512" />
   <meta name="description" content="Alquiler, venta y fabricación de trenes y tranvías turísticos para ayuntamientos, eventos, bodas y recintos en toda España." />
   <meta name="robots" content="index,follow" />
   <link rel="canonical" href="https://www.trenesytranvias.com/" />
   <title>Trenes y tranvías turísticos en España | Ciudad del Sol</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@1,9..144,500;1,9..144,600&family=Manrope:wght@500;600;700;800&family=Source+Sans+3:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="./styles.css" />
+  <link rel="stylesheet" href="./pages.css" />
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -59,8 +60,11 @@
       <div class="hero-media" aria-hidden="true">
         <img src="https://i.ytimg.com/vi/Ma5BEoAO5ZU/maxresdefault.jpg" alt="" fetchpriority="high" />
         <div class="hero-shade"></div>
+        <div class="hero-sun"></div>
+        <div class="hero-rails"></div>
       </div>
       <div class="hero-content page-shell">
+        <p class="hero-brand reveal">Ciudad del Sol</p>
         <div class="hero-kicker reveal">Fabricación · alquiler · venta</div>
         <h1 class="reveal">Trenes turísticos.<br />La ciudad se disfruta <em>a bordo.</em></h1>
         <p class="hero-lede reveal">Trenes y tranvías turísticos para ciudades, eventos y espacios que necesitan mover personas y, al mismo tiempo, crear una experiencia reconocible.</p>
@@ -86,27 +90,36 @@
         </div>
       </div>
 
-      <div class="use-cases">
-        <article class="use-card reveal">
-          <span class="use-number">01</span>
-          <h3>Ciudades y turismo</h3>
-          <p>Recorridos urbanos, conexión entre puntos turísticos y apoyo a temporadas con alta afluencia.</p>
-          <a class="text-action" href="/trenes-para-ayuntamientos/">Ver solución para ayuntamientos <span>→</span></a>
+      <div class="route-board">
+        <article class="route-stop reveal">
+          <div class="route-stop-marker" aria-hidden="true"><span></span></div>
+          <div class="route-stop-body">
+            <p class="route-stop-line">Ayuntamientos</p>
+            <h3>Ciudades y turismo</h3>
+            <p>Recorridos urbanos, conexión entre puntos turísticos y apoyo a temporadas con alta afluencia.</p>
+            <a class="text-action" href="/trenes-para-ayuntamientos/">Ver solución para ayuntamientos <span>→</span></a>
+          </div>
         </article>
-        <article class="use-card reveal">
-          <span class="use-number">02</span>
-          <h3>Ferias y eventos</h3>
-          <p>Movilidad interna para ferias, celebraciones y eventos con gran volumen de visitantes.</p>
-          <a class="text-action" href="/trenes-para-eventos/">Ver trenes para eventos <span>→</span></a>
+        <article class="route-stop reveal">
+          <div class="route-stop-marker" aria-hidden="true"><span></span></div>
+          <div class="route-stop-body">
+            <p class="route-stop-line">Eventos</p>
+            <h3>Ferias y celebraciones</h3>
+            <p>Movilidad interna para ferias, celebraciones y eventos con gran volumen de visitantes.</p>
+            <a class="text-action" href="/trenes-para-eventos/">Ver trenes para eventos <span>→</span></a>
+          </div>
         </article>
-        <article class="use-card reveal">
-          <span class="use-number">03</span>
-          <h3>Empresas y recintos</h3>
-          <p>Una solución visible y práctica para complejos turísticos, parques y espacios privados.</p>
-          <a class="text-action" href="/alquiler-tren-turistico/">Ver opciones de alquiler <span>→</span></a>
+        <article class="route-stop reveal">
+          <div class="route-stop-marker" aria-hidden="true"><span></span></div>
+          <div class="route-stop-body">
+            <p class="route-stop-line">Recintos</p>
+            <h3>Empresas y espacios privados</h3>
+            <p>Una solución visible y práctica para complejos turísticos, parques y espacios privados.</p>
+            <a class="text-action" href="/alquiler-tren-turistico/">Ver opciones de alquiler <span>→</span></a>
+          </div>
         </article>
       </div>
-      <div class="hub-links reveal" aria-label="Soluciones destacadas">
+      <div class="ticket-strip reveal" aria-label="Soluciones destacadas">
         <a href="/trenes-turisticos/">Trenes turísticos</a>
         <a href="/trenes-para-eventos/">Eventos</a>
         <a href="/trenes-de-boda/">Bodas</a>
@@ -214,9 +227,10 @@
     </section>
 
     <section class="cta section">
+      <div class="cta-rails" aria-hidden="true"></div>
       <div class="page-shell cta-shell reveal">
         <span class="overline">Hablemos de tu recorrido</span>
-        <h2>¿Dónde quieres que llegue el próximo?</h2>
+        <h2>¿Dónde quieres que llegue el <em>próximo?</em></h2>
         <p>Cuéntanos la ciudad, el evento o el proyecto y podremos definir la modalidad más adecuada.</p>
         <div class="cta-actions">
           <a class="button button-dark" href="./contacto.html">Solicitar presupuesto <span>→</span></a>
