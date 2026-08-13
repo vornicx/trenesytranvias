@@ -60,7 +60,9 @@
             <label>Tipo de proyecto<select name="project" data-project-select><option value="">Selecciona una opción</option><option value="turismo">Turismo y ciudad</option><option value="eventos">Ferias y eventos</option><option value="recintos">Empresas y recintos</option><option value="tren">Tren turístico</option><option value="tranvia">Tranvía turístico</option><option value="otro">Otro</option></select></label>
             <div class="field-row"><label>Modalidad<select name="operation"><option value="">No lo sé todavía</option><option value="alquiler">Alquiler</option><option value="compra">Compra</option><option value="fabricacion">Fabricación / proyecto especial</option></select></label><label>Localidad / provincia<input name="location" autocomplete="address-level2" maxlength="160" /></label></div>
             <label>Qué necesitas<textarea name="message" rows="5" maxlength="4000" placeholder="Fechas, recorrido, tipo de evento, uso previsto..."></textarea></label>
-            <label class="form-honeypot" aria-hidden="true">No completar<input name="website" tabindex="-1" autocomplete="off" /></label>
+            <div class="form-honeypot" aria-hidden="true">
+              <label>Sitio web<input type="text" name="website" tabindex="-1" autocomplete="off" /></label>
+            </div>
             <label class="check-field"><input type="checkbox" name="privacy" required /><span>Acepto que estos datos se utilicen para responder a esta solicitud.</span></label>
             <p class="form-status" data-form-status aria-live="polite"></p>
             <button class="button button-dark button-wide" type="submit" data-contact-submit>Enviar solicitud →</button>

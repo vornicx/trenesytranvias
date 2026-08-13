@@ -125,7 +125,8 @@ async function persistInquiry(data){
     location: value('location') || null,
     message: value('message') || null,
     source: 'website',
-    status: 'new'
+    status: 'new',
+    priority: 'normal'
   };
 
   const response = await fetch(`${config.url}/rest/v1/tyt_inquiries`, {
@@ -133,7 +134,7 @@ async function persistInquiry(data){
     headers: {
       apikey: config.publishableKey,
       'Content-Type': 'application/json',
-      Prefer: 'return=representation'
+      Prefer: 'return=minimal'
     },
     body: JSON.stringify(payload)
   });
