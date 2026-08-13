@@ -53,6 +53,7 @@ test('generator writes indexable hub and province pages plus sitemap', async () 
     assert.match(html, /contacto\.html/);
     assert.match(html, /application\/ld\+json/);
     assert.match(html, /<meta name="description"/);
+    assert.match(html, />Solicitar presupuesto →<\/a>/);
   }
 
   assert.match(provinceHtml, /Sevilla/);
@@ -65,10 +66,12 @@ test('generator writes indexable hub and province pages plus sitemap', async () 
 });
 
 test('public entry pages expose key SEO hubs and crawl directives', async () => {
-  const [home, solutions, robots] = await Promise.all([
+  const [home, solutions, robots, ...organizationPages] = await Promise.all([
     readFile(new URL('index.html', root), 'utf8'),
     readFile(new URL('soluciones.html', root), 'utf8'),
     readFile(new URL('robots.txt', root), 'utf8'),
+    ...['contacto.html', 'soluciones.html', 'vehiculos.html', 'empresa.html', 'ecija.html']
+      .map(path => readFile(new URL(path, root), 'utf8')),
   ]);
   const keyHubs = [
     '/trenes-turisticos/',
@@ -85,6 +88,9 @@ test('public entry pages expose key SEO hubs and crawl directives', async () => 
     assert.match(solutions, new RegExp(`href="${href}"`));
   }
   assert.match(home, /"@type":\s*"Organization"/);
+  for (const html of organizationPages) {
+    assert.match(html, /"@type":\s*"Organization"/);
+  }
   assert.match(robots, /^Allow: \/$/m);
   assert.match(robots, /^Sitemap: https:\/\/www\.trenesytranvias\.com\/sitemap\.xml$/m);
 });
