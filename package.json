@@ -1,6 +1,7 @@
 {
   "type": "module",
   "scripts": {
-    "test": "node --test"
+    "test": "node --test",
+    "seo:generate": "node scripts/generate-seo-pages.mjs"
   }
 }
