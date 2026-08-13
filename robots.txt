@@ -3,3 +3,5 @@ Allow: /
 Disallow: /studio
 Disallow: /studio.html
 Disallow: /gestion
+
+Sitemap: https://www.trenesytranvias.com/sitemap.xml

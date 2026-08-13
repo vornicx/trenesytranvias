@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const origin = 'https://www.trenesytranvias.com';
+const corePaths = ['/', '/contacto.html', '/soluciones.html', '/vehiculos.html', '/empresa.html', '/ecija.html'];
 
 const [pages, provinces, productTemplate, provinceTemplate] = await Promise.all([
   readJson('data/seo-pages.json'),
@@ -14,7 +15,7 @@ const [pages, provinces, productTemplate, provinceTemplate] = await Promise.all(
 
 validateData(pages, provinces);
 
-const urls = [];
+const urls = corePaths.map((pathname) => `${origin}${pathname}`);
 for (const page of pages) {
   const pathname = `/${page.slug}/`;
   const canonical = `${origin}${pathname}`;
@@ -64,7 +65,7 @@ for (const [index, province] of provinces.entries()) {
 }
 
 await writeFile(path.join(root, 'sitemap.xml'), sitemap(urls), 'utf8');
-console.log(`SEO generado: ${pages.length} hubs, ${provinces.length} provincias, ${urls.length} URLs.`);
+console.log(`SEO generado: ${pages.length} hubs, ${provinces.length} provincias, ${urls.length} URLs totales.`);
 
 async function readJson(relativePath) {
   return JSON.parse(await readFile(path.join(root, relativePath), 'utf8'));

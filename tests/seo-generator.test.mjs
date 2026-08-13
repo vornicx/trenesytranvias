@@ -57,6 +57,34 @@ test('generator writes indexable hub and province pages plus sitemap', async () 
 
   assert.match(provinceHtml, /Sevilla/);
   assert.match(provinceHtml, /Andalucía/);
-  assert.equal((sitemap.match(/<url>/g) || []).length, 63);
+  assert.equal((sitemap.match(/<url>/g) || []).length, 69);
+  for (const path of ['/', '/contacto.html', '/soluciones.html', '/vehiculos.html', '/empresa.html', '/ecija.html']) {
+    assert.match(sitemap, new RegExp(`<loc>https://www\\.trenesytranvias\\.com${path.replace('.', '\\.')}</loc>`));
+  }
   assert.match(sitemap, /https:\/\/www\.trenesytranvias\.com\/trenes-turisticos\/sevilla\//);
+});
+
+test('public entry pages expose key SEO hubs and crawl directives', async () => {
+  const [home, solutions, robots] = await Promise.all([
+    readFile(new URL('index.html', root), 'utf8'),
+    readFile(new URL('soluciones.html', root), 'utf8'),
+    readFile(new URL('robots.txt', root), 'utf8'),
+  ]);
+  const keyHubs = [
+    '/trenes-turisticos/',
+    '/trenes-para-eventos/',
+    '/trenes-de-boda/',
+    '/alquiler-tren-turistico/',
+    '/trenes-para-ayuntamientos/',
+    '/carrozas-navidenas/',
+    '/desfiles/',
+  ];
+
+  for (const href of keyHubs) {
+    assert.match(home, new RegExp(`href="${href}"`));
+    assert.match(solutions, new RegExp(`href="${href}"`));
+  }
+  assert.match(home, /"@type":\s*"Organization"/);
+  assert.match(robots, /^Allow: \/$/m);
+  assert.match(robots, /^Sitemap: https:\/\/www\.trenesytranvias\.com\/sitemap\.xml$/m);
 });
