@@ -1,5 +1,6 @@
 import { createApiFetch } from './studio/lib/api.js';
 import { createMarkInquiryWon } from './studio/lib/sales.js';
+import { initAjustesView } from './studio/views/ajustes.js';
 
 const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
@@ -578,6 +579,11 @@ document.addEventListener('click', event => {
 document.addEventListener('keydown', event => {
   if (event.key !== 'Escape') return;
   closeDrawer(); closeManual(); closeWon(); sidebar?.classList.remove('is-open');
+});
+
+initAjustesView({
+  apiFetch,
+  root: document.querySelector('[data-view="ajustes"]')
 });
 
 session = readSession();

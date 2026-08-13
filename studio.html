@@ -110,7 +110,29 @@
       <section data-view="clientes" hidden></section>
       <section data-view="ayuntamientos" hidden></section>
       <section data-view="ventas" hidden></section>
-      <section data-view="ajustes" hidden></section>
+      <section data-view="ajustes" hidden>
+        <header class="studio-topbar">
+          <div class="studio-topbar-left">
+            <button class="studio-icon-button mobile-sidebar-button" type="button" aria-label="Abrir navegación" data-sidebar-toggle>☰</button>
+            <div><h1>Ajustes</h1><p>Configura el comportamiento del panel comercial.</p></div>
+          </div>
+        </header>
+        <div class="studio-content">
+          <section class="inquiry-panel ajustes-panel">
+            <form class="studio-form ajustes-form" data-ajustes-form>
+              <h2>Umbral de ficha de cliente</h2>
+              <p class="ajustes-help">Cuando un contacto acumula esta cantidad de ventas, el sistema exige crear o completar su ficha de cliente.</p>
+              <label>Umbral de ventas
+                <input type="number" name="client_fiche_threshold" min="1" step="1" inputmode="numeric" required data-ajustes-threshold />
+              </label>
+              <p class="ajustes-status" data-ajustes-status aria-live="polite"></p>
+              <div class="ajustes-actions">
+                <button class="studio-button" type="submit" data-ajustes-save>Guardar</button>
+              </div>
+            </form>
+          </section>
+        </div>
+      </section>
     </main>
   </div>
 
