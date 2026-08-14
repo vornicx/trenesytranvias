@@ -195,3 +195,32 @@
 .contact-panel-head{
   background:linear-gradient(90deg,rgba(239,175,47,.12),rgba(20,21,18,.03));
 }
+
+
+/* Poster language on internal pages */
+.page-hero{
+  padding:128px 0 96px !important;
+  background:
+    radial-gradient(1000px 420px at 100% -30%,rgba(239,175,47,.2),transparent 55%),
+    linear-gradient(180deg,#f3f1ea,var(--paper)) !important;
+}
+.page-title{font-size:clamp(56px,7.4vw,110px) !important}
+.internal-cta{
+  clip-path:polygon(0 8%,100% 0,100% 100%,0 100%);
+  padding-top:110px !important;
+}
+.section-body>.lead{font-size:clamp(22px,2.4vw,28px);line-height:1.35}
+.fact-row{
+  transition:background .2s ease;
+  padding-left:8px;padding-right:8px;margin-left:-8px;margin-right:-8px;border-radius:8px;
+}
+.fact-row:hover{background:rgba(239,175,47,.08)}
+.contact-panel{
+  border:0 !important;
+  box-shadow:0 40px 90px rgba(16,16,12,.14) !important;
+}
+.contact-panel-head{
+  background:var(--ink) !important;color:#fff !important;
+}
+.contact-panel-head span{color:rgba(255,255,255,.55)}
+.contact-panel-head span:last-child{color:var(--sun) !important}
