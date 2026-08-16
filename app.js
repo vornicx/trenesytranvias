@@ -8,6 +8,13 @@ if (!document.querySelector('link[href$="pages.css"]')) {
   document.head.appendChild(coherenceStyles);
 }
 
+if (!document.querySelector('link[href$="mobile-touch-targets.css"]')) {
+  const touchTargetStyles = document.createElement('link');
+  touchTargetStyles.rel = 'stylesheet';
+  touchTargetStyles.href = './mobile-touch-targets.css';
+  document.head.appendChild(touchTargetStyles);
+}
+
 const header = $('[data-header]');
 const menuButton = $('[data-menu-button]');
 const mobileMenu = $('[data-mobile-menu]');
