@@ -21,6 +21,9 @@ function lineFor(content, index) {
 function localTarget(raw, fromFile) {
   if (!raw || raw.startsWith('#') || raw.startsWith('mailto:') || raw.startsWith('tel:') || raw.startsWith('javascript:')) return null;
   if (/^[a-z]+:\/\//i.test(raw)) return null;
+  // SEO templates contain build-time placeholders (for example {{canonical}}),
+  // which are not deployable paths and must not be reported as broken links.
+  if (raw.includes('{{') || raw.includes('}}')) return null;
 
   const clean = raw.split('#')[0].split('?')[0];
   if (!clean) return null;
