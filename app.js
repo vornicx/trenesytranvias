@@ -1,36 +1,30 @@
 const $ = (s, root = document) => root.querySelector(s);
 const $$ = (s, root = document) => [...root.querySelectorAll(s)];
 
+const appScriptUrl = document.currentScript?.src || new URL('./app.js', window.location.href).href;
+const assetUrl = file => new URL(file, appScriptUrl).href;
+
 if (!document.querySelector('link[href$="pages.css"]')) {
   const coherenceStyles = document.createElement('link');
   coherenceStyles.rel = 'stylesheet';
-  coherenceStyles.href = './pages.css';
+  coherenceStyles.href = assetUrl('pages.css');
   document.head.appendChild(coherenceStyles);
+}
+
+if (!document.querySelector('link[data-archic-layer]')) {
+  const archicStyles = document.createElement('link');
+  archicStyles.rel = 'stylesheet';
+  archicStyles.href = assetUrl('archic.css');
+  archicStyles.dataset.archicLayer = 'true';
+  document.head.appendChild(archicStyles);
 }
 
 const header = $('[data-header]');
 const menuButton = $('[data-menu-button]');
 const mobileMenu = $('[data-mobile-menu]');
 
-const desktopNav = $('.desktop-nav');
-if (desktopNav && !$('.management-nav-link', desktopNav)) {
-  const managementNavLink = document.createElement('a');
-  managementNavLink.href = './gestion';
-  managementNavLink.className = 'management-nav-link';
-  managementNavLink.textContent = 'Gestión';
-  managementNavLink.setAttribute('aria-label', 'Abrir área privada de gestión');
-  desktopNav.appendChild(managementNavLink);
-}
-
-const mobileNav = $('.mobile-menu nav');
-if (mobileNav && !$('.management-nav-link', mobileNav)) {
-  const managementMobileLink = document.createElement('a');
-  managementMobileLink.href = './gestion';
-  managementMobileLink.className = 'management-nav-link';
-  managementMobileLink.textContent = 'Área de gestión';
-  managementMobileLink.setAttribute('aria-label', 'Abrir área privada de gestión');
-  mobileNav.appendChild(managementMobileLink);
-}
+/* Management stays available, but it is intentionally kept out of the public navigation. */
+$$('.desktop-nav .management-nav-link, .mobile-menu .management-nav-link').forEach(link => link.remove());
 
 const syncHeader = () => header?.classList.toggle('is-scrolled', window.scrollY > 22);
 syncHeader();
@@ -73,13 +67,20 @@ $$('.reveal').forEach(el => {
 });
 
 const footerBottom = $('.footer-bottom');
-if (footerBottom && !$('.management-access', footerBottom)) {
-  const managementLink = document.createElement('a');
-  managementLink.href = './gestion';
-  managementLink.className = 'management-access';
-  managementLink.textContent = 'Área de gestión';
-  managementLink.setAttribute('aria-label', 'Abrir área privada de gestión');
-  footerBottom.appendChild(managementLink);
+if (footerBottom) {
+  const developmentLabel = [...footerBottom.querySelectorAll('span')]
+    .find(span => span.textContent.trim() === 'Sitio web en desarrollo');
+  if (developmentLabel) developmentLabel.textContent = 'Écija · Sevilla · Proyectos en España';
+
+  if (!$('.management-access', footerBottom)) {
+    const managementLink = document.createElement('a');
+    managementLink.href = assetUrl('gestion').replace(/\/app\.js\/gestion$/, '/gestion');
+    managementLink.href = new URL('gestion', appScriptUrl).href;
+    managementLink.className = 'management-access';
+    managementLink.textContent = 'Acceso gestión';
+    managementLink.setAttribute('aria-label', 'Abrir área privada de gestión');
+    footerBottom.appendChild(managementLink);
+  }
 }
 
 const contactForm = $('[data-contact-form]');
@@ -154,7 +155,6 @@ async function persistInquiry(data){
     console.error('Inquiry submission failed', response.status, details);
     throw new Error('submission_failed');
   }
-  // Prefer: return=minimal → empty body; parsing JSON would throw and fake a failure.
   return true;
 }
 
