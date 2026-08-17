@@ -3,17 +3,18 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#151714" />
+  <meta name="theme-color" content="#0c0f12" />
   <meta name="description" content="Trenes y tranvías turísticos para ayuntamientos, eventos, bodas y recintos. Alquiler, venta y proyectos a medida desde Écija para España." />
   <meta name="robots" content="index,follow" />
   <link rel="canonical" href="https://www.trenesytranvias.com/" />
   <title>Trenes turísticos para ayuntamientos y eventos | Ciudad del Sol</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@1,9..144,500;1,9..144,600&family=Manrope:wght@500;600;700;800&family=Source+Sans+3:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Manrope:wght@500;600;700;800&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="./styles.css" />
   <link rel="stylesheet" href="./pages.css" />
   <link rel="stylesheet" href="./archic.css" data-archic-layer />
+  <link rel="stylesheet" href="./home-premium.css" />
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -41,12 +42,12 @@
     }
   </script>
 </head>
-<body class="home-business">
+<body class="home-business home-premium">
   <a class="skip-link" href="#contenido">Ir al contenido</a>
 
-  <header class="site-header" data-header>
+  <header class="site-header premium-header" data-header>
     <a class="brand" href="./index.html" aria-label="Trenes y Tranvías Ciudad del Sol, inicio">
-      <span class="brand-mark" aria-hidden="true"><span></span></span>
+      <span class="brand-mark premium-brand-mark" aria-hidden="true"><span>TT</span></span>
       <span class="brand-copy"><strong>Trenes & Tranvías</strong><small>Ciudad del Sol</small></span>
     </a>
     <nav class="desktop-nav" aria-label="Navegación principal">
@@ -56,7 +57,7 @@
       <a href="./empresa.html">Empresa</a>
     </nav>
     <div class="header-actions">
-      <a class="button button-dark button-sm" href="./contacto.html">Solicitar presupuesto</a>
+      <a class="button button-sun button-sm premium-nav-cta" href="./contacto.html">Solicitar presupuesto <span aria-hidden="true">→</span></a>
       <button class="menu-button" type="button" aria-label="Abrir menú" aria-expanded="false" data-menu-button><span></span><span></span></button>
     </div>
   </header>
@@ -73,173 +74,215 @@
   </div>
 
   <main id="contenido">
-    <section class="business-hero" aria-labelledby="hero-title">
-      <div class="business-hero-media" aria-hidden="true">
+    <section class="premium-hero" aria-labelledby="hero-title">
+      <div class="premium-hero-media" aria-hidden="true">
         <img src="https://i.ytimg.com/vi/Ma5BEoAO5ZU/maxresdefault.jpg" alt="" fetchpriority="high" />
       </div>
-      <div class="page-shell business-hero-grid">
-        <div class="business-hero-copy">
-          <p class="business-kicker reveal">Movilidad turística · Écija, Sevilla</p>
-          <h1 class="reveal" id="hero-title">Trenes turísticos para <span>ciudades, eventos y recintos.</span></h1>
-          <p class="business-hero-lede reveal">Alquiler, venta y proyectos de trenes y tranvías turísticos para organizaciones que necesitan mover personas con una solución visible, práctica y adaptada al contexto.</p>
-          <div class="business-hero-actions reveal">
-            <a class="button button-sun" href="./contacto.html">Solicitar propuesta <span aria-hidden="true">→</span></a>
-            <a class="button button-outline" href="./soluciones.html">Explorar soluciones</a>
+      <div class="premium-hero-shade" aria-hidden="true"></div>
+      <div class="premium-hero-route" aria-hidden="true"><i></i><i></i><i></i></div>
+
+      <div class="page-shell premium-hero-shell">
+        <div class="premium-hero-copy">
+          <p class="premium-kicker reveal">Movilidad turística · alquiler · venta · proyectos</p>
+          <h1 class="reveal" id="hero-title">Movilidad turística <em>con presencia.</em></h1>
+          <p class="premium-hero-lede reveal">Trenes y tranvías turísticos para ciudades, eventos, ayuntamientos y recintos. Una solución visible, práctica y configurada alrededor del recorrido real.</p>
+          <div class="premium-hero-actions reveal">
+            <a class="button button-sun" href="./contacto.html">Solicitar presupuesto <span aria-hidden="true">→</span></a>
+            <a class="button premium-ghost-button" href="./vehiculos.html">Ver vehículos <span aria-hidden="true">→</span></a>
           </div>
         </div>
 
-        <aside class="hero-assurance reveal" aria-label="Ámbitos de trabajo">
-          <div class="hero-assurance-row"><small>01</small><strong>Ayuntamientos y turismo urbano</strong></div>
-          <div class="hero-assurance-row"><small>02</small><strong>Ferias, bodas y eventos</strong></div>
-          <div class="hero-assurance-row"><small>03</small><strong>Alquiler, compra y proyecto especial</strong></div>
-          <p class="hero-assurance-note">Cada propuesta se define según recorrido, fechas, uso, capacidad y necesidades operativas.</p>
+        <aside class="premium-hero-brief reveal" aria-label="Resumen de proyecto">
+          <span class="premium-hero-brief-label">Project brief / 01</span>
+          <div><small>Ámbito</small><strong>España</strong></div>
+          <div><small>Base</small><strong>Écija · Sevilla</strong></div>
+          <div><small>Modalidad</small><strong>Alquiler · venta</strong></div>
+          <div><small>Enfoque</small><strong>Proyecto a medida</strong></div>
         </aside>
       </div>
-    </section>
 
-    <section class="business-strip" aria-label="Resumen del servicio">
-      <div class="page-shell business-strip-grid">
-        <div class="business-strip-item"><small>Base</small><strong>Écija · Sevilla</strong></div>
-        <div class="business-strip-item"><small>Cobertura</small><strong>Proyectos en España</strong></div>
-        <div class="business-strip-item"><small>Modalidad</small><strong>Alquiler · Venta</strong></div>
-        <div class="business-strip-item"><small>Aplicación</small><strong>Turismo · Eventos</strong></div>
+      <div class="page-shell premium-hero-foot reveal">
+        <span>01</span>
+        <p>Ciudades · turismo · ferias · celebraciones · recintos</p>
+        <a href="#soluciones">Descubrir soluciones <span aria-hidden="true">↓</span></a>
       </div>
     </section>
 
-    <section class="business-section" id="soluciones">
+    <section class="premium-context" id="soluciones">
       <div class="page-shell">
-        <div class="section-heading-grid">
-          <p class="overline reveal">Soluciones por contexto</p>
+        <header class="premium-section-head reveal">
           <div>
-            <h2 class="business-title reveal">No se trata de poner un tren. Se trata de resolver <span>el recorrido.</span></h2>
-            <p class="business-intro reveal">El vehículo, la modalidad y la operativa cambian según quién lo necesita. La web separa cada caso para que un ayuntamiento, un organizador o un recinto llegue directamente a la solución adecuada.</p>
+            <p class="premium-overline">Soluciones a medida</p>
+            <h2>Cuatro contextos. <em>Una misma exigencia.</em></h2>
           </div>
-        </div>
+          <div class="premium-section-side">
+            <p>El recorrido, el calendario y la operación cambian. La calidad con la que se plantea el proyecto, no.</p>
+            <a class="premium-inline-link" href="./soluciones.html">Ver todas las soluciones <span>→</span></a>
+          </div>
+        </header>
 
-        <div class="solution-grid">
-          <article class="solution-card reveal">
-            <span class="solution-number">01 · Sector público</span>
-            <h3>Ayuntamientos y turismo</h3>
-            <p>Movilidad turística, conexión entre puntos de interés y apoyo a campañas, temporadas o celebraciones municipales.</p>
-            <a class="text-action" href="/trenes-para-ayuntamientos/">Ver solución para ayuntamientos <span>→</span></a>
-          </article>
-          <article class="solution-card reveal">
-            <span class="solution-number">02 · Activaciones</span>
-            <h3>Ferias y eventos</h3>
-            <p>Traslados internos y recorridos para eventos con afluencia, fiestas, ferias, romerías y celebraciones.</p>
-            <a class="text-action" href="/trenes-para-eventos/">Ver solución para eventos <span>→</span></a>
-          </article>
-          <article class="solution-card reveal">
-            <span class="solution-number">03 · Operación privada</span>
-            <h3>Recintos y empresas</h3>
-            <p>Una solución reconocible para complejos turísticos, instalaciones, parques, fincas y espacios privados.</p>
-            <a class="text-action" href="/alquiler-tren-turistico/">Ver opciones de alquiler <span>→</span></a>
-          </article>
+        <div class="premium-use-grid">
+          <a class="premium-use-card reveal" href="/trenes-turisticos/">
+            <img src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Plaza%20de%20Espa%C3%B1a%2C%20%C3%89cija.jpg" alt="Plaza de España de Écija" loading="lazy" />
+            <span class="premium-use-shade"></span>
+            <div class="premium-use-content">
+              <span class="premium-use-index">01 · Ciudad</span>
+              <h3>Ciudades<br />y turismo</h3>
+              <p>Recorridos que conectan puntos de interés y hacen visible la experiencia turística.</p>
+              <span class="premium-use-arrow">→</span>
+            </div>
+          </a>
+
+          <a class="premium-use-card reveal" href="/trenes-para-eventos/">
+            <img src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Noria%20Feria%20de%20Sevilla.JPG" alt="Noria de la Feria de Sevilla" loading="lazy" />
+            <span class="premium-use-shade"></span>
+            <div class="premium-use-content">
+              <span class="premium-use-index">02 · Activación</span>
+              <h3>Eventos<br />y ferias</h3>
+              <p>Movilidad dentro de celebraciones, ferias y eventos con afluencia de público.</p>
+              <span class="premium-use-arrow">→</span>
+            </div>
+          </a>
+
+          <a class="premium-use-card reveal" href="/trenes-para-ayuntamientos/">
+            <img src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Plaza%20de%20Espa%C3%B1a%20e%20Iglesia%20de%20Santa%20Mar%C3%ADa.%20%C3%89cija.jpg" alt="Entorno monumental de Écija" loading="lazy" />
+            <span class="premium-use-shade"></span>
+            <div class="premium-use-content">
+              <span class="premium-use-index">03 · Sector público</span>
+              <h3>Ayuntamientos</h3>
+              <p>Proyectos turísticos y servicios locales planteados desde el recorrido y el uso previsto.</p>
+              <span class="premium-use-arrow">→</span>
+            </div>
+          </a>
+
+          <a class="premium-use-card reveal" href="/alquiler-tren-turistico/">
+            <img src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Plaza%20Exterior%20Fibes%20Sevilla.jpg" alt="Exterior de FIBES Sevilla" loading="lazy" />
+            <span class="premium-use-shade"></span>
+            <div class="premium-use-content">
+              <span class="premium-use-index">04 · Operación privada</span>
+              <h3>Recintos<br />y empresas</h3>
+              <p>Desplazamientos internos para complejos, instalaciones, parques y espacios privados.</p>
+              <span class="premium-use-arrow">→</span>
+            </div>
+          </a>
         </div>
       </div>
     </section>
 
-    <section class="capability-section" aria-labelledby="capability-title">
-      <div class="business-section">
-        <div class="page-shell">
-          <div class="section-heading-grid">
-            <p class="overline reveal">Capacidad del proyecto</p>
-            <div>
-              <h2 class="business-title reveal" id="capability-title">La solución se configura alrededor del <span>uso real.</span></h2>
-              <p class="business-intro reveal" style="color:rgba(255,255,255,.58)">Antes de hablar de modelo o acabado, importa entender el recorrido, la duración, el público y la operación. Esa información determina la propuesta.</p>
-            </div>
-          </div>
+    <section class="premium-engineering" aria-labelledby="engineering-title">
+      <div class="page-shell premium-engineering-grid">
+        <div class="premium-engineering-intro reveal">
+          <p class="premium-overline">Vehículos y configuración</p>
+          <h2 id="engineering-title">Ingeniería pensada para <em>el recorrido.</em></h2>
+          <p>El vehículo se define después de entender la operación: uso, entorno, duración, pasajeros, disponibilidad y modalidad.</p>
+          <a class="button premium-dark-outline" href="./vehiculos.html">Descubrir vehículos <span aria-hidden="true">→</span></a>
+        </div>
 
-          <div class="capability-layout">
-            <div class="capability-photo reveal" aria-label="Esquema conceptual de recorrido turístico">
-              <svg viewBox="0 0 760 620" role="img" aria-label="Esquema de un recorrido con paradas" style="display:block;width:100%;height:100%;min-height:520px">
-                <rect width="760" height="620" fill="#11130f"/>
-                <path d="M95 484 C188 392, 178 252, 302 232 C434 211, 435 377, 558 347 C629 330, 651 244, 675 151" fill="none" stroke="#e5a72f" stroke-width="3"/>
-                <path d="M95 484 C188 392, 178 252, 302 232 C434 211, 435 377, 558 347 C629 330, 651 244, 675 151" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="20" stroke-dasharray="2 20"/>
-                <circle cx="95" cy="484" r="13" fill="#e5a72f"/>
-                <circle cx="302" cy="232" r="9" fill="#f6f4ec"/>
-                <circle cx="558" cy="347" r="9" fill="#f6f4ec"/>
-                <circle cx="675" cy="151" r="13" fill="#e5a72f"/>
-                <text x="80" y="530" fill="rgba(255,255,255,.52)" font-family="Manrope, sans-serif" font-size="13">ORIGEN</text>
-                <text x="641" y="119" fill="rgba(255,255,255,.52)" font-family="Manrope, sans-serif" font-size="13">DESTINO</text>
-                <text x="72" y="98" fill="#ffffff" font-family="Manrope, sans-serif" font-size="35" font-weight="700">Cada recorrido exige</text>
-                <text x="72" y="139" fill="#ffffff" font-family="Manrope, sans-serif" font-size="35" font-weight="700">una configuración distinta.</text>
-                <text x="72" y="178" fill="rgba(255,255,255,.48)" font-family="Source Sans 3, sans-serif" font-size="17">Recorrido · fechas · pasajeros · entorno · modalidad</text>
-              </svg>
-              <div class="capability-photo-label"><small>Metodología</small><strong>Primero el contexto. Después el vehículo.</strong></div>
-            </div>
-
-            <div class="capability-panel reveal">
-              <div class="capability-row"><span>01</span><div><h3>Alquiler</h3><p>Para necesidades puntuales, temporadas, campañas y eventos donde no tiene sentido inmovilizar una compra.</p></div></div>
-              <div class="capability-row"><span>02</span><div><h3>Venta</h3><p>Para operaciones recurrentes que necesitan disponer de un vehículo turístico propio.</p></div></div>
-              <div class="capability-row"><span>03</span><div><h3>Proyecto especial</h3><p>Configuración y fabricación a concretar según uso, equipamiento, capacidad y condicionantes del proyecto.</p></div></div>
-              <div class="capability-row"><span>04</span><div><h3>Equipamiento</h3><p>Megafonía, iluminación y otras configuraciones se validan según el vehículo disponible y la necesidad real.</p></div></div>
-              <a class="button button-sun" href="./vehiculos.html">Ver vehículos y modalidades →</a>
-            </div>
+        <div class="premium-train-board reveal">
+          <div class="premium-board-top">
+            <span>Ciudad del Sol / configuration study</span>
+            <span>Écija · España</span>
           </div>
+          <svg class="premium-train-svg" viewBox="0 0 1040 320" role="img" aria-label="Ilustración técnica conceptual de un tren turístico con dos vagones">
+            <g fill="none" stroke="currentColor" stroke-width="3">
+              <path d="M72 212h170v-64h-18l-16-46h-78l-22 46H88z"/>
+              <rect x="125" y="119" width="54" height="54"/>
+              <path d="M98 147h124M154 102V70h35v32M189 82h32v20"/>
+              <circle cx="112" cy="222" r="27"/><circle cx="205" cy="222" r="27"/>
+              <path d="M240 200h45"/>
+              <rect x="286" y="121" width="284" height="92" rx="4"/>
+              <path d="M312 145h52v44h-52zM380 145h52v44h-52zM448 145h52v44h-52zM516 145h28v44h-28z"/>
+              <circle cx="332" cy="222" r="24"/><circle cx="520" cy="222" r="24"/>
+              <path d="M570 200h45"/>
+              <rect x="616" y="121" width="330" height="92" rx="4"/>
+              <path d="M642 145h52v44h-52zM710 145h52v44h-52zM778 145h52v44h-52zM846 145h52v44h-52zM914 145h8v44h-8z"/>
+              <circle cx="664" cy="222" r="24"/><circle cx="895" cy="222" r="24"/>
+              <path d="M52 264h916M72 280h170M286 280h284M616 280h330" stroke-width="1" stroke-dasharray="5 7"/>
+            </g>
+            <g class="premium-svg-labels">
+              <text x="74" y="304">TRACTORA</text>
+              <text x="286" y="304">MÓDULO 01</text>
+              <text x="616" y="304">MÓDULO 02</text>
+            </g>
+          </svg>
+          <div class="premium-board-note">Representación conceptual · la configuración final depende del vehículo y del proyecto.</div>
+        </div>
+      </div>
+
+      <div class="page-shell premium-capability-row reveal">
+        <div><span>01</span><strong>Alquiler</strong><small>Eventos, temporadas y usos puntuales.</small></div>
+        <div><span>02</span><strong>Venta</strong><small>Para operaciones recurrentes.</small></div>
+        <div><span>03</span><strong>Accesibilidad</strong><small>Espacio adaptado según vehículo.</small></div>
+        <div><span>04</span><strong>Megafonía</strong><small>Equipamiento publicado en unidades disponibles.</small></div>
+        <div><span>05</span><strong>Proyecto especial</strong><small>Configuración a concretar con el cliente.</small></div>
+      </div>
+    </section>
+
+    <section class="premium-proof" id="ecija">
+      <div class="page-shell premium-proof-grid">
+        <div class="premium-proof-visual reveal">
+          <img src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Plaza%20de%20Espa%C3%B1a%2C%20%C3%89cija.jpg" alt="Plaza de España de Écija" loading="lazy" />
+          <div class="premium-proof-badge"><span>Base operativa</span><strong>Écija</strong><small>Sevilla · Andalucía</small></div>
+        </div>
+        <div class="premium-proof-copy reveal">
+          <p class="premium-overline">Experiencia tangible</p>
+          <h2>No parte de una idea. <em>Parte de una operación real.</em></h2>
+          <p>El servicio turístico de Écija es una referencia visible del tipo de movilidad que desarrolla Ciudad del Sol: conectar puntos, organizar recorridos y adaptar el vehículo al contexto.</p>
+          <div class="premium-proof-list">
+            <div><span>01</span><p><strong>Servicio local</strong> Traslados y recorridos turísticos dentro de Écija.</p></div>
+            <div><span>02</span><p><strong>Aplicación flexible</strong> El mismo principio se traslada a eventos, recintos y otras localidades.</p></div>
+            <div><span>03</span><p><strong>Trato directo</strong> El proyecto empieza por entender dónde, cuándo y para qué debe funcionar.</p></div>
+          </div>
+          <a class="premium-inline-link" href="./ecija.html">Conocer el caso de Écija <span>→</span></a>
         </div>
       </div>
     </section>
 
-    <section class="business-section" id="ecija">
-      <div class="page-shell ecija-proof">
-        <div class="ecija-proof-aside reveal">
-          <p class="overline">Operación visible</p>
-          <h2>La experiencia empieza en Écija.</h2>
-          <p>Ciudad del Sol no parte de una idea abstracta. El servicio turístico de Écija es una referencia pública y tangible del tipo de movilidad que desarrolla la empresa.</p>
-          <a class="button button-dark" href="./ecija.html">Conocer el caso de Écija →</a>
-        </div>
-
-        <div>
-          <div class="proof-facts reveal">
-            <article class="proof-fact"><small>Servicio local</small><div><h3>Conexión turística en Écija</h3><p>El tren turístico presta servicio de traslados entre la estación de autobuses y la Plaza de España, además de recorridos por la ciudad.</p></div></article>
-            <article class="proof-fact"><small>Aplicación</small><div><h3>Turismo y eventos</h3><p>El mismo principio de movilidad se adapta a celebraciones, ferias, recintos y necesidades de otras localidades.</p></div></article>
-            <article class="proof-fact"><small>Enfoque</small><div><h3>Trato directo sobre el proyecto</h3><p>El punto de partida es siempre el uso: dónde circulará, durante cuánto tiempo, para qué público y con qué objetivos.</p></div></article>
-          </div>
-          <p class="proof-source reveal">Referencia pública del servicio local: información turística de Écija y de la Comarca de Écija.</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="business-section" aria-labelledby="process-title">
+    <section class="premium-process" aria-labelledby="process-title">
       <div class="page-shell">
-        <div class="section-heading-grid">
-          <p class="overline reveal">Cómo se plantea</p>
+        <header class="premium-process-head reveal">
           <div>
-            <h2 class="business-title reveal" id="process-title">Del primer contacto a una propuesta <span>entendible.</span></h2>
-            <p class="business-intro reveal">Un comprador público o privado no debería tener que adivinar qué necesita. La propuesta se construye con la información que de verdad cambia el proyecto.</p>
+            <p class="premium-overline">De la necesidad a la propuesta</p>
+            <h2 id="process-title">Análisis antes que catálogo.</h2>
           </div>
-        </div>
-        <div class="process-grid">
-          <article class="process-step reveal"><span>01</span><h3>Contexto</h3><p>Ciudad, recinto, evento, fechas y objetivo del servicio.</p></article>
-          <article class="process-step reveal"><span>02</span><h3>Recorrido</h3><p>Trayecto, entorno, frecuencia estimada y condicionantes de operación.</p></article>
-          <article class="process-step reveal"><span>03</span><h3>Modalidad</h3><p>Alquiler, compra o estudio de una configuración específica.</p></article>
-          <article class="process-step reveal"><span>04</span><h3>Propuesta</h3><p>Vehículo, disponibilidad y alcance ajustados al proyecto planteado.</p></article>
+          <p>Un proyecto serio no empieza eligiendo un modelo. Empieza entendiendo el contexto que ese vehículo tiene que resolver.</p>
+        </header>
+
+        <div class="premium-process-line" aria-label="Proceso de trabajo">
+          <article class="premium-process-step reveal"><span>01</span><i></i><h3>Contexto</h3><p>Ciudad, recinto, evento, fechas y objetivo.</p></article>
+          <article class="premium-process-step reveal"><span>02</span><i></i><h3>Recorrido</h3><p>Trayecto, entorno, frecuencia y condicionantes.</p></article>
+          <article class="premium-process-step reveal"><span>03</span><i></i><h3>Modalidad</h3><p>Alquiler, compra o estudio de configuración.</p></article>
+          <article class="premium-process-step reveal"><span>04</span><i></i><h3>Propuesta</h3><p>Vehículo, disponibilidad y alcance del proyecto.</p></article>
         </div>
       </div>
     </section>
 
-    <section class="business-cta">
-      <div class="page-shell business-cta-grid reveal">
-        <h2>Cuéntanos dónde tiene que funcionar.</h2>
+    <section class="premium-final-cta">
+      <div class="premium-final-media" aria-hidden="true"><img src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Plaza%20de%20Espa%C3%B1a%20e%20Iglesia%20de%20Santa%20Mar%C3%ADa.%20%C3%89cija.jpg" alt="" loading="lazy" /></div>
+      <div class="page-shell premium-final-grid reveal">
         <div>
-          <p>Con la localidad, las fechas y el tipo de uso podemos orientar la modalidad y el vehículo más adecuados.</p>
-          <a class="button button-dark" href="./contacto.html">Solicitar presupuesto <span aria-hidden="true">→</span></a>
+          <p class="premium-overline">Tu proyecto empieza aquí</p>
+          <h2>Hagamos que el recorrido <em>tenga presencia.</em></h2>
+        </div>
+        <div>
+          <p>Cuéntanos la localidad, las fechas y el tipo de uso. A partir de ahí podemos orientar la modalidad y el vehículo más adecuados.</p>
+          <a class="button button-sun" href="./contacto.html">Solicitar presupuesto <span aria-hidden="true">→</span></a>
         </div>
       </div>
     </section>
   </main>
 
-  <footer class="footer">
+  <footer class="footer premium-footer">
     <div class="page-shell footer-grid">
       <a class="brand footer-brand" href="./index.html">
-        <span class="brand-mark" aria-hidden="true"><span></span></span>
+        <span class="brand-mark premium-brand-mark" aria-hidden="true"><span>TT</span></span>
         <span class="brand-copy"><strong>Trenes & Tranvías</strong><small>Ciudad del Sol</small></span>
       </a>
       <div class="footer-col"><small>Soluciones</small><a href="/trenes-para-ayuntamientos/">Ayuntamientos</a><a href="/trenes-para-eventos/">Eventos</a><a href="./vehiculos.html">Vehículos</a></div>
       <div class="footer-col"><small>Empresa</small><a href="./empresa.html">Sobre nosotros</a><a href="./ecija.html">Écija</a><a href="./contacto.html">Contacto</a></div>
-      <div class="footer-col"><small>Base</small><span>Écija · Sevilla · España</span></div>
+      <div class="footer-col"><small>Base</small><span>Écija · Sevilla · España</span><a href="./contacto.html">Solicitar presupuesto</a></div>
     </div>
+    <div class="page-shell premium-photo-credit">Fotografías de contexto: CarlosVdeHabsburgo, Josep Maria Viñolas Esteva y JuliaSevilla2021 · Wikimedia Commons. Imagen de tren: material público enlazado desde el proyecto.</div>
     <div class="page-shell footer-bottom"><span>© 2026 Trenes y Tranvías Ciudad del Sol</span><span>Écija · Sevilla · Proyectos en España</span></div>
   </footer>
 
