@@ -1,0 +1,51 @@
+/* Mobile interaction sizing guardrail.
+   Preserves the visual scale while ensuring the controls most likely to be
+   used on a phone expose a 44px hit area. */
+@media (max-width: 760px) {
+  .brand,
+  .button,
+  .menu-button,
+  .text-action,
+  .poster-strip-link,
+  .footer-col a,
+  .footer-bottom a,
+  .management-access,
+  .hub-board a {
+    min-height: 44px;
+  }
+
+  .menu-button {
+    width: 44px;
+    height: 44px;
+  }
+
+  .button-sm {
+    padding-block: 12px;
+  }
+
+  .text-action,
+  .poster-strip-link,
+  .footer-col a,
+  .footer-bottom a,
+  .management-access,
+  .hub-board a {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .text-action {
+    margin-top: 8px;
+    padding-block: 10px;
+  }
+
+  .poster-strip-link,
+  .footer-col a,
+  .footer-bottom a,
+  .management-access {
+    padding-block: 10px;
+  }
+
+  .hub-board a {
+    justify-content: center;
+  }
+}
