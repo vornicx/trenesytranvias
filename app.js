@@ -19,6 +19,14 @@ if (!document.querySelector('link[data-archic-layer]')) {
   document.head.appendChild(archicStyles);
 }
 
+if (!document.querySelector('link[data-touch-target-layer]')) {
+  const touchTargetStyles = document.createElement('link');
+  touchTargetStyles.rel = 'stylesheet';
+  touchTargetStyles.href = assetUrl('mobile-touch-targets.css');
+  touchTargetStyles.dataset.touchTargetLayer = 'true';
+  document.head.appendChild(touchTargetStyles);
+}
+
 const header = $('[data-header]');
 const menuButton = $('[data-menu-button]');
 const mobileMenu = $('[data-mobile-menu]');
