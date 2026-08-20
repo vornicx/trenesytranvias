@@ -1,0 +1,65 @@
+/* Mobile interaction sizing and legibility guardrail.
+   Preserves the visual scale while ensuring the controls most likely to be
+   used on a phone expose a 44px hit area and metadata stays readable. */
+@media (max-width: 760px) {
+  .brand,
+  .button,
+  .menu-button,
+  .text-action,
+  .poster-strip-link,
+  .footer-col a,
+  .footer-bottom a,
+  .management-access,
+  .hub-board a {
+    min-height: 44px;
+  }
+
+  .menu-button {
+    width: 44px;
+    height: 44px;
+  }
+
+  .button-sm {
+    padding-block: 12px;
+  }
+
+  .text-action,
+  .poster-strip-link,
+  .footer-col a,
+  .footer-bottom a,
+  .management-access,
+  .hub-board a {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .text-action {
+    margin-top: 8px;
+    padding-block: 10px;
+  }
+
+  .poster-strip-link,
+  .footer-col a,
+  .footer-bottom a,
+  .management-access {
+    padding-block: 10px;
+  }
+
+  .hub-board a {
+    justify-content: center;
+  }
+
+  /* Benchmark also reports a high share of visible text below 12px.
+     On phones, compact metadata should remain compact, but never sub-legible. */
+  small,
+  .brand-copy small,
+  .button-sm,
+  .hero-kicker,
+  .hero-note span,
+  .hero-inline-link small,
+  .poster-strip-kicker,
+  .overline,
+  .vehicle-type {
+    font-size: 12px;
+  }
+}
