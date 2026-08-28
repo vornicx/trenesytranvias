@@ -16,6 +16,7 @@ const [pages, provinces, productTemplate, provinceTemplate] = await Promise.all(
 validateData(pages, provinces);
 
 const urls = corePaths.map((pathname) => `${origin}${pathname}`);
+
 for (const page of pages) {
   const pathname = `/${page.slug}`;
   const canonical = `${origin}${pathname}`;
@@ -23,18 +24,11 @@ for (const page of pages) {
     ...page,
     canonical,
     keywords: page.keywords.join(', '),
-    breadcrumbs: breadcrumbs([
-      ['Inicio', '/'],
-      [page.h1, pathname],
-    ]),
+    breadcrumbs: breadcrumbs([['Inicio', '/'], [page.h1, pathname]]),
     content: productContent(page),
     faqs: faqMarkup(page.faqs),
-    schema: schemaMarkup(page, canonical, [
-      ['Inicio', `${origin}/`],
-      [page.h1, canonical],
-    ]),
+    schema: schemaMarkup(page, canonical, [['Inicio', `${origin}/`], [page.h1, canonical]]),
   });
-
   await writePage(path.join(root, page.slug, 'index.html'), html);
   urls.push(canonical);
 }
@@ -59,7 +53,6 @@ for (const [index, province] of provinces.entries()) {
       [province.name, canonical],
     ]),
   });
-
   await writePage(path.join(root, 'trenes-turisticos', province.slug, 'index.html'), html);
   urls.push(canonical);
 }
@@ -74,12 +67,9 @@ async function readJson(relativePath) {
 function validateData(seoPages, provinceList) {
   if (seoPages.length !== 13) throw new Error(`Se esperaban 13 hubs y hay ${seoPages.length}.`);
   if (provinceList.length !== 50) throw new Error(`Se esperaban 50 provincias y hay ${provinceList.length}.`);
-
-  const allSlugs = [...seoPages, ...provinceList].map(({ slug }) => slug);
-  if (new Set(allSlugs).size !== allSlugs.length) throw new Error('Hay slugs SEO duplicados.');
-  if (provinceList.some(({ slug }) => !/^[a-z0-9-]+$/.test(slug))) {
-    throw new Error('Los slugs de provincia deben ser ASCII.');
-  }
+  if (new Set(seoPages.map(({ slug }) => slug)).size !== seoPages.length) throw new Error('Hay hubs SEO duplicados.');
+  if (new Set(provinceList.map(({ slug }) => slug)).size !== provinceList.length) throw new Error('Hay provincias SEO duplicadas.');
+  if (provinceList.some(({ slug }) => !/^[a-z0-9-]+$/.test(slug))) throw new Error('Los slugs de provincia deben ser ASCII.');
 }
 
 function escapeHtml(value) {
@@ -94,20 +84,18 @@ function escapeHtml(value) {
 function render(template, values) {
   const html = template.replace(/\{\{(\w+)\}\}/g, (placeholder, key) => {
     if (!(key in values)) throw new Error(`Falta el valor de plantilla ${placeholder}.`);
-    return ['content', 'faqs', 'breadcrumbs', 'schema'].includes(key)
-      ? String(values[key])
-      : escapeHtml(values[key]);
+    return ['content', 'faqs', 'breadcrumbs', 'schema'].includes(key) ? String(values[key]) : escapeHtml(values[key]);
   });
   if (/\{\{[^}]+\}\}/.test(html)) throw new Error('Han quedado placeholders sin sustituir.');
   return html;
 }
 
 function breadcrumbs(items) {
-  return `<nav class="eyebrow" aria-label="Migas de pan"><span>${items
-    .map(([label, href], index) => index === items.length - 1
-      ? `<span aria-current="page">${escapeHtml(label)}</span>`
-      : `<a href="${escapeHtml(href)}">${escapeHtml(label)}</a>`)
-    .join(' <span aria-hidden="true">·</span> ')}</span><span>Ciudad del Sol</span></nav>`;
+  const content = items.map(([label, href], index) => index === items.length - 1
+    ? `<span aria-current="page">${escapeHtml(label)}</span>`
+    : `<a href="${escapeHtml(href)}">${escapeHtml(label)}</a>`
+  ).join(' <span aria-hidden="true">·</span> ');
+  return `<nav class="eyebrow" aria-label="Migas de pan"><span>${content}</span><span>Ciudad del Sol</span></nav>`;
 }
 
 function faqMarkup(faqs) {
@@ -116,8 +104,9 @@ function faqMarkup(faqs) {
   ).join('')}</div>`;
 }
 
-const profiles = {
-  rental: {
+function profileFor(page) {
+  const slug = page.slug;
+  if (slug.includes('alquiler')) return {
     overline: 'Uso temporal',
     heading: 'El calendario y el recorrido definen el alquiler.',
     intro: 'Para una necesidad temporal, lo primero es concretar dónde funcionará, en qué fechas y qué trayecto debe cubrir.',
@@ -127,8 +116,8 @@ const profiles = {
       ['Uso', 'Turismo, evento, celebración, recinto u otra necesidad temporal.'],
       ['Propuesta', 'La unidad, configuración y disponibilidad se confirman después de revisar el contexto.'],
     ],
-  },
-  sale: {
+  };
+  if (slug.includes('venta')) return {
     overline: 'Operación recurrente',
     heading: 'La compra tiene sentido cuando el uso deja de ser puntual.',
     intro: 'En una operación recurrente importa entender el servicio que tendrá que prestar el vehículo antes de hablar de una unidad concreta.',
@@ -138,8 +127,8 @@ const profiles = {
       ['Uso', 'Turismo, recinto, operación municipal o actividad privada.'],
       ['Configuración', 'La propuesta concreta vehículo y equipamiento con información verificable.'],
     ],
-  },
-  municipal: {
+  };
+  if (slug.includes('ayuntamiento') || slug === 'trenes-turisticos') return {
     overline: 'Ciudad y turismo',
     heading: 'Un proyecto municipal empieza por el mapa real de la localidad.',
     intro: 'La conversación útil empieza identificando llegada, puntos de interés, recorrido y calendario, no escogiendo un vehículo por apariencia.',
@@ -149,19 +138,8 @@ const profiles = {
       ['Calendario', 'Servicio puntual, campaña, temporada u operación recurrente.'],
       ['Modalidad', 'Alquiler, compra o proyecto según duración y necesidad.'],
     ],
-  },
-  event: {
-    overline: 'Evento y celebración',
-    heading: 'En un evento, el flujo de personas manda.',
-    intro: 'Fechas, accesos y recorridos repetidos ayudan a entender dónde puede aportar valor un tren, tranvía o carroza dentro de la operación.',
-    steps: [
-      ['Accesos', 'Entradas, aparcamientos y puntos de recogida previstos.'],
-      ['Trayecto', 'Qué zonas conviene conectar durante la celebración.'],
-      ['Público', 'Tipo de uso y contexto general del evento.'],
-      ['Operación', 'Fechas y recorrido orientan la modalidad y el vehículo.'],
-    ],
-  },
-  tram: {
+  };
+  if (slug.includes('tranvia')) return {
     overline: 'Tranvía turístico',
     heading: 'La estética del vehículo no sustituye al planteamiento operativo.',
     intro: 'Antes de proponer una unidad se revisan contexto, recorrido, uso y modalidad. La configuración concreta se confirma con el proyecto.',
@@ -171,8 +149,19 @@ const profiles = {
       ['Uso', 'Necesidad temporal o recurrente.'],
       ['Disponibilidad', 'Unidad y configuración se confirman en la propuesta.'],
     ],
-  },
-  default: {
+  };
+  if (/(evento|boda|naviden|desfile|carroza)/.test(slug)) return {
+    overline: 'Evento y celebración',
+    heading: 'En un evento, el flujo de personas manda.',
+    intro: 'Fechas, accesos y recorridos repetidos ayudan a entender dónde puede aportar valor un tren, tranvía o carroza dentro de la operación.',
+    steps: [
+      ['Accesos', 'Entradas, aparcamientos y puntos de recogida previstos.'],
+      ['Trayecto', 'Qué zonas conviene conectar durante la celebración.'],
+      ['Público', 'Tipo de uso y contexto general del evento.'],
+      ['Operación', 'Fechas y recorrido orientan la modalidad y el vehículo.'],
+    ],
+  };
+  return {
     overline: 'Proyecto operativo',
     heading: 'El contexto decide antes que el catálogo.',
     intro: 'Localidad, fechas, recorrido y uso son la base para orientar una solución concreta sin convertir la web en un catálogo genérico.',
@@ -182,17 +171,7 @@ const profiles = {
       ['Duración', 'Necesidad puntual, estacional o recurrente.'],
       ['Siguiente paso', 'Vehículo y modalidad se concretan con ese contexto.'],
     ],
-  },
-};
-
-function profileFor(page) {
-  const slug = page.slug;
-  if (slug.includes('alquiler')) return profiles.rental;
-  if (slug.includes('venta')) return profiles.sale;
-  if (slug.includes('ayuntamiento') || slug === 'trenes-turisticos') return profiles.municipal;
-  if (slug.includes('tranvia')) return profiles.tram;
-  if (/(evento|boda|naviden|desfile|carroza)/.test(slug)) return profiles.event;
-  return profiles.default;
+  };
 }
 
 function logicRows(steps) {
@@ -229,18 +208,9 @@ function provincePage(province, index) {
     keywords: `trenes turísticos ${province.name}, alquiler tren turístico ${province.name}, venta tren turístico ${province.name}`,
     cta: `Plantea tu proyecto de tren turístico en ${province.name}`,
     faqs: [
-      {
-        q: `¿Estudiáis alquiler de tren turístico en ${province.name}?`,
-        a: `Se valoran proyectos en ${province.name} según fechas, recorrido, logística y disponibilidad para el servicio planteado.`,
-      },
-      {
-        q: `¿Se puede plantear la compra de un tren turístico para un proyecto en ${province.ccaa}?`,
-        a: 'La venta forma parte de las modalidades disponibles para operaciones recurrentes y se concreta después de revisar el uso previsto.',
-      },
-      {
-        q: '¿Qué información ayuda a preparar una primera valoración?',
-        a: 'Localidad, fechas aproximadas, recorrido o zona de trabajo y tipo de uso.',
-      },
+      { q: `¿Estudiáis alquiler de tren turístico en ${province.name}?`, a: `Se valoran proyectos en ${province.name} según fechas, recorrido, logística y disponibilidad para el servicio planteado.` },
+      { q: `¿Se puede plantear la compra de un tren turístico para un proyecto en ${province.ccaa}?`, a: 'La venta forma parte de las modalidades disponibles para operaciones recurrentes y se concreta después de revisar el uso previsto.' },
+      { q: '¿Qué información ayuda a preparar una primera valoración?', a: 'Localidad, fechas aproximadas, recorrido o zona de trabajo y tipo de uso.' },
     ],
   };
 }
@@ -253,14 +223,12 @@ function provinceContent(province, index) {
     `Los proyectos en ${province.name} pueden ser puntuales, estacionales o recurrentes. Esa duración, junto con el recorrido previsto, ayuda a decidir la modalidad.`,
     `Desde una celebración hasta una ruta estable, cada uso en ${province.name} tiene un contexto propio. La primera valoración sirve para concretarlo.`,
   ];
-
   const steps = [
     ['Localidad', `Municipio o recinto concreto dentro de ${province.name}.`],
     ['Recorrido', 'Origen, destino aproximado, accesos y puntos de parada si ya están definidos.'],
     ['Calendario', 'Fechas y duración aproximada del servicio.'],
     ['Uso', 'Turismo, evento, recinto, operación municipal u otra necesidad.'],
   ];
-
   return `<section class="solution-route"><div class="page-shell solution-route-grid">
     <aside class="solution-route-title"><p class="overline">${escapeHtml(province.ccaa)}</p><h2>La provincia no define el proyecto. El recorrido sí.</h2><p>La ubicación sirve para situar la solicitud; la propuesta necesita además entender trayecto, fechas y uso.</p></aside>
     <div class="solution-route-body"><p class="lead">${escapeHtml(intros[index % intros.length])}</p>${logicRows(steps)}
@@ -274,41 +242,14 @@ function provinceContent(province, index) {
 }
 
 function schemaMarkup(page, canonical, breadcrumbItems) {
-  const schema = {
+  return JSON.stringify({
     '@context': 'https://schema.org',
     '@graph': [
-      {
-        '@type': 'Service',
-        name: page.h1,
-        description: page.description,
-        url: canonical,
-        provider: {
-          '@type': 'Organization',
-          name: 'Trenes y Tranvías Ciudad del Sol',
-          url: origin,
-        },
-        areaServed: { '@type': 'Country', name: 'España' },
-      },
-      {
-        '@type': 'BreadcrumbList',
-        itemListElement: breadcrumbItems.map(([name, item], index) => ({
-          '@type': 'ListItem',
-          position: index + 1,
-          name,
-          item,
-        })),
-      },
-      {
-        '@type': 'FAQPage',
-        mainEntity: page.faqs.map(({ q, a }) => ({
-          '@type': 'Question',
-          name: q,
-          acceptedAnswer: { '@type': 'Answer', text: a },
-        })),
-      },
+      { '@type': 'Service', name: page.h1, description: page.description, url: canonical, provider: { '@type': 'Organization', name: 'Trenes y Tranvías Ciudad del Sol', url: origin }, areaServed: { '@type': 'Country', name: 'España' } },
+      { '@type': 'BreadcrumbList', itemListElement: breadcrumbItems.map(([name, item], index) => ({ '@type': 'ListItem', position: index + 1, name, item })) },
+      { '@type': 'FAQPage', mainEntity: page.faqs.map(({ q, a }) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })) },
     ],
-  };
-  return JSON.stringify(schema).replaceAll('<', '\\u003c');
+  }).replaceAll('<', '\\u003c');
 }
 
 async function writePage(filename, html) {
@@ -317,8 +258,5 @@ async function writePage(filename, html) {
 }
 
 function sitemap(canonicalUrls) {
-  const body = canonicalUrls
-    .map((url) => `  <url><loc>${escapeHtml(url)}</loc></url>`)
-    .join('\n');
-  return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${body}\n</urlset>\n`;
+  return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${canonicalUrls.map((url) => `  <url><loc>${escapeHtml(url)}</loc></url>`).join('\n')}\n</urlset>\n`;
 }
