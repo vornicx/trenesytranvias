@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#141512" />
+  <meta name="theme-color" content="#0b0d0f" />
   <meta name="description" content="{{description}}" />
   <meta name="keywords" content="{{keywords}}" />
   <meta name="robots" content="index,follow" />
@@ -11,9 +11,10 @@
   <title>{{title}}</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@1,9..144,500;1,9..144,600&family=Manrope:wght@500;600;700;800&family=Source+Sans+3:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="/styles.css" />
   <link rel="stylesheet" href="/pages.css" />
+  <link rel="stylesheet" href="/industrial-shared.css" data-industrial-layer />
   <script type="application/ld+json">{{schema}}</script>
 </head>
 <body class="internal-page">
@@ -26,28 +27,10 @@
   <div class="mobile-menu" data-mobile-menu hidden><nav aria-label="Navegación móvil"><a href="/trenes-turisticos/">Trenes turísticos</a><a href="/alquiler-tren-turistico/">Alquiler</a><a href="/venta-trenes-turisticos/">Venta</a><a href="/trenes-para-ayuntamientos/">Ayuntamientos</a><a href="/contacto.html">Contacto</a></nav></div>
 
   <main id="contenido">
-    <section class="page-hero">
-      <div class="page-shell">
-        {{breadcrumbs}}
-        <div class="page-hero-grid">
-          <h1 class="page-title reveal">{{h1}}</h1>
-          <div class="reveal"><p class="page-intro">{{description}}</p><div class="page-actions"><a class="button button-dark" href="/contacto.html">Solicitar presupuesto →</a></div></div>
-        </div>
-      </div>
-    </section>
+    <section class="page-hero"><div class="page-shell">{{breadcrumbs}}<div class="page-hero-grid"><h1 class="page-title reveal">{{h1}}</h1><div class="reveal"><p class="page-intro">{{description}}</p><div class="page-actions"><a class="button button-dark" href="/contacto.html">Solicitar presupuesto →</a></div></div></div></div></section>
     {{content}}
-    <section class="content-section subtle-panel">
-      <div class="page-shell section-grid">
-        <div class="section-label"><p class="overline">Información útil</p><h2>Preguntas sobre el servicio.</h2></div>
-        <div class="section-body">{{faqs}}</div>
-      </div>
-    </section>
-    <section class="internal-cta">
-      <div class="page-shell internal-cta-grid">
-        <h2>{{cta}}</h2>
-        <div><p>Cuéntanos la localidad, el recorrido, las fechas y el tipo de uso para preparar una primera valoración.</p><a class="button button-dark" href="/contacto.html">Solicitar presupuesto →</a></div>
-      </div>
-    </section>
+    <section class="content-section subtle-panel"><div class="page-shell section-grid"><div class="section-label"><p class="overline">Información útil</p><h2>Preguntas sobre el servicio.</h2></div><div class="section-body">{{faqs}}</div></div></section>
+    <section class="internal-cta"><div class="page-shell internal-cta-grid"><h2>{{cta}}</h2><div><p>Cuéntanos la localidad, el recorrido, las fechas y el tipo de uso para preparar una primera valoración.</p><a class="button button-dark" href="/contacto.html">Solicitar presupuesto →</a></div></div></section>
   </main>
 
   <footer class="footer"><div class="page-shell footer-grid"><a class="brand footer-brand" href="/"><span class="brand-mark" aria-hidden="true"><span></span></span><span class="brand-copy"><strong>Trenes & Tranvías</strong><small>Ciudad del Sol</small></span></a><div class="footer-col"><small>Producto</small><a href="/trenes-turisticos/">Trenes turísticos</a><a href="/tranvias-turisticos/">Tranvías turísticos</a><a href="/trenes-para-eventos/">Eventos</a></div><div class="footer-col"><small>Proyecto</small><a href="/alquiler-tren-turistico/">Alquiler</a><a href="/venta-trenes-turisticos/">Venta</a><a href="/trenes-para-ayuntamientos/">Ayuntamientos</a></div><div class="footer-col"><small>Contacto</small><a href="/contacto.html">Solicitar presupuesto</a><span>Écija · Sevilla · España</span></div></div><div class="page-shell footer-bottom"><span>© 2026 Trenes y Tranvías Ciudad del Sol</span><span>Proyectos en España</span></div></footer>
