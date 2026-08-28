@@ -1,0 +1,27 @@
+/* ARCHIC v2 — operational intake composition for Contact */
+.contact-route{display:grid;grid-template-columns:repeat(4,1fr);margin:0 0 34px;border-top:1px solid #d1d5d2;border-bottom:1px solid #d1d5d2}
+.contact-route>div{position:relative;padding:18px 18px 17px 0;border-right:1px solid #d1d5d2}
+.contact-route>div+div{padding-left:18px}
+.contact-route>div:last-child{border-right:0}
+.contact-route small{display:block;color:var(--i-signal-deep);font:800 8px/1 var(--i-display);letter-spacing:.12em;text-transform:uppercase}
+.contact-route strong{display:block;margin-top:8px;color:var(--i-ink);font:800 13px/1.2 var(--i-display)}
+.contact-stage{min-width:0;margin:0;padding:0;border:0}
+.contact-stage+ .contact-stage{margin-top:8px;padding-top:26px;border-top:1px solid #d9dcda}
+.contact-stage legend{width:100%;margin:0 0 19px;padding:0;display:flex;align-items:center;gap:14px;color:var(--i-ink);font:800 12px/1 var(--i-display);letter-spacing:-.01em}
+.contact-stage legend span{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;background:var(--i-ink);color:var(--i-signal);font:800 8px/1 var(--i-display);letter-spacing:.08em}
+.contact-stage .stage-note{margin:-7px 0 18px;color:var(--i-muted);font-size:13px;line-height:1.5}
+.internal-page .contact-form input[required],.internal-page .contact-form select[required]{border-left:3px solid var(--i-signal)}
+.internal-page .contact-form input:focus-visible,.internal-page .contact-form select:focus-visible,.internal-page .contact-form textarea:focus-visible,.internal-page .contact-form button:focus-visible{outline:3px solid rgba(242,173,36,.45);outline-offset:2px}
+.contact-submit-note{margin:-8px 0 0;color:var(--i-muted);font-size:12px;line-height:1.45}
+@media(max-width:760px){
+  .contact-route{grid-template-columns:1fr 1fr;margin-bottom:28px}
+  .contact-route>div,.contact-route>div+div{padding:14px 12px 14px 0;border-bottom:1px solid #d1d5d2}
+  .contact-route>div:nth-child(even){padding-left:12px;border-right:0}
+  .contact-route>div:nth-child(n+3){border-bottom:0}
+  .contact-stage+ .contact-stage{padding-top:22px}
+}
+@media(max-width:430px){
+  .contact-route{display:block;border-bottom:0}
+  .contact-route>div,.contact-route>div+div{padding:13px 0;border-right:0;border-bottom:1px solid #d1d5d2}
+  .contact-route strong{margin-top:5px}
+}
