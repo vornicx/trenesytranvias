@@ -3,26 +3,18 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#141512" />
-  <meta name="description" content="Solicita presupuesto para un tren turístico, tranvía, evento, boda o proyecto municipal en España." />
+  <meta name="theme-color" content="#0b0d0f" />
+  <meta name="description" content="Solicita presupuesto para un tren turístico, tranvía, evento o proyecto municipal en España." />
   <meta name="robots" content="index,follow" />
   <link rel="canonical" href="https://www.trenesytranvias.com/contacto" />
   <title>Solicitar presupuesto | Trenes y Tranvías</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@1,9..144,500;1,9..144,600&family=Manrope:wght@500;600;700;800&family=Source+Sans+3:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="./styles.css" />
   <link rel="stylesheet" href="./pages.css" />
-  <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Organization",
-      "name": "Trenes y Tranvías Ciudad del Sol",
-      "url": "https://www.trenesytranvias.com/",
-      "description": "Alquiler, venta y fabricación de trenes y tranvías turísticos para proyectos en España.",
-      "areaServed": {"@type": "Country", "name": "España"}
-    }
-  </script>
+  <link rel="stylesheet" href="./industrial-shared.css" data-industrial-layer />
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"Trenes y Tranvías Ciudad del Sol","url":"https://www.trenesytranvias.com/","description":"Alquiler, venta y fabricación de trenes y tranvías turísticos para proyectos en España.","areaServed":{"@type":"Country","name":"España"}}</script>
 </head>
 <body class="internal-page">
   <a class="skip-link" href="#contenido">Ir al contenido</a>
@@ -38,8 +30,8 @@
       <div class="page-shell">
         <div class="eyebrow reveal"><span>Contacto</span><span>Solicitud</span></div>
         <div class="page-hero-grid">
-          <h1 class="page-title reveal">Solicita presupuesto para <span>tu recorrido.</span></h1>
-          <p class="page-intro reveal">Cuanta más información tengamos sobre lugar, fechas y uso previsto, mejor podremos orientar la modalidad y el vehículo.</p>
+          <h1 class="page-title reveal">Cuéntanos dónde tiene que <span>funcionar.</span></h1>
+          <p class="page-intro reveal">Con localidad, fechas y tipo de uso podemos empezar a orientar la modalidad y el vehículo sin convertir la solicitud en un formulario interminable.</p>
         </div>
       </div>
     </section>
@@ -47,9 +39,9 @@
     <section class="content-section contact-section">
       <div class="page-shell contact-layout">
         <aside class="contact-aside reveal">
-          <p class="overline">Antes de empezar</p>
-          <h2>Lo importante es entender el proyecto.</h2>
-          <p>La solicitud llega al panel de gestión de Ciudad del Sol para revisarla, clasificarla y hacer seguimiento.</p>
+          <p class="overline">Para preparar la propuesta</p>
+          <h2>Necesitamos el contexto, no un pliego completo.</h2>
+          <p>Si aún no tienes todos los datos, no pasa nada. Con el lugar, las fechas aproximadas y el uso previsto ya podemos empezar la conversación.</p>
           <div class="contact-facts">
             <div><small>Base</small><strong>Écija · Sevilla</strong></div>
             <div><small>Modalidades</small><strong>Alquiler · venta · fabricación</strong></div>
@@ -58,19 +50,14 @@
         </aside>
 
         <div class="contact-panel reveal">
-          <div class="contact-panel-head">
-            <span>Formulario de solicitud</span>
-            <span>Respuesta directa</span>
-          </div>
+          <div class="contact-panel-head"><span>Solicitud de proyecto</span><span>Datos esenciales</span></div>
           <form class="contact-form" data-contact-form novalidate>
             <div class="field-row"><label>Nombre y apellidos<input name="name" autocomplete="name" maxlength="120" required /></label><label>Empresa / entidad<input name="company" autocomplete="organization" maxlength="160" /></label></div>
             <div class="field-row"><label>Email<input type="email" name="email" autocomplete="email" maxlength="254" required /></label><label>Teléfono<input type="tel" name="phone" autocomplete="tel" maxlength="40" /></label></div>
             <label>Tipo de proyecto<select name="project" data-project-select><option value="">Selecciona una opción</option><option value="turismo">Turismo y ciudad</option><option value="eventos">Ferias y eventos</option><option value="recintos">Empresas y recintos</option><option value="tren">Tren turístico</option><option value="tranvia">Tranvía turístico</option><option value="otro">Otro</option></select></label>
             <div class="field-row"><label>Modalidad<select name="operation"><option value="">No lo sé todavía</option><option value="alquiler">Alquiler</option><option value="compra">Compra</option><option value="fabricacion">Fabricación / proyecto especial</option></select></label><label>Localidad / provincia<input name="location" autocomplete="address-level2" maxlength="160" /></label></div>
             <label>Qué necesitas<textarea name="message" rows="5" maxlength="4000" placeholder="Fechas, recorrido, tipo de evento, uso previsto..."></textarea></label>
-            <div class="form-honeypot" aria-hidden="true">
-              <label>Sitio web<input type="text" name="website" tabindex="-1" autocomplete="off" /></label>
-            </div>
+            <div class="form-honeypot" aria-hidden="true"><label>Sitio web<input type="text" name="website" tabindex="-1" autocomplete="off" /></label></div>
             <label class="check-field"><input type="checkbox" name="privacy" required /><span>Acepto que estos datos se utilicen para responder a esta solicitud.</span></label>
             <p class="form-status" data-form-status aria-live="polite"></p>
             <button class="button button-sun button-wide" type="submit" data-contact-submit>Enviar solicitud →</button>
@@ -79,8 +66,8 @@
 
           <section class="contact-success" data-contact-success hidden>
             <p class="overline">Solicitud recibida</p>
-            <h2>Ya está en gestión.</h2>
-            <p>La solicitud ha quedado registrada correctamente. El equipo podrá verla y hacer seguimiento desde su panel privado.</p>
+            <h2>Ya tenemos el contexto.</h2>
+            <p>La solicitud ha quedado registrada correctamente para poder revisarla y continuar la conversación.</p>
             <textarea class="request-summary" data-request-summary readonly aria-label="Resumen de la solicitud"></textarea>
             <div class="page-actions"><button class="button button-dark" type="button" data-copy-request>Copiar resumen</button><a class="button button-outline" href="./index.html">Volver al inicio</a></div>
           </section>
@@ -89,7 +76,7 @@
     </section>
   </main>
 
-  <footer class="footer"><div class="page-shell footer-grid"><a class="brand footer-brand" href="./index.html"><span class="brand-mark" aria-hidden="true"><span></span></span><span class="brand-copy"><strong>Trenes & Tranvías</strong><small>Ciudad del Sol</small></span></a><div class="footer-col"><small>Servicios</small><a href="./soluciones.html">Soluciones</a><a href="./vehiculos.html">Vehículos</a><a href="./ecija.html">Écija</a></div><div class="footer-col"><small>Empresa</small><a href="./empresa.html">Sobre nosotros</a><a href="./contacto.html">Contacto</a></div><div class="footer-col"><small>Ubicación</small><span>Écija · Sevilla · España</span></div></div><div class="page-shell footer-bottom"><span>© 2026 Trenes y Tranvías Ciudad del Sol</span><span>Sitio web en desarrollo</span></div></footer>
+  <footer class="footer"><div class="page-shell footer-grid"><a class="brand footer-brand" href="./index.html"><span class="brand-mark" aria-hidden="true"><span></span></span><span class="brand-copy"><strong>Trenes & Tranvías</strong><small>Ciudad del Sol</small></span></a><div class="footer-col"><small>Servicios</small><a href="./soluciones.html">Soluciones</a><a href="./vehiculos.html">Vehículos</a><a href="./ecija.html">Écija</a></div><div class="footer-col"><small>Empresa</small><a href="./empresa.html">Sobre nosotros</a><a href="./contacto.html">Contacto</a></div><div class="footer-col"><small>Ubicación</small><span>Écija · Sevilla · España</span></div></div><div class="page-shell footer-bottom"><span>© 2026 Trenes y Tranvías Ciudad del Sol</span><span>Écija · Sevilla · Proyectos en España</span></div></footer>
   <script src="./supabase-config.js"></script>
   <script src="./app.js"></script>
 </body>
