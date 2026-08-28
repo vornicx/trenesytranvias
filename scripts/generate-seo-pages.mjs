@@ -116,50 +116,130 @@ function faqMarkup(faqs) {
   ).join('')}</div>`;
 }
 
+const profiles = {
+  rental: {
+    overline: 'Uso temporal',
+    heading: 'El calendario y el recorrido definen el alquiler.',
+    intro: 'Para una necesidad temporal, lo primero es concretar dónde funcionará, en qué fechas y qué trayecto debe cubrir.',
+    steps: [
+      ['Fechas', 'Periodo aproximado, jornadas y horarios previstos.'],
+      ['Recorrido', 'Origen, destino, paradas o zona en la que debe operar.'],
+      ['Uso', 'Turismo, evento, celebración, recinto u otra necesidad temporal.'],
+      ['Propuesta', 'La unidad, configuración y disponibilidad se confirman después de revisar el contexto.'],
+    ],
+  },
+  sale: {
+    overline: 'Operación recurrente',
+    heading: 'La compra tiene sentido cuando el uso deja de ser puntual.',
+    intro: 'En una operación recurrente importa entender el servicio que tendrá que prestar el vehículo antes de hablar de una unidad concreta.',
+    steps: [
+      ['Frecuencia', 'Cómo y con qué regularidad se prevé utilizar el vehículo.'],
+      ['Recorrido', 'Entorno, trayecto y puntos que habrá que conectar.'],
+      ['Uso', 'Turismo, recinto, operación municipal o actividad privada.'],
+      ['Configuración', 'La propuesta concreta vehículo y equipamiento con información verificable.'],
+    ],
+  },
+  municipal: {
+    overline: 'Ciudad y turismo',
+    heading: 'Un proyecto municipal empieza por el mapa real de la localidad.',
+    intro: 'La conversación útil empieza identificando llegada, puntos de interés, recorrido y calendario, no escogiendo un vehículo por apariencia.',
+    steps: [
+      ['Origen', 'Estación, aparcamiento, acceso o punto donde se concentra la llegada.'],
+      ['Destino', 'Centro, zona de interés, recinto o puntos que conviene conectar.'],
+      ['Calendario', 'Servicio puntual, campaña, temporada u operación recurrente.'],
+      ['Modalidad', 'Alquiler, compra o proyecto según duración y necesidad.'],
+    ],
+  },
+  event: {
+    overline: 'Evento y celebración',
+    heading: 'En un evento, el flujo de personas manda.',
+    intro: 'Fechas, accesos y recorridos repetidos ayudan a entender dónde puede aportar valor un tren, tranvía o carroza dentro de la operación.',
+    steps: [
+      ['Accesos', 'Entradas, aparcamientos y puntos de recogida previstos.'],
+      ['Trayecto', 'Qué zonas conviene conectar durante la celebración.'],
+      ['Público', 'Tipo de uso y contexto general del evento.'],
+      ['Operación', 'Fechas y recorrido orientan la modalidad y el vehículo.'],
+    ],
+  },
+  tram: {
+    overline: 'Tranvía turístico',
+    heading: 'La estética del vehículo no sustituye al planteamiento operativo.',
+    intro: 'Antes de proponer una unidad se revisan contexto, recorrido, uso y modalidad. La configuración concreta se confirma con el proyecto.',
+    steps: [
+      ['Contexto', 'Ciudad, evento o recinto en el que se integrará.'],
+      ['Recorrido', 'Zona de trabajo y trayecto aproximado.'],
+      ['Uso', 'Necesidad temporal o recurrente.'],
+      ['Disponibilidad', 'Unidad y configuración se confirman en la propuesta.'],
+    ],
+  },
+  default: {
+    overline: 'Proyecto operativo',
+    heading: 'El contexto decide antes que el catálogo.',
+    intro: 'Localidad, fechas, recorrido y uso son la base para orientar una solución concreta sin convertir la web en un catálogo genérico.',
+    steps: [
+      ['Lugar', 'Dónde debe funcionar el vehículo.'],
+      ['Recorrido', 'Qué puntos, zonas o trayectos tiene que cubrir.'],
+      ['Duración', 'Necesidad puntual, estacional o recurrente.'],
+      ['Siguiente paso', 'Vehículo y modalidad se concretan con ese contexto.'],
+    ],
+  },
+};
+
+function profileFor(page) {
+  const slug = page.slug;
+  if (slug.includes('alquiler')) return profiles.rental;
+  if (slug.includes('venta')) return profiles.sale;
+  if (slug.includes('ayuntamiento') || slug === 'trenes-turisticos') return profiles.municipal;
+  if (slug.includes('tranvia')) return profiles.tram;
+  if (/(evento|boda|naviden|desfile|carroza)/.test(slug)) return profiles.event;
+  return profiles.default;
+}
+
+function logicRows(steps) {
+  return `<div class="solution-logic">${steps.map(([label, text], index) =>
+    `<div class="solution-logic-row"><span>${String(index + 1).padStart(2, '0')}</span><strong>${escapeHtml(label)}</strong><p>${escapeHtml(text)}</p></div>`
+  ).join('')}</div>`;
+}
+
 function productContent(page) {
-  const [primary, secondary = 'proyectos en España'] = page.keywords;
-  return `<section class="content-section"><div class="page-shell section-grid">
-    <div class="section-label"><p class="overline">Una solución con recorrido</p><h2>El proyecto marca la configuración.</h2></div>
-    <div class="section-body"><p class="lead">${escapeHtml(page.description)}</p>
-      <p>Antes de proponer una modalidad revisamos ubicación, calendario, trayecto, afluencia y objetivo. Así, la búsqueda de ${escapeHtml(primary)} se convierte en una solución concreta y no en un vehículo aislado.</p>
-      <div class="facts-list">
-        <div class="fact-row"><span>01</span><strong>Uso</strong><p>Recorridos turísticos, celebraciones, movilidad interna o programación temporal.</p></div>
-        <div class="fact-row"><span>02</span><strong>Modalidad</strong><p>Alquiler, venta o proyecto especial según duración y necesidades reales.</p></div>
-        <div class="fact-row"><span>03</span><strong>Contexto</strong><p>Valoración individual para ${escapeHtml(secondary)} con atención directa desde Écija.</p></div>
-      </div>
+  const profile = profileFor(page);
+  return `<section class="solution-route"><div class="page-shell solution-route-grid">
+    <aside class="solution-route-title"><p class="overline">${escapeHtml(profile.overline)}</p><h2>${escapeHtml(profile.heading)}</h2><p>${escapeHtml(profile.intro)}</p></aside>
+    <div class="solution-route-body"><p class="lead">${escapeHtml(page.description)}</p>${logicRows(profile.steps)}
+      <div class="solution-next"><span>La información concreta de unidad y disponibilidad se confirma al estudiar el proyecto.</span><a href="/contacto.html">Enviar contexto →</a></div>
     </div>
   </div></section>
   <section class="content-section dark-panel"><div class="page-shell section-grid">
-    <div class="section-label"><p class="overline">Del plano a la calle</p><h2>Datos que ayudan a orientar la propuesta.</h2></div>
-    <div class="section-body"><p class="lead">Lugar, fechas y recorrido son el punto de partida.</p><p>También resulta útil conocer horarios, capacidad aproximada, público, accesos y cualquier condicionante operativo. Con esa base podemos valorar el siguiente paso con mayor precisión.</p><a class="text-action light-action" href="/contacto.html">Enviar datos del proyecto <span>→</span></a></div>
+    <div class="section-label"><p class="overline">De la necesidad a la propuesta</p><h2>No hace falta definir el vehículo por adelantado.</h2></div>
+    <div class="section-body"><p class="lead">Con lugar, fechas aproximadas y uso ya se puede empezar.</p><p>Si existe un recorrido previsto, una zona concreta o condicionantes relevantes, se añaden a la solicitud. La propuesta posterior concreta modalidad y alcance sin presentar disponibilidad como un dato en tiempo real.</p><a class="text-action light-action" href="/contacto.html">Plantear el proyecto <span>→</span></a></div>
   </div></section>`;
 }
 
 function provincePage(province, index) {
   const descriptions = [
     `Alquiler y venta de trenes turísticos en ${province.name} para municipios, eventos y recintos de ${province.ccaa}. Estudiamos recorrido, fechas y uso.`,
-    `Trenes turísticos en ${province.name} para rutas locales, celebraciones y proyectos permanentes. Opciones de alquiler y venta en ${province.ccaa}.`,
+    `Trenes turísticos en ${province.name} para rutas locales, celebraciones y proyectos recurrentes. Opciones de alquiler y venta según el proyecto.`,
     `Soluciones de tren turístico para proyectos en ${province.name}: alquiler temporal o compra según recorrido, calendario y operación prevista.`,
-    `Consulta trenes turísticos para ciudades, empresas y eventos de ${province.name}. Valoramos cada propuesta dentro de ${province.ccaa}.`,
+    `Consulta trenes turísticos para ciudades, empresas y eventos de ${province.name}. Cada propuesta se valora según el contexto del servicio.`,
   ];
   return {
     title: `Trenes turísticos en ${province.name} | Alquiler y venta`,
     h1: `Trenes turísticos en ${province.name}`,
     description: descriptions[index % descriptions.length],
     keywords: `trenes turísticos ${province.name}, alquiler tren turístico ${province.name}, venta tren turístico ${province.name}`,
-    cta: `Hablemos de tu proyecto de tren turístico en ${province.name}`,
+    cta: `Plantea tu proyecto de tren turístico en ${province.name}`,
     faqs: [
       {
-        q: `¿Ofrecéis alquiler de tren turístico en ${province.name}?`,
-        a: `Estudiamos solicitudes de alquiler en ${province.name} según fechas, recorrido, logística y disponibilidad.`,
+        q: `¿Estudiáis alquiler de tren turístico en ${province.name}?`,
+        a: `Se valoran proyectos en ${province.name} según fechas, recorrido, logística y disponibilidad para el servicio planteado.`,
       },
       {
-        q: `¿Se puede comprar un tren turístico para un proyecto de ${province.ccaa}?`,
-        a: 'Sí. La venta se plantea para operaciones estables después de revisar uso, capacidad y configuración.',
+        q: `¿Se puede plantear la compra de un tren turístico para un proyecto en ${province.ccaa}?`,
+        a: 'La venta forma parte de las modalidades disponibles para operaciones recurrentes y se concreta después de revisar el uso previsto.',
       },
       {
-        q: '¿Qué información necesitáis para valorar el servicio?',
-        a: 'Localidad, fechas, horarios, recorrido aproximado, finalidad y afluencia prevista.',
+        q: '¿Qué información ayuda a preparar una primera valoración?',
+        a: 'Localidad, fechas aproximadas, recorrido o zona de trabajo y tipo de uso.',
       },
     ],
   };
@@ -167,26 +247,29 @@ function provincePage(province, index) {
 
 function provinceContent(province, index) {
   const intros = [
-    `Una ruta urbana, una feria o un recinto turístico requieren ritmos distintos. En ${province.name}, la propuesta parte del lugar concreto y de cómo se moverán las personas.`,
-    `${province.name} reúne municipios y espacios con necesidades muy diferentes. Por eso estudiamos el trayecto y el calendario antes de orientar alquiler, venta o configuración.`,
-    `Llevar un tren turístico a ${province.name} exige encajar vehículo, accesos y operación. El objetivo es que el recorrido sea práctico y también reconocible para el visitante.`,
-    `Los proyectos de ${province.name} pueden ser puntuales, estacionales o permanentes. Esa duración, junto con la ruta prevista, determina la modalidad más razonable.`,
-    `Desde una celebración local hasta una ruta estable, cada uso en ${province.name} tiene condicionantes propios. La primera valoración sirve para identificarlos con claridad.`,
+    `Una ruta urbana, una feria o un recinto requieren planteamientos distintos. En ${province.name}, la propuesta parte del lugar concreto y del trayecto que se quiere resolver.`,
+    `${province.name} reúne municipios y espacios con necesidades diferentes. Por eso el recorrido y el calendario se revisan antes de orientar alquiler, venta o configuración.`,
+    `Un proyecto de tren turístico en ${province.name} necesita encajar lugar, accesos, recorrido y duración. Esos datos permiten orientar la siguiente conversación.`,
+    `Los proyectos en ${province.name} pueden ser puntuales, estacionales o recurrentes. Esa duración, junto con el recorrido previsto, ayuda a decidir la modalidad.`,
+    `Desde una celebración hasta una ruta estable, cada uso en ${province.name} tiene un contexto propio. La primera valoración sirve para concretarlo.`,
   ];
-  return `<section class="content-section"><div class="page-shell section-grid">
-    <div class="section-label"><p class="overline">${escapeHtml(province.ccaa)}</p><h2>Una solución ajustada al lugar.</h2></div>
-    <div class="section-body"><p class="lead">${escapeHtml(intros[index % intros.length])}</p>
-      <p>Trabajamos proyectos de alquiler y venta de trenes turísticos en ${escapeHtml(province.name)} para ayuntamientos, empresas, organizadores y recintos. No publicamos una tarifa genérica porque transporte, duración, horarios y condiciones del trazado cambian el alcance.</p>
-      <div class="facts-list">
-        <div class="fact-row"><span>01</span><strong>Recorrido</strong><p>Localidad, distancias, firme, giros, pendientes y puntos de parada.</p></div>
-        <div class="fact-row"><span>02</span><strong>Calendario</strong><p>Fechas, horarios y duración puntual, estacional o permanente.</p></div>
-        <div class="fact-row"><span>03</span><strong>Uso</strong><p>Turismo, evento, feria, recinto o servicio promovido por un ayuntamiento.</p></div>
-      </div>
+
+  const steps = [
+    ['Localidad', `Municipio o recinto concreto dentro de ${province.name}.`],
+    ['Recorrido', 'Origen, destino aproximado, accesos y puntos de parada si ya están definidos.'],
+    ['Calendario', 'Fechas y duración aproximada del servicio.'],
+    ['Uso', 'Turismo, evento, recinto, operación municipal u otra necesidad.'],
+  ];
+
+  return `<section class="solution-route"><div class="page-shell solution-route-grid">
+    <aside class="solution-route-title"><p class="overline">${escapeHtml(province.ccaa)}</p><h2>La provincia no define el proyecto. El recorrido sí.</h2><p>La ubicación sirve para situar la solicitud; la propuesta necesita además entender trayecto, fechas y uso.</p></aside>
+    <div class="solution-route-body"><p class="lead">${escapeHtml(intros[index % intros.length])}</p>${logicRows(steps)}
+      <div class="solution-next"><span>Base operativa de Ciudad del Sol: Écija · Sevilla.</span><a href="/contacto.html">Plantear proyecto en ${escapeHtml(province.name)} →</a></div>
     </div>
   </div></section>
   <section class="content-section dark-panel"><div class="page-shell section-grid">
-    <div class="section-label"><p class="overline">Modalidades relacionadas</p><h2>Alquiler, venta y proyectos municipales.</h2></div>
-    <div class="section-body"><p class="lead">El tiempo de uso ayuda a elegir el camino.</p><p>Consulta las opciones de <a class="light-action" href="/alquiler-tren-turistico/">alquiler de tren turístico</a>, <a class="light-action" href="/venta-trenes-turisticos/">venta de trenes turísticos</a> y soluciones para <a class="light-action" href="/trenes-para-ayuntamientos/">ayuntamientos</a>.</p><a class="text-action light-action" href="/contacto.html">Valorar un proyecto en ${escapeHtml(province.name)} <span>→</span></a></div>
+    <div class="section-label"><p class="overline">Modalidad</p><h2>Temporal o recurrente.</h2></div>
+    <div class="section-body"><p class="lead">La duración del uso ayuda a orientar alquiler o compra.</p><p>Consulta el <a class="light-action" href="/alquiler-tren-turistico/">alquiler de tren turístico</a>, la <a class="light-action" href="/venta-trenes-turisticos/">venta de trenes turísticos</a> o las soluciones para <a class="light-action" href="/trenes-para-ayuntamientos/">ayuntamientos</a>. La configuración concreta se valida después con el contexto real.</p><a class="text-action light-action" href="/contacto.html">Enviar datos del recorrido <span>→</span></a></div>
   </div></section>`;
 }
 
