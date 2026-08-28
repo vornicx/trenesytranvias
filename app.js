@@ -19,6 +19,14 @@ if (!document.querySelector('link[data-archic-layer]')) {
   document.head.appendChild(archicStyles);
 }
 
+if (document.body.classList.contains('internal-page') && !document.querySelector('link[data-industrial-layer]')) {
+  const industrialStyles = document.createElement('link');
+  industrialStyles.rel = 'stylesheet';
+  industrialStyles.href = assetUrl('industrial-shared.css');
+  industrialStyles.dataset.industrialLayer = 'true';
+  document.head.appendChild(industrialStyles);
+}
+
 const header = $('[data-header]');
 const menuButton = $('[data-menu-button]');
 const mobileMenu = $('[data-mobile-menu]');
