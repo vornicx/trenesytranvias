@@ -40,17 +40,17 @@ This must **not** resemble:
 - una web ferroviaria ficticiamente técnica con planos, tolerancias o diagramas inventados
 - una colección de cards/iconos que podría vender cualquier servicio
 
-## Design Thesis
+## Public Design Thesis
 
-**DESIGN THESIS:** La web debe comportarse como una operación de transporte turístico bien planteada: el recorrido define la necesidad, el vehículo demuestra capacidad real y la propuesta comercial avanza de ubicación y uso a modalidad y contacto, con una estética industrial sobria ligada al producto de Ciudad del Sol.
+**DESIGN THESIS:** La web debe comportarse como una operación de transporte turístico bien planteada: el recorrido define la necesidad, el vehículo demuestra presencia real y la propuesta comercial avanza de ubicación y uso a modalidad y contacto, con una estética industrial sobria ligada al producto de Ciudad del Sol.
 
-## Business-Native Primitive
+## Public Business-Native Primitive
 
 **PRIMITIVE:** `ORIGEN → RECORRIDO → VEHÍCULO → MODALIDAD → PROPUESTA`
 
 This primitive comes from how a train/tram project is actually evaluated and must shape the interface rather than appear as decorative railway graphics.
 
-### How it affects the system
+### How it affects the public system
 
 - **Layout:** directional sequences, route/stop logic, operational rows and clear progression instead of generic card grids.
 - **Imagery:** real vehicle first; operation/context second; no filler image.
@@ -59,6 +59,24 @@ This primitive comes from how a train/tram project is actually evaluated and mus
 - **Components:** vehicle records, operational facts, project steps, route facts, enquiry stages and comparison rows.
 - **Copy:** nouns and verbs from the real business: localidad, recorrido, fechas, vehículo, alquiler, venta, fabricación, evento, ayuntamiento, recinto, propuesta.
 
+## Studio Design Thesis
+
+**STUDIO DESIGN THESIS:** El Studio debe sentirse como una mesa de control comercial de Ciudad del Sol: cada solicitud entra, se cualifica, recibe un próximo paso y avanza hasta propuesta o cierre, con alta legibilidad, estados inequívocos y cero decoración que compita con la decisión operativa.
+
+## Studio Business-Native Primitive
+
+**STUDIO PRIMITIVE:** `SOLICITUD → CUALIFICACIÓN → SEGUIMIENTO → PROPUESTA → CIERRE`
+
+### How it affects Studio
+
+- **Layout:** bandeja y pipeline responden a estados comerciales reales; tablas para comparar; drawer para actuar sobre una oportunidad.
+- **Data:** solicitudes, clientes, ayuntamientos, seguimientos, campañas, ventas y facturación reales del sistema.
+- **Typography:** misma familia sans del sitio; mayor densidad y numerales legibles; nada de serif editorial.
+- **Color:** negro/grafito estructura; amarillo señal para acción, selección o atención; colores secundarios solo codifican estados.
+- **Components:** KPI como ledger operativo, filas densas, pipeline de oportunidades, filtros, historial, acciones de seguimiento y cierre.
+- **Motion:** estado y continuidad espacial; drawers/modales rápidos; nada flotante o ambiental.
+- **Mobile:** prioriza revisión, búsqueda, actualización, seguimiento y cierre; no intenta conservar tablas desktop completas.
+
 ## Aesthetic direction
 
 **Keywords:** industrial, directo, sólido, operativo, local, comercial, visible, preciso  
@@ -66,22 +84,28 @@ This primitive comes from how a train/tram project is actually evaluated and mus
 **ENERGY:** 2 / balanced  
 **RHYTHM:** 2 / varied but controlled  
 **MOTION:** 2 / restrained choreography  
-**Density:** 2 / balanced; denser where specs/process benefit  
+**Density:** 2 public / 3 Studio where scanning benefits  
 **Surface behavior:** flat, structural, minimal elevation; lines indicate information structure rather than decoration  
 **Shape language:** rectilinear; radii only where function requires them  
-**Image system:** documentary/product; large real photography + video + useful captions  
+**Image system:** documentary/product publicly; none by default in Studio  
 **Type system:** Manrope for display/control hierarchy + Source Sans 3 for reading  
 **Color behavior:** graphite/white are structural; yellow signal marks action, direction and key operational information
 
 ## Reskin Test
 
-Three decisions that should only plausibly come from this business:
+Three public decisions that should only plausibly come from this business:
 
 1. The core narrative follows `Origen → Recorrido → Vehículo → Modalidad → Propuesta`, not a generic marketing funnel.
 2. Vehicle and equipment information is presented like rolling-stock/operational information, using rows and verified configuration notes rather than generic feature cards.
 3. The primary enquiry asks where the vehicle must operate, when, and for what use; Écija functions as real operational proof rather than generic social proof.
 
-**RESKIN TEST TARGET:** PASS. If these three decisions disappear, the design has become generic and must be reworked.
+Three Studio decisions that should only plausibly come from this business/system:
+
+1. Pipeline and detail states follow `Solicitud → Cualificación → Seguimiento → Propuesta → Cierre`.
+2. Ayuntamientos have their own recontact/electoral-campaign workspace because that is a real commercial workflow in the product.
+3. A closed opportunity can become a registered sale tied to a client and later reporting/export, instead of ending at a decorative “won” badge.
+
+**RESKIN TEST TARGET:** PASS. If these decisions disappear, the interface has become generic and must be reworked.
 
 ## Page contracts
 
@@ -134,9 +158,22 @@ Three decisions that should only plausibly come from this business:
 **Visual mode:** concise operational landing.  
 **Must not become:** templated SEO doorway with repeated filler.
 
+### `/studio.html`
+**Page mode:** dashboard / operations UI.  
+**Primary job:** turn incoming enquiries into followed-up, qualified and closed commercial opportunities without losing context.  
+**Primary users:** authorised internal commercial/operations users.  
+**Primary actions:** review request, update status/priority/owner/follow-up, qualify, quote, mark sold, register sale.  
+**Trust evidence:** real persisted system state; no simulated activity.  
+**Required views:** Solicitudes, Clientes, Ayuntamientos, Ventas, Ajustes.  
+**Visual mode:** dense industrial operations console, not generic SaaS dashboard.  
+**Mobile priority:** search/review/update/follow-up; desktop tables recompose to actionable rows.  
+**Must not become:** rounded-card SaaS template, luxury backoffice, fake analytics dashboard or status theatre.
+
 ## Motion Thesis
 
-**MOTION THESIS:** Precisa y mecánica: el movimiento debe recordar una operación que avanza por etapas, usando feedback rápido, continuidad direccional y cambios de estado claros; nunca animación ambiental para fingir calidad.
+**PUBLIC MOTION THESIS:** Precisa y mecánica: el movimiento debe recordar una operación que avanza por etapas, usando feedback rápido, continuidad direccional y cambios de estado claros; nunca animación ambiental para fingir calidad.
+
+**STUDIO MOTION THESIS:** Utilitaria y rápida: estados, drawer, modal, selección y navegación deben responder con claridad sin retrasar escaneo ni acciones.
 
 ## Active Archic modules
 
@@ -147,16 +184,17 @@ Three decisions that should only plausibly come from this business:
 - [x] motion
 - [x] local-business
 - [x] commerce/catalogue
+- [x] saas / operations — Studio only
 - [ ] luxury
 - [ ] automotive
 - [ ] real-estate
-- [ ] saas
 - [ ] editorial
 
 ## Delivery targets
 
 **Target score:** 90–94 flagship; push toward 95 only when the real image library is strong enough.  
-**Critical pages:** `/`, `/vehiculos.html`, `/soluciones.html`, `/ecija.html`, `/contacto.html`  
+**Critical public pages:** `/`, `/vehiculos.html`, `/soluciones.html`, `/ecija.html`, `/contacto.html`  
+**Critical private surface:** `/studio.html` login + authenticated workflow when credentials are available  
 **Critical mobile widths:** 320, 375, 390/393, 430, 768; desktop 1440  
 **Performance priorities:** protect hero/LCP, avoid unnecessary JS, dimensions on prominent images, no unstable embeds.  
 **Accessibility priorities:** keyboard navigation, visible focus, readable contrast, comfortable touch targets, 200% zoom/reflow, reduced motion.  
