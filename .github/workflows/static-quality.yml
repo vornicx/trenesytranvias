@@ -20,8 +20,5 @@ jobs:
         with:
           node-version: 22
 
-      - name: Check JavaScript syntax
-        run: node --check app.js
-
-      - name: Audit static HTML quality
-        run: node scripts/quality-report.mjs
+      - name: Run Archic v2 repository checks
+        run: npm run check

@@ -1,0 +1,58 @@
+name: Regenerate SEO pages
+
+on:
+  push:
+    paths:
+      - 'seo/templates/**'
+      - 'scripts/generate-seo-pages.mjs'
+      - 'data/seo-pages.json'
+      - 'data/provincias.json'
+      - '.github/workflows/seo-regenerate.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: seo-regenerate-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  regenerate:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+          fetch-depth: 0
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Regenerate deterministic SEO output
+        run: npm run seo:generate
+
+      - name: Validate generator and output
+        run: |
+          node --check scripts/generate-seo-pages.mjs
+          node scripts/quality-report.mjs
+
+      - name: Commit generated pages when needed
+        shell: bash
+        run: |
+          if git diff --quiet; then
+            echo 'SEO output already current.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add sitemap.xml \
+            alquiler-carrozas alquiler-tranvia-turistico alquiler-tren-turistico \
+            carrozas-de-boda carrozas-navidenas carrozas-para-eventos desfiles \
+            tranvias-turisticos trenes-de-boda trenes-para-ayuntamientos \
+            trenes-para-eventos trenes-turisticos venta-trenes-turisticos
+          git commit -m 'Regenerate SEO pages from Archic v2 templates'
+          git push origin HEAD:${{ github.ref_name }}

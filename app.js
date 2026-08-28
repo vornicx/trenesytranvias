@@ -19,6 +19,14 @@ if (!document.querySelector('link[data-archic-layer]')) {
   document.head.appendChild(archicStyles);
 }
 
+if (document.body.classList.contains('internal-page') && !document.querySelector('link[data-industrial-layer]')) {
+  const industrialStyles = document.createElement('link');
+  industrialStyles.rel = 'stylesheet';
+  industrialStyles.href = assetUrl('industrial-shared.css');
+  industrialStyles.dataset.industrialLayer = 'true';
+  document.head.appendChild(industrialStyles);
+}
+
 const header = $('[data-header]');
 const menuButton = $('[data-menu-button]');
 const mobileMenu = $('[data-mobile-menu]');
@@ -74,7 +82,6 @@ if (footerBottom) {
 
   if (!$('.management-access', footerBottom)) {
     const managementLink = document.createElement('a');
-    managementLink.href = assetUrl('gestion').replace(/\/app\.js\/gestion$/, '/gestion');
     managementLink.href = new URL('gestion', appScriptUrl).href;
     managementLink.className = 'management-access';
     managementLink.textContent = 'Acceso gestión';
@@ -108,16 +115,19 @@ function buildRequestSummary(data){
   return [
     'SOLICITUD · TRENES Y TRANVÍAS CIUDAD DEL SOL',
     '',
+    `Localidad / provincia: ${value('location') || '—'}`,
+    `Fechas aproximadas: ${value('dates') || 'Por definir'}`,
+    `Recorrido / zona: ${value('route') || 'Por definir'}`,
+    `Proyecto: ${labels[value('project')] || value('project') || '—'}`,
+    `Modalidad: ${labels[value('operation')] || 'Por definir'}`,
+    '',
+    'Contexto adicional:',
+    value('message') || '—',
+    '',
     `Nombre: ${value('name')}`,
     `Empresa / entidad: ${value('company') || '—'}`,
     `Email: ${value('email')}`,
-    `Teléfono: ${value('phone') || '—'}`,
-    `Proyecto: ${labels[value('project')] || value('project') || '—'}`,
-    `Modalidad: ${labels[value('operation')] || 'Por definir'}`,
-    `Localidad / provincia: ${value('location') || '—'}`,
-    '',
-    'Necesidad:',
-    value('message') || '—'
+    `Teléfono: ${value('phone') || '—'}`
   ].join('\n');
 }
 
@@ -125,6 +135,11 @@ async function persistInquiry(data){
   const config = window.TYT_SUPABASE;
   if (!config?.url || !config?.publishableKey) throw new Error('backend_not_configured');
   const value = key => String(data.get(key) || '').trim();
+  const messageParts = [
+    value('dates') ? `Fechas aproximadas: ${value('dates')}` : '',
+    value('route') ? `Recorrido / zona: ${value('route')}` : '',
+    value('message') ? `Contexto adicional: ${value('message')}` : ''
+  ].filter(Boolean);
   const payload = {
     name: value('name'),
     company: value('company') || null,
@@ -133,7 +148,7 @@ async function persistInquiry(data){
     project_type: value('project') || null,
     operation: value('operation') || null,
     location: value('location') || null,
-    message: value('message') || null,
+    message: messageParts.join('\n\n') || null,
     source: 'website',
     status: 'new',
     priority: 'normal'
@@ -168,12 +183,20 @@ contactForm?.addEventListener('submit', async event => {
   const data = new FormData(contactForm);
   const name = String(data.get('name') || '').trim();
   const email = String(data.get('email') || '').trim();
+  const location = String(data.get('location') || '').trim();
+  const project = String(data.get('project') || '').trim();
   const privacy = data.get('privacy');
   const honeypot = String(data.get('website') || '').trim();
 
   if (honeypot) return;
-  if (!name || !email || !/^\S+@\S+\.\S+$/.test(email) || !privacy) {
-    if (formStatus) formStatus.textContent = 'Revisa nombre, email y aceptación antes de continuar.';
+  if (!location || !project || !name || !email || !/^\S+@\S+\.\S+$/.test(email) || !privacy) {
+    if (formStatus) formStatus.textContent = 'Completa localidad, tipo de proyecto, nombre, email y aceptación antes de enviar.';
+    const firstMissing = !location ? contactForm.querySelector('[name="location"]')
+      : !project ? contactForm.querySelector('[name="project"]')
+      : !name ? contactForm.querySelector('[name="name"]')
+      : (!email || !/^\S+@\S+\.\S+$/.test(email)) ? contactForm.querySelector('[name="email"]')
+      : contactForm.querySelector('[name="privacy"]');
+    firstMissing?.focus();
     return;
   }
 
@@ -188,12 +211,13 @@ contactForm?.addEventListener('submit', async event => {
     contactForm.hidden = true;
     if (contactSuccess) {
       contactSuccess.hidden = false;
-      contactSuccess.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      contactSuccess.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center' });
     }
   } catch (error) {
     console.error(error);
     if (error?.message === 'backend_not_configured') {
-      if (formStatus) formStatus.textContent = 'El formulario no está configurado todavía. Escríbenos más tarde o vuelve a intentarlo.';
+      if (formStatus) formStatus.textContent = 'El formulario no está configurado todavía. Vuelve a intentarlo más tarde.';
     } else if (formStatus) {
       formStatus.textContent = 'No hemos podido registrar la solicitud. Inténtalo de nuevo en unos segundos.';
     }
