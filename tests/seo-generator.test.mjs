@@ -39,7 +39,7 @@ test('SEO datasets cover every product hub and all 50 provinces', async () => {
   ));
 });
 
-test('generator writes indexable hub and province pages plus sitemap', async () => {
+test('generator writes Archic v2 hub and province pages plus sitemap', async () => {
   await execFileAsync(process.execPath, ['scripts/generate-seo-pages.mjs'], {
     cwd: new URL('.', root),
   });
@@ -53,11 +53,17 @@ test('generator writes indexable hub and province pages plus sitemap', async () 
     assert.match(html, /contacto\.html/);
     assert.match(html, /application\/ld\+json/);
     assert.match(html, /<meta name="description"/);
-    assert.match(html, />Solicitar presupuesto →<\/a>/);
+    assert.match(html, />Plantear el proyecto →<\/a>/);
+    assert.match(html, /project-v2\.css/);
+    assert.match(html, /class="internal-page project-v2"/);
+    assert.match(html, /project-route-strip/);
+    assert.doesNotMatch(html, /Fraunces/);
   }
 
+  assert.match(hubHtml, /El contexto|mapa real|recorrido/);
   assert.match(provinceHtml, /Sevilla/);
   assert.match(provinceHtml, /Andalucía/);
+  assert.match(provinceHtml, /La provincia no define el proyecto\. El recorrido sí\./);
   assert.equal((sitemap.match(/<url>/g) || []).length, 69);
   for (const path of ['/', '/contacto', '/soluciones', '/vehiculos', '/empresa', '/ecija']) {
     assert.match(sitemap, new RegExp(`<loc>https://www\\.trenesytranvias\\.com${path.replace('.', '\\.')}</loc>`));
@@ -70,7 +76,7 @@ test('generator writes indexable hub and province pages plus sitemap', async () 
   assert.match(provinceHtml, /rel="canonical" href="https:\/\/www\.trenesytranvias\.com\/trenes-turisticos\/sevilla"/);
 });
 
-test('public entry pages expose key SEO hubs and crawl directives', async () => {
+test('public entry pages expose intentional commercial paths and crawl directives', async () => {
   const [home, solutions, robots, ...organizationPages] = await Promise.all([
     readFile(new URL('index.html', root), 'utf8'),
     readFile(new URL('soluciones.html', root), 'utf8'),
@@ -78,7 +84,19 @@ test('public entry pages expose key SEO hubs and crawl directives', async () => 
     ...['contacto.html', 'soluciones.html', 'vehiculos.html', 'empresa.html', 'ecija.html']
       .map(path => readFile(new URL(path, root), 'utf8')),
   ]);
-  const keyHubs = [
+
+  // The home stays deliberately focused instead of becoming an SEO directory.
+  const homeCommercialPaths = [
+    '/trenes-turisticos/',
+    '/trenes-para-eventos/',
+    '/alquiler-tren-turistico/',
+    '/trenes-para-ayuntamientos/',
+    '/venta-trenes-turisticos/',
+  ];
+  for (const href of homeCommercialPaths) assert.match(home, new RegExp(`href="${href}"`));
+
+  // Soluciones is the intentional discovery hub for the broader use-case taxonomy.
+  const solutionPaths = [
     '/trenes-turisticos/',
     '/trenes-para-eventos/',
     '/trenes-de-boda/',
@@ -87,15 +105,10 @@ test('public entry pages expose key SEO hubs and crawl directives', async () => 
     '/carrozas-navidenas/',
     '/desfiles/',
   ];
+  for (const href of solutionPaths) assert.match(solutions, new RegExp(`href="${href}"`));
 
-  for (const href of keyHubs) {
-    assert.match(home, new RegExp(`href="${href}"`));
-    assert.match(solutions, new RegExp(`href="${href}"`));
-  }
   assert.match(home, /"@type":\s*"Organization"/);
-  for (const html of organizationPages) {
-    assert.match(html, /"@type":\s*"Organization"/);
-  }
+  for (const html of organizationPages) assert.match(html, /"@type":\s*"Organization"/);
   assert.match(robots, /^Allow: \/$/m);
   assert.match(robots, /^Sitemap: https:\/\/www\.trenesytranvias\.com\/sitemap\.xml$/m);
 });
