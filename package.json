@@ -2,6 +2,8 @@
   "type": "module",
   "scripts": {
     "test": "node --test",
-    "seo:generate": "node scripts/generate-seo-pages.mjs"
+    "seo:generate": "node scripts/generate-seo-pages.mjs",
+    "quality": "node scripts/quality-report.mjs",
+    "check": "node --check app.js && node --check studio.js && node --check scripts/generate-seo-pages.mjs && npm run quality && npm test"
   }
 }
