@@ -1,3 +1,5 @@
+@import url("./studio-archic-v2.css");
+
 .management-access{color:rgba(255,255,255,.48);transition:color .2s ease}.management-access:hover{color:#fff}
 
 .studio-topbar-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.view-switch{display:flex;padding:3px;border:1px solid var(--studio-line,#deded8);border-radius:10px;background:#f5f4ef}.view-switch button{border:0;background:transparent;padding:8px 12px;border-radius:7px;font:inherit;font-size:12px;font-weight:700;color:#74746e;cursor:pointer}.view-switch button.is-active{background:#fff;color:#171817;box-shadow:0 1px 4px rgba(0,0,0,.07)}
